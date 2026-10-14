@@ -6,9 +6,9 @@ a{text-decoration:none;color:inherit}
 .wrap{width:min(1440px,92%);margin:0 auto}
 
 .topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.98);border-bottom:1px solid #e6edf6}
-.nav{height:72px;display:flex;align-items:center;gap:28px}
-.logo{width:170px;flex:0 0 auto}
-.logo img{width:100%;height:auto}
+.nav{min-height:78px;display:flex;align-items:center;gap:22px}
+.logo{display:flex;align-items:center;flex:0 0 auto;min-width:175px}
+.logo img{height:58px;width:auto;max-width:100%;object-fit:contain}
 .menu{margin-left:auto;display:flex;align-items:center;gap:34px;font-size:15px;font-weight:800;white-space:nowrap}
 .menu a:hover{color:#0b82e9}
 .account{display:flex;gap:10px;margin-left:18px}
@@ -19,10 +19,8 @@ a{text-decoration:none;color:inherit}
 .btn.ghost:hover,.btn.outline:hover{background:#f0f8ff}
 
 .hero{position:relative;min-height:355px;overflow:hidden;background:#f9fcff}
-.hero-photo{position:absolute;right:0;top:0;width:70%;height:100%;background:
-linear-gradient(90deg,#fff 0%,rgba(255,255,255,.86) 18%,rgba(255,255,255,.28) 52%,rgba(255,255,255,.02) 100%),
-url("hero-classroom.jpg") center/cover no-repeat}
-.hero-inner{position:relative;z-index:3;padding-top:28px}
+.hero-photo{position:absolute;right:0;top:0;width:69%;height:100%;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.88) 15%,rgba(255,255,255,.32) 45%,rgba(255,255,255,.04) 100%),url("hero-classroom.jpg") center center/cover no-repeat}
+.hero-inner{position:relative;z-index:3;padding-top:28px;padding-bottom:58px}
 .hero-copy{max-width:650px}
 .eyebrow{margin:0 0 12px;color:#0a5bb3;font-size:18px;font-weight:800}
 .hero h1{margin:0;font-size:52px;line-height:1.13;letter-spacing:-.05em;color:#0b3279}
@@ -53,35 +51,35 @@ url("hero-classroom.jpg") center/cover no-repeat}
 .more span{font-size:18px;line-height:1}
 
 .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{position:relative;border:1px solid #dce7f2;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(22,66,120,.05)}
-.card img{width:100%;height:90px;object-fit:cover}
-.card-body{position:relative;padding:12px 16px 14px;min-height:92px}
-.card h3{margin:0 0 6px;font-size:18px}
+.card{position:relative;border:1px solid #dce7f2;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(22,66,120,.05);display:flex;flex-direction:column}
+.card img{width:100%;height:112px;object-fit:cover;object-position:center center;background:#eef6ff}
+.card-body{position:relative;padding:14px 16px 16px;min-height:108px}
+.card h3{margin:0 0 6px;font-size:18px;color:#113b7c}
 .card p{margin:0;color:#5f7393;font-size:13px;line-height:1.45}
 .circle-arrow{position:absolute;right:13px;bottom:15px;width:31px;height:31px;border:1px solid #6fb9f5;color:#0a78db;border-radius:50%;display:grid;place-items:center;font-size:22px}
-.partner img{height:120px}
-.subject-badge{position:absolute;left:16px;top:83px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;border:5px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.05)}
+.partner img{height:132px;object-position:center}
+.subject-badge{position:absolute;left:16px;top:98px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;border:5px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.05)}
 .subject-badge.blue{background:#2489ee}
 .subject-badge.green{background:#26b99c}
 .subject-badge.purple{background:#8256e3}
 .subject-badge.orange{background:#f48742}
-.partner .card-body{padding-top:27px;min-height:116px}
+.partner .card-body{padding-top:32px;min-height:120px}
 
 .news{padding-bottom:28px}
-.seminar-row{display:grid;grid-template-columns:1fr 190px 260px;align-items:center;min-height:108px;border:1px solid #dbe6f1;border-radius:11px;background:#f9fcff;overflow:hidden}
+.seminar-row{display:grid;grid-template-columns:1fr 190px 260px;align-items:center;min-height:118px;border:1px solid #dbe6f1;border-radius:11px;background:#f9fcff;overflow:hidden}
 .seminar-left{display:flex;align-items:center;gap:18px;padding:16px 20px}
 .people-icon{font-size:42px;color:#087fe9}
-.seminar-head{display:flex;align-items:center;gap:10px}
+.seminar-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .seminar-head h3{margin:0;font-size:21px}
 .tag{background:#e6f4ff;color:#0878df;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px}
 .seminar-left p{margin:8px 0 0;color:#51698f;font-size:13px}
 .seminar-left .address{font-size:12px;color:#6d82a2}
 .reserve{justify-self:center;border-radius:8px}
-.seminar-row>img{width:100%;height:108px;object-fit:cover}
+.seminar-row>img{width:100%;height:118px;object-fit:cover;object-position:center}
 
 footer{background:#fff;border-top:1px solid #e5edf6}
-.footer-row{min-height:74px;display:flex;align-items:center;gap:30px;font-size:13px;color:#61789a}
-.footer-logo{width:120px}
+.footer-row{min-height:80px;display:flex;align-items:center;gap:26px;font-size:13px;color:#61789a}
+.footer-logo{width:132px;height:auto}
 .foot-item strong{color:#143a77;font-size:16px}
 .hours{margin-left:8px}
 .hours span,.foot-links span{margin:0 8px;color:#b7c3d3}
@@ -103,11 +101,12 @@ footer{background:#fff;border-top:1px solid #e5edf6}
 }
 @media(max-width:720px){
   .wrap{width:min(94%,680px)}
-  .nav{height:64px}
-  .logo{width:130px}
+  .nav{min-height:64px}
+  .logo{min-width:140px}
+  .logo img{height:48px}
   .account .btn{padding:9px 12px;font-size:12px}
   .hero{min-height:500px}
-  .hero-photo{width:100%;opacity:.25;background-position:center}
+  .hero-photo{width:100%;opacity:.24;background-position:center}
   .hero-inner{padding-top:34px}
   .hero h1{font-size:39px}
   .hero-sub br{display:none}
