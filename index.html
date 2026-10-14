@@ -1,215 +1,149 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="콘매쓰(CON MATH) 통합수학 교육 및 협력 교육 네트워크 소개">
   <title>CON MATH | 학생에게 필요한 교육을 함께 연결합니다</title>
-  <meta name="description" content="CON MATH 통합수학 교육 브랜드" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" href="assets/hero-right.webp" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap nav">
-      <a class="logo" href="#top" aria-label="CON MATH 홈">
-        <img src="conmath-logo.png" alt="CON MATH" />
+<header class="header" id="brand">
+  <div class="shell header-inner">
+    <a href="#brand" class="logo" aria-label="콘매쓰 홈페이지 맨 위로">
+      <img src="assets/brand-logo.png" width="173" height="65" alt="CON MATH 통합수학">
+    </a>
+    <nav class="nav-desktop" aria-label="주 메뉴">
+      <a href="#brand">브랜드 소개</a>
+      <a href="#courses">교육과정</a>
+      <a href="#partners">협력학원</a>
+      <a href="#textbooks">교재</a>
+      <a href="#management">학습관리</a>
+      <a href="#news">설명회·소식</a>
+      <a href="#contact">문의</a>
+    </nav>
+    <a class="contact-top" href="tel:01048369991" aria-label="콘매쓰 전화 상담 010-4836-9991">
+      <span class="bubble">•••</span> 상담 문의
+    </a>
+    <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="모바일 주 메뉴" hidden>
+    <a href="#brand">브랜드 소개</a><a href="#courses">교육과정</a><a href="#partners">협력학원</a>
+    <a href="#textbooks">교재</a><a href="#management">학습관리</a><a href="#news">설명회·소식</a><a href="#contact">문의</a>
+    <a href="tel:01048369991" class="mobile-call">상담 문의 010-4836-9991</a>
+  </nav>
+</header>
+<main>
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-photo" aria-hidden="true"></div>
+    <div class="hero-left-decoration" aria-hidden="true"></div>
+    <div class="shell hero-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">수학 교육의 새로운 연결, <span>CON MATH</span></p>
+        <h1 id="hero-heading">학생에게 필요한 교육을,<br><strong>함께 연결합니다.</strong></h1>
+        <p class="hero-description">CON MATH는 통합수학 교육을 전문으로 하며,<br class="desktop-br"> 필요한 경우 학생에게 가장 적합한 협력 학원으로 연결해 더 나은 교육을 제공합니다.</p>
+        <div class="hero-buttons">
+          <a class="pill-btn solid" href="tel:01048369991"><span aria-hidden="true">☏</span> 상담 문의 <b>›</b></a>
+          <a class="pill-btn outline" href="#partners"><span aria-hidden="true">♟</span> 협력 제안 보기 <b>›</b></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="features shell" id="management" aria-label="콘매쓰의 교육 원칙">
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M5 18 24 10l19 8-19 8L5 18Z" fill="currentColor"/><path d="M12 24v9c9 7 17 7 25 0v-9M43 18v14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      </span>
+      <div><h2>통합수학 전문</h2><p>변화하는 교육과정에 맞춘<br>깊이 있는 수학 교육을 제공합니다.</p></div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="currentColor"><circle cx="24" cy="15" r="7"/><circle cx="8" cy="21" r="6"/><circle cx="40" cy="21" r="6"/><path d="M13 44V29q2-10 11-10t11 10v15ZM1 44V30q1-8 8-8h3q-3 5-3 12v10ZM39 44V34q0-7-3-12h3q8 0 8 8v14Z"/></svg>
+      </span>
+      <div><h2>학생 맞춤 관리</h2><p>학생의 현재 수준과 목표에 맞는<br>개별 맞춤 관리를 지원합니다.</p></div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><circle cx="24" cy="9" r="6"/><circle cx="9" cy="37" r="6"/><circle cx="39" cy="37" r="6"/><path d="m21 15-9 17m15-17 9 17M15 37h18"/></svg>
+      </span>
+      <div><h2>협력 교육 네트워크</h2><p>검증된 협력 학원과의 연결을 통해<br>더 넓은 교육 기회를 제공합니다.</p></div>
+    </div>
+  </section>
+  <span id="textbooks" class="anchor-marker" aria-hidden="true"></span>
+  <section class="shell content-row courses-row" id="courses" aria-labelledby="courses-title">
+    <div class="section-intro">
+      <h2 id="courses-title">교육과정</h2>
+      <p>다양한 수학 학습으로<br>더 큰 가능성을 만듭니다.</p>
+      <a class="inline-link" href="#course-cards">교육과정 자세히 보기 <span>›</span></a>
+    </div>
+    <div class="card-grid course-grid" id="course-cards">
+      <a class="image-card" href="tel:01048369991" aria-label="교과 수학: 학교 수업의 기초를 다지는 핵심 개념 학습. 전화 상담하기">
+        <img src="assets/course-school.webp" alt="교과 수학: 학교 수업의 기초를 다지는 핵심 개념 학습" width="293" height="139">
       </a>
-
-      <nav class="menu" aria-label="주 메뉴">
-        <a href="#brand">브랜드 소개</a>
-        <a href="#courses">교육과정</a>
-        <a href="#partners">협력학원</a>
-        <a href="#books">교재</a>
-        <a href="#management">학습관리</a>
-        <a href="#news">설명회·소식</a>
-        <a href="#contact">문의</a>
-      </nav>
-
-      <div class="account">
-        <button class="btn ghost" type="button">로그인</button>
-        <button class="btn solid" type="button">회원가입</button>
-      </div>
+      <a class="image-card" href="tel:01048369991" aria-label="통합 수학: 수학적 사고력을 키우는 심화 학습. 전화 상담하기">
+        <img src="assets/course-integrated.webp" alt="통합 수학: 수학적 사고력을 키우는 심화 학습" width="296" height="139">
+      </a>
+      <a class="image-card" href="tel:01048369991" aria-label="멘토 클래스: 학습 습관과 문제 해결력을 키우는 맞춤 지도. 전화 상담하기">
+        <img src="assets/course-mentor.webp" alt="멘토 클래스: 학습 습관과 문제 해결력을 키우는 맞춤 지도" width="295" height="139">
+      </a>
+      <a class="image-card" href="#news" aria-label="설명회 안내: 입시와 학습 전략을 함께하는 전문가 설명회. 안내 보기">
+        <img src="assets/course-seminar.webp" alt="설명회 안내: 입시와 학습 전략을 함께하는 전문가 설명회" width="291" height="139">
+      </a>
     </div>
-  </header>
-
-  <main id="top">
-    <section class="hero" id="brand">
-      <div class="hero-photo"></div>
-      <div class="wrap hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow">수학 교육의 새로운 연결, CON MATH</p>
-          <h1>학생에게 필요한 교육을,<br><span>함께 연결합니다.</span></h1>
-          <p class="hero-sub">
-            CON MATH는 통합수학 교육을 전문으로 하며,<br>
-            필요한 경우 학생에게 가장 적합한 협력 학원으로 연결해 더 나은 교육을 제공합니다.
-          </p>
-          <div class="hero-buttons">
-            <a class="btn solid hero-btn" href="#contact">상담 문의 <b>›</b></a>
-            <a class="btn outline hero-btn" href="#partners">협력 제안 보기 <b>›</b></a>
-          </div>
-        </div>
-      </div>
-      <div class="hero-wave wave1"></div>
-      <div class="hero-wave wave2"></div>
-      <div class="hero-wave wave3"></div>
-    </section>
-
-    <section class="features">
-      <div class="wrap feature-grid">
-        <article class="feature">
-          <div class="feature-icon">🎓</div>
-          <div>
-            <h3>통합수학 전문</h3>
-            <p>변화하는 교육과정에 맞춘<br>깊이 있는 수학 교육을 제공합니다.</p>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="feature-icon">👥</div>
-          <div>
-            <h3>학생 맞춤 관리</h3>
-            <p>학생의 현재 수준과 목표에 맞는<br>개별 맞춤 관리를 지원합니다.</p>
-          </div>
-        </article>
-        <article class="feature">
-          <div class="feature-icon">◉</div>
-          <div>
-            <h3>협력 교육 네트워크</h3>
-            <p>검증된 협력 학원과의 연결을 통해<br>더 넓은 교육 기회를 제공합니다.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="block" id="courses">
-      <div class="wrap block-grid">
-        <aside class="section-title">
-          <span class="accent"></span>
-          <h2>교육과정</h2>
-          <p>다양한 수학 학습으로<br>더 큰 가능성을 만듭니다.</p>
-          <a class="more" href="#">교육과정 자세히 보기 <span>›</span></a>
-        </aside>
-
-        <div class="card-grid course-grid">
-          <article class="card">
-            <img src="course-school.jpg" alt="교과 수학" />
-            <div class="card-body">
-              <h3>교과 수학</h3>
-              <p>학교 수업의 기초를 다지는<br>핵심 개념 학습</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card">
-            <img src="course-integrated.jpg" alt="통합 수학" />
-            <div class="card-body">
-              <h3>통합 수학</h3>
-              <p>수학적 사고력을 키우는<br>심화 학습</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card">
-            <img src="course-mentor.jpg" alt="멘토 클래스" />
-            <div class="card-body">
-              <h3>멘토 클래스</h3>
-              <p>학습 습관과 문제 해결력을<br>키우는 맞춤 지도</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card">
-            <img src="seminar.jpg" alt="설명회 안내" />
-            <div class="card-body">
-              <h3>설명회 안내</h3>
-              <p>입시와 학습 전략을 함께하는<br>전문가 설명회</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="block" id="partners">
-      <div class="wrap block-grid">
-        <aside class="section-title">
-          <span class="accent"></span>
-          <h2>협력학원</h2>
-          <p>각 분야의 검증된<br>협력 학원들이 함께합니다.</p>
-          <a class="more" href="#">협력학원 더 보기 <span>›</span></a>
-        </aside>
-
-        <div class="card-grid partner-grid">
-          <article class="card partner">
-            <img src="partner-english.jpg" alt="영어" />
-            <div class="subject-badge blue">AA</div>
-            <div class="card-body">
-              <h3>영어</h3>
-              <p>탄탄한 기본기로 만드는<br>폭넓은 학습 경쟁력</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card partner">
-            <img src="partner-korean.jpg" alt="국어·논술" />
-            <div class="subject-badge green">책</div>
-            <div class="card-body">
-              <h3>국어·논술</h3>
-              <p>생각하는 힘을 키우는<br>읽기와 쓰기의 완성</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card partner">
-            <img src="partner-science.jpg" alt="과학" />
-            <div class="subject-badge purple">⚗</div>
-            <div class="card-body">
-              <h3>과학</h3>
-              <p>탐구하는 즐거움을 키우는<br>과학적 사고력</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-          <article class="card partner">
-            <img src="partner-arts.jpg" alt="예체능" />
-            <div class="subject-badge orange">✦</div>
-            <div class="card-body">
-              <h3>예체능</h3>
-              <p>다양한 재능을 키우는<br>균형 있는 교육</p>
-              <span class="circle-arrow">›</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="block news" id="news">
-      <div class="wrap block-grid">
-        <aside class="section-title">
-          <span class="accent"></span>
-          <h2>설명회·소식</h2>
-          <p>CON MATH의 새로운 소식과<br>유익한 교육 정보를 만나보세요.</p>
-        </aside>
-
-        <article class="seminar-row">
-          <div class="seminar-left">
-            <div class="people-icon">👥</div>
-            <div>
-              <div class="seminar-head">
-                <h3>학부모·학생 설명회</h3>
-                <span class="tag">사전 예약제</span>
-              </div>
-              <p><strong>매주 토요일 오후 2시</strong> <span class="dot">•</span> CON MATH 본사</p>
-              <p class="address">수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
-            </div>
-          </div>
-          <a class="btn solid reserve" href="#contact">설명회 예약하기 <b>›</b></a>
-          <img src="seminar.jpg" alt="학부모·학생 설명회" />
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer id="contact">
-    <div class="wrap footer-row">
-      <img src="conmath-logo.png" alt="CON MATH" class="footer-logo" />
-      <div class="foot-item">☎ <strong>010-4836-9991</strong></div>
-      <div class="foot-item">⌖ 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</div>
-      <div class="foot-item hours">◷ 평일 10:00 - 19:00 <span>|</span> 토요일 10:00 - 16:00</div>
-      <div class="foot-links">개인정보처리방침 <span>|</span> 이용약관</div>
+  </section>
+  <div class="shell rule" aria-hidden="true"></div>
+  <section class="shell content-row partners-row" id="partners" aria-labelledby="partners-title">
+    <div class="section-intro">
+      <h2 id="partners-title">협력학원</h2>
+      <p>각 분야의 검증된<br>협력 학원들이 함께합니다.</p>
+      <a class="inline-link" href="tel:01048369991">협력학원 더 보기 <span>›</span></a>
     </div>
-  </footer>
+    <div class="card-grid partner-grid">
+      <a class="image-card" href="tel:01048369991" aria-label="영어: 탄탄한 기본기로 만드는 폭넓은 학습 경쟁력. 문의하기">
+        <img src="assets/partner-english.webp" alt="영어: 탄탄한 기본기로 만드는 폭넓은 학습 경쟁력" width="292" height="196" loading="lazy">
+      </a>
+      <a class="image-card" href="tel:01048369991" aria-label="국어·논술: 생각하는 힘을 키우는 읽기와 쓰기의 완성. 문의하기">
+        <img src="assets/partner-korean.webp" alt="국어·논술: 생각하는 힘을 키우는 읽기와 쓰기의 완성" width="294" height="196" loading="lazy">
+      </a>
+      <a class="image-card" href="tel:01048369991" aria-label="과학: 탐구하는 즐거움을 키우는 과학적 사고력. 문의하기">
+        <img src="assets/partner-science.webp" alt="과학: 탐구하는 즐거움을 키우는 과학적 사고력" width="293" height="196" loading="lazy">
+      </a>
+      <a class="image-card" href="tel:01048369991" aria-label="예체능: 다양한 재능을 키우는 균형 있는 교육. 문의하기">
+        <img src="assets/partner-arts.webp" alt="예체능: 다양한 재능을 키우는 균형 있는 교육" width="291" height="196" loading="lazy">
+      </a>
+    </div>
+  </section>
+  <div class="shell rule after-partners" aria-hidden="true"></div>
+  <section class="shell content-row news-row" id="news" aria-labelledby="news-title">
+    <div class="section-intro">
+      <h2 id="news-title">설명회·소식</h2>
+      <p>CON MATH의 새로운 소식과<br>유익한 교육 정보를 만나보세요.</p>
+    </div>
+    <a class="seminar-desktop image-card" href="tel:01048369991" aria-label="학부모·학생 설명회: 매주 토요일 오후 2시, 콘매쓰 본사. 설명회 예약 전화하기">
+      <img src="assets/seminar-banner.webp" alt="학부모·학생 설명회 사전 예약제. 매주 토요일 오후 2시, 콘매쓰 본사. 설명회 예약하기" width="1176" height="124" loading="lazy">
+    </a>
+    <div class="seminar-mobile">
+      <span class="seminar-label">사전 예약제</span>
+      <h3>학부모·학생 설명회</h3>
+      <p>매주 토요일 오후 2시</p>
+      <p>수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
+      <a href="tel:01048369991" class="seminar-cta">설명회 예약하기 ›</a>
+    </div>
+  </section>
+</main>
+<footer id="contact">
+  <div class="shell footer-inner">
+    <a class="footer-logo" href="#brand"><img src="assets/brand-logo.png" alt="CON MATH" width="173" height="65"></a>
+    <a class="footer-phone" href="tel:01048369991"><span aria-hidden="true">☎</span> 010-4836-9991</a>
+    <div class="footer-address"><span aria-hidden="true">⌖</span> 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</div>
+    <div class="footer-hours"><span aria-hidden="true">◷</span> 평일 10:00 - 19:00 <i></i> 토요일 10:00 - 16:00</div>
+    <div class="footer-legal"><span>개인정보처리방침</span><i></i><span>이용약관</span></div>
+  </div>
+</footer>
+<script src="script.js" defer></script>
 </body>
 </html>
