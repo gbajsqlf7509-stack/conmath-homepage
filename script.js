@@ -33,3 +33,27 @@ if (accountDialog) {
   accountDialog.querySelector('.account-close').addEventListener('click', () => accountDialog.close());
   accountDialog.addEventListener('click', e => { if (e.target === accountDialog) accountDialog.close(); });
 }
+
+/* Shared curriculum dropdown behavior. Buttons never navigate by themselves. */
+document.querySelectorAll('[data-course-dropdown]').forEach(group => {
+  const trigger=group.querySelector('.course-dropdown-trigger');
+  const setOpen=open => {
+    group.classList.toggle('is-open',open);
+    trigger.setAttribute('aria-expanded',String(open));
+  };
+  trigger.addEventListener('click',()=>setOpen(!group.classList.contains('is-open')));
+  group.addEventListener('mouseenter',()=>{if(window.matchMedia('(hover: hover) and (pointer: fine)').matches)setOpen(true);});
+  group.addEventListener('mouseleave',()=>setOpen(false));
+  group.addEventListener('focusin',()=>setOpen(true));
+  group.addEventListener('focusout',e=>{if(!group.contains(e.relatedTarget))setOpen(false);});
+  document.addEventListener('click',e=>{if(!group.contains(e.target))setOpen(false);});
+  group.addEventListener('keydown',e=>{if(e.key==='Escape'){setOpen(false);trigger.focus();}});
+});
+document.querySelectorAll('[data-mobile-course-group]').forEach(group=>{
+  const trigger=group.querySelector('.mobile-course-trigger');
+  const panel=group.querySelector('.mobile-course-links');
+  const setOpen=open=>{panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));};
+  setOpen(false);
+  trigger.addEventListener('click',()=>setOpen(panel.hidden));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);});
+});
