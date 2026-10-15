@@ -1,0 +1,49 @@
+/* CON MATH curriculum detail page */
+:root{--m-navy:#0a346a;--m-blue:#0a87ee;--m-muted:#546f94;--m-border:#ddeaf6}
+.curriculum-page{background:#fff;color:var(--m-navy);font-size:16px;line-height:1.65}
+.curriculum-header{position:sticky;top:0;z-index:25;background:#fff;border-bottom:1px solid #e5eef6;box-shadow:0 3px 16px #0a326707}
+.curriculum-head-inner{min-height:74px;display:flex;align-items:center;gap:22px}
+.curriculum-logo{display:block;width:200px;flex-shrink:0;background:#fff}.curriculum-logo img{width:100%;height:auto}
+.curriculum-head-links{display:flex;align-items:center;gap:clamp(12px,2.2vw,30px);margin-left:auto}
+.curriculum-head-links a{font-weight:800;color:#143b73;white-space:nowrap;font-size:14px}
+.curriculum-head-links a:hover{color:#0789ef}
+.curriculum-back{font-weight:800;color:#006cdd;border:1px solid #b5d9f9;padding:8px 16px;border-radius:30px;white-space:nowrap;font-size:14px}
+.curriculum-intro{background:linear-gradient(160deg,#fff 0%,#f4faff 100%);border-bottom:1px solid #e0edf8;padding:44px 0 48px}
+.crumbs{display:flex;align-items:center;gap:10px;color:#6f87a8;font-size:13px;margin-bottom:22px;font-weight:700}
+.crumbs a:hover{color:#008af2}.overline{margin:0 0 14px;font-weight:900;font-size:12px;letter-spacing:.12em;color:#1688df}
+.curriculum-intro h1{font-size:clamp(32px,4.8vw,58px);line-height:1.22;margin:0 0 18px;font-weight:900;letter-spacing:-.055em;color:#082f69}
+.curriculum-intro h1 span{display:block;color:#0b88eb;font-size:.72em;letter-spacing:-.04em;margin-top:4px}
+.curriculum-intro .intro-lead{font-size:clamp(16px,1.7vw,20px);color:#4a668f;max-width:920px;line-height:1.75;margin:0}
+.curriculum-intro .intro-lead strong{font-weight:900;color:#0d3972}
+.quick-nav{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.quick-nav a{background:#fff;border:1px solid #bcddf6;padding:9px 17px;font-weight:800;color:#0762c6;border-radius:20px;font-size:14px}
+.section-band{padding:48px 0;border-bottom:1px solid #ecf2f9;scroll-margin-top:90px}.section-heading{margin-bottom:25px}
+.section-heading h2{font-size:clamp(23px,2.4vw,32px);letter-spacing:-.035em;color:#092f6d;margin:0 0 10px}
+.section-heading p{color:#637e9f;font-size:15px;margin:0;line-height:1.65}
+.statement{max-width:1060px;padding:26px 30px;background:#f5faff;border-left:5px solid #1888e6;border-radius:0 16px 16px 0}
+.statement p{font-size:16px;line-height:1.92;color:#415e87;margin:0 0 15px}.statement p:last-child{margin-bottom:0}.statement h3{font-size:20px;margin:0 0 15px;color:#113b78}
+.panel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.panel{background:#fff;border:1px solid var(--m-border);border-radius:18px;padding:24px;box-shadow:0 9px 25px #0c35620a;min-height:185px}
+.panel-index{font-size:14px;font-weight:900;color:#0b82e4;border-bottom:2px solid #cde7fa;padding-bottom:8px;margin-bottom:17px;width:max-content}
+.panel h3{font-size:19px;font-weight:900;line-height:1.35;color:#0c3876;margin:0 0 12px}.panel p{font-size:15px;color:#526c91;line-height:1.7;margin:0}
+.emphasis-statement{background:linear-gradient(125deg,#0c3f91,#0b8de8);border-radius:22px;color:white;padding:34px}
+.emphasis-statement strong{font-size:clamp(22px,3vw,32px);letter-spacing:-.045em}.emphasis-statement p{color:#e2f3ff;line-height:1.85;max-width:900px;margin:14px 0 0}
+.stage-sequence{font-weight:800;border:1px solid #cfe6f9;border-radius:18px;background:#f3f9ff;padding:20px 24px;font-size:17px;line-height:2.25;color:#133d76}.stage-sequence span{color:#1594ef;margin:0 5px}
+.stage-index{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:30px}.stage-index a{border-radius:20px;padding:10px 15px;border:1px solid #cde4f9;background:#f6fbff;color:#115cab;font-weight:800;font-size:13px}
+.stages{display:grid;gap:24px}.curriculum-stage{scroll-margin-top:94px;padding:28px;background:#fff;border:1px solid #dce9f6;border-radius:23px;box-shadow:0 10px 30px #1547700a}
+.stage-header{display:flex;gap:18px;align-items:flex-start;padding-bottom:21px;border-bottom:1px solid #e3effa}.stage-no{flex-shrink:0;background:linear-gradient(135deg,#076be1,#25a3f6);color:#fff;border-radius:14px;padding:14px 16px;font-size:20px;font-weight:900}
+.stage-header h3{font-size:clamp(22px,2.5vw,31px);margin:0 0 6px;line-height:1.3;color:#0b3676}.stage-header p{color:#547097;margin:0;font-size:15px;line-height:1.7}
+.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:19px}
+.topic-block{background:#f7fbff;padding:21px 22px;border-radius:16px;border:1px solid #e3effa}.topic-block h4{font-size:16px;color:#0c3d83;margin:0 0 12px;font-weight:900}.topic-block ul{padding-left:20px;margin:0}.topic-block li{line-height:1.8;margin:8px 0;color:#49658c;font-size:14px}
+.concept-bridge{background:#ecf6ff;border-left:4px solid #1994f3;margin-top:19px;border-radius:0 13px 13px 0;padding:18px 21px}.concept-bridge strong{font-size:16px;color:#0b3c83}.concept-bridge p{margin:8px 0 0;font-size:14px;color:#46658d;line-height:1.8}
+.mentor-track-head{margin-bottom:20px}.mentor-track-head .overline{margin-bottom:6px}.mentor-track-head h2{margin:0 0 10px;font-size:clamp(25px,3vw,36px);letter-spacing:-.04em}.track-hook{font-size:17px;font-weight:650;color:#526f97;line-height:1.7;margin:0}
+.mentor-two{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}.mentor-two .statement{height:100%}
+.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.check-item{display:flex;align-items:flex-start;gap:13px;border:1px solid #dce9f6;border-radius:15px;padding:18px;background:#fff}
+.check-item>span{border-radius:11px;background:#e6f4ff;padding:7px 9px;color:#0a70d6;font-size:13px;font-weight:900}.check-item strong{display:block;margin:2px 0 7px;font-size:16px;color:#153f79}.check-item p{font-size:14px;color:#5d7799;line-height:1.65;margin:0}
+.next-courses{padding:42px 0 50px;background:#f6faff}.next-courses h2{font-size:23px;margin:0 0 20px;letter-spacing:-.03em}.links-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.links-row a{background:#fff;border:1px solid #cfe2f6;border-radius:14px;padding:17px 19px;display:flex;justify-content:space-between;font-weight:900;color:#0c4eae}.links-row a.active{background:#e4f3ff}
+.selector-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.selector-card{border-radius:20px;padding:26px;min-height:275px;border:1px solid #d6e8f8;box-shadow:0 9px 30px #102b5f0a;display:flex;flex-direction:column;gap:14px;background:#fff}
+.sel-count{font-size:13px;font-weight:900;color:#1484df;letter-spacing:.06em}.selector-card h3{font-size:27px;letter-spacing:-.04em;color:#0a397f;margin:0}.selector-card p{color:#597398;margin:0;line-height:1.7;font-size:15px}.selector-card span{margin-top:auto;color:#086ccf;font-size:15px;font-weight:900}.selector-card.s-teal{background:linear-gradient(135deg,#fff,#f1fcfe)}.selector-card.s-purple{background:linear-gradient(135deg,#fff,#f6f3ff)}.selector-card.s-blue{background:linear-gradient(135deg,#fff,#f2f9ff)}
+.curriculum-footer{background:#fff;padding:24px 0;border-top:1px solid #e2edf8}.footer-flex{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer-logo-clean{width:175px}.footer-logo-clean img{width:100%;height:auto}.curriculum-footer p{margin:0;font-size:13px;font-weight:700;color:#647f9d}.curriculum-footer a:last-child{font-size:14px;font-weight:900;color:#0b5ac0}
+@media(max-width:1100px){.curriculum-head-links{gap:13px}.curriculum-head-links a{font-size:12px}.curriculum-logo{width:164px}.curriculum-back{font-size:12px;padding:7px 10px}}
+@media(max-width:880px){.curriculum-head-inner{min-height:64px}.curriculum-head-links{display:none}.curriculum-logo{width:160px}.curriculum-back{margin-left:auto}.panel-grid,.selector-grid{grid-template-columns:1fr}.topic-grid{grid-template-columns:1fr}.mentor-two{grid-template-columns:1fr}}
+@media(max-width:570px){.curriculum-intro{padding:26px 0 32px}.curriculum-intro h1{font-size:32px}.curriculum-intro h1 span{font-size:.72em}.curriculum-intro .intro-lead{font-size:15px}.section-band{padding:28px 0}.statement{padding:20px;border-radius:0 12px 12px 0}.statement p{font-size:14px}.curriculum-stage{padding:17px;border-radius:16px}.stage-header{gap:12px}.stage-no{padding:10px 13px;border-radius:11px;font-size:16px}.topic-block{padding:16px}.topic-block li{font-size:13px}.concept-bridge{padding:15px}.checklist{grid-template-columns:1fr}.quick-nav a{font-size:12px}.stage-index a{font-size:12px;padding:8px 10px}.links-row{grid-template-columns:1fr}.footer-flex{justify-content:center;text-align:center;flex-direction:column}.selector-card{min-height:220px;padding:20px}}
