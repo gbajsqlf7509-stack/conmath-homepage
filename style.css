@@ -37,3 +37,25 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 @media(max-width:970px){.header-inner{justify-content:space-between}.header-actions{margin-left:auto}.header-actions .contact-top{display:none}.account-link{font-size:13px}.menu-toggle{flex:none}}
 @media(max-width:570px){.header-inner{gap:7px}.header-actions{gap:7px}.header-actions .account-link{font-size:11.5px;letter-spacing:-.025em;padding:7px 0}.header-actions .account-link.join-link{padding:7px 7px}.logo{width:clamp(104px,32vw,145px);flex:none}.logo img{width:100%}.menu-toggle{height:35px;width:35px}.rebuilt-card .card-content{inset:8% 7% 8% 8%;justify-content:space-between}.rebuilt-card .card-symbol{width:22px;height:22px;font-size:13px}.rebuilt-card .card-title{font-size:clamp(11px,3.2vw,13px);letter-spacing:-.035em}.rebuilt-card .card-description{font-size:clamp(8px,2.35vw,10px);line-height:1.3}.rebuilt-card .card-arrow{width:21px;height:21px;font-size:20px;right:4%;bottom:7%}}
 @media(max-width:360px){.contact-top{display:none}.rebuilt-card .card-symbol{width:28px;height:28px;font-size:16px}.rebuilt-card .card-title{font-size:15px}.rebuilt-card .card-description{font-size:11px}}
+
+/* Crisp card refresh: scalable illustrations, native text, no raster text. */
+.rebuilt-card{--card-ink:#71a3d5;isolation:isolate;background:#f4faff}
+.rebuilt-card::before{background:linear-gradient(110deg,#fbfdff,#eaf5ff)}
+.rebuilt-card .card-art{position:absolute;right:-7%;top:5%;height:91%;width:56%;color:var(--card-ink);opacity:.61;filter:none}
+.rebuilt-card.mint{--card-ink:#3baf99}.rebuilt-card.mint::before{background:linear-gradient(110deg,#fcfffe,#ecfaf6)}
+.rebuilt-card.purple,.rebuilt-card.violet{--card-ink:#9c79d8}
+.rebuilt-card.purple::before,.rebuilt-card.violet::before{background:linear-gradient(110deg,#fdfcff,#f1ecfc)}
+.rebuilt-card.peach,.rebuilt-card.orange{--card-ink:#d89158}
+.rebuilt-card.peach::before,.rebuilt-card.orange::before{background:linear-gradient(110deg,#fffefa,#fff4e5)}
+.rebuilt-card .card-content{z-index:1}
+.rebuilt-card .card-title{background:#ffffffee;box-shadow:0 0 6px 3px #ffffff88;border-radius:3px;padding:1px 2px;text-shadow:none}
+.rebuilt-card .card-description{background:#fffffff0;box-shadow:0 0 6px 3px #ffffffaa;border-radius:3px;padding:1px 2px}
+.course-grid .rebuilt-card{aspect-ratio:1.86}
+.partner-grid .rebuilt-card{aspect-ratio:1.47}
+@media(max-width:570px){
+ .course-grid .rebuilt-card{aspect-ratio:1.72}
+ .partner-grid .rebuilt-card{aspect-ratio:1.43}
+ .rebuilt-card .card-art{right:-8%;width:58%;top:10%;height:80%}
+ .rebuilt-card .card-title{font-size:clamp(12px,3.45vw,15px)}
+ .rebuilt-card .card-description{font-size:clamp(9px,2.55vw,11px);line-height:1.35}
+}
