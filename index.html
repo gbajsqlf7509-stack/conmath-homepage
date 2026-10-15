@@ -24,12 +24,16 @@
       <a href="#news">설명회·소식</a>
       <a href="#contact">문의</a>
     </nav>
-    <a class="contact-top" href="tel:01048369991" aria-label="콘매쓰 전화 상담 010-4836-9991">
-      <span class="bubble">•••</span> 상담 문의
-    </a>
-    <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-nav">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-actions">
+      <button class="account-link" type="button" data-account="login">로그인</button>
+      <button class="account-link join-link" type="button" data-account="signup">회원가입</button>
+      <a class="contact-top" href="tel:01048369991" aria-label="콘매쓰 전화 상담 010-4836-9991">
+        <span class="bubble">•••</span> 상담 문의
+      </a>
+      <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
   <nav class="mobile-nav" id="mobile-nav" aria-label="모바일 주 메뉴" hidden>
     <a href="#brand">브랜드 소개</a><a href="#courses">교육과정</a><a href="#partners">협력학원</a>
@@ -81,17 +85,25 @@
       <a class="inline-link" href="#course-cards">교육과정 자세히 보기 <span>›</span></a>
     </div>
     <div class="card-grid course-grid" id="course-cards">
-      <a class="image-card" href="tel:01048369991" aria-label="교과 수학: 학교 수업의 기초를 다지는 핵심 개념 학습. 전화 상담하기">
-        <img src="course-school.webp" alt="교과 수학: 학교 수업의 기초를 다지는 핵심 개념 학습" width="293" height="139">
+      <a class="image-card rebuilt-card blue" href="tel:01048369991" aria-label="교과 수학 — 학교 수업의 기초를 다지는 핵심 개념 학습">
+        <span class="card-photo" style="background-image:url('course-school.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">∑</span><strong class="card-title">교과 수학</strong><span class="card-description">학교 수업의 기초를 다지는<br>핵심 개념 학습</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="tel:01048369991" aria-label="통합 수학: 수학적 사고력을 키우는 심화 학습. 전화 상담하기">
-        <img src="course-integrated.webp" alt="통합 수학: 수학적 사고력을 키우는 심화 학습" width="296" height="139">
+      <a class="image-card rebuilt-card cyan" href="tel:01048369991" aria-label="통합 수학 — 수학적 사고력을 키우는 심화 학습">
+        <span class="card-photo" style="background-image:url('course-integrated.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">△</span><strong class="card-title">통합 수학</strong><span class="card-description">수학적 사고력을 키우는<br>심화 학습</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="tel:01048369991" aria-label="멘토 클래스: 학습 습관과 문제 해결력을 키우는 맞춤 지도. 전화 상담하기">
-        <img src="course-mentor.webp" alt="멘토 클래스: 학습 습관과 문제 해결력을 키우는 맞춤 지도" width="295" height="139">
+      <a class="image-card rebuilt-card purple" href="tel:01048369991" aria-label="멘토 클래스 — 학습 습관과 문제 해결력을 키우는 맞춤 지도">
+        <span class="card-photo" style="background-image:url('course-mentor.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">✎</span><strong class="card-title">멘토 클래스</strong><span class="card-description">학습 습관과 문제 해결력을<br>키우는 맞춤 지도</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="#news" aria-label="설명회 안내: 입시와 학습 전략을 함께하는 전문가 설명회. 안내 보기">
-        <img src="course-seminar.webp" alt="설명회 안내: 입시와 학습 전략을 함께하는 전문가 설명회" width="291" height="139">
+      <a class="image-card rebuilt-card orange" href="#news" aria-label="설명회 안내 — 입시와 학습 전략을 함께하는 전문가 설명회">
+        <span class="card-photo" style="background-image:url('course-seminar.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">◉</span><strong class="card-title">설명회 안내</strong><span class="card-description">입시와 학습 전략을 함께하는<br>전문가 설명회</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
     </div>
   </section>
@@ -103,17 +115,25 @@
       <a class="inline-link" href="tel:01048369991">협력학원 더 보기 <span>›</span></a>
     </div>
     <div class="card-grid partner-grid">
-      <a class="image-card" href="tel:01048369991" aria-label="영어: 탄탄한 기본기로 만드는 폭넓은 학습 경쟁력. 문의하기">
-        <img src="partner-english.webp" alt="영어: 탄탄한 기본기로 만드는 폭넓은 학습 경쟁력" width="292" height="196" loading="lazy">
+      <a class="image-card rebuilt-card sky" href="tel:01048369991" aria-label="영어 — 탄탄한 기본기로 만드는 폭넓은 학습 경쟁력">
+        <span class="card-photo" style="background-image:url('partner-english.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">A</span><strong class="card-title">영어</strong><span class="card-description">탄탄한 기본기로 만드는<br>폭넓은 학습 경쟁력</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="tel:01048369991" aria-label="국어·논술: 생각하는 힘을 키우는 읽기와 쓰기의 완성. 문의하기">
-        <img src="partner-korean.webp" alt="국어·논술: 생각하는 힘을 키우는 읽기와 쓰기의 완성" width="294" height="196" loading="lazy">
+      <a class="image-card rebuilt-card mint" href="tel:01048369991" aria-label="국어·논술 — 생각하는 힘을 키우는 읽기와 쓰기의 완성">
+        <span class="card-photo" style="background-image:url('partner-korean.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">文</span><strong class="card-title">국어·논술</strong><span class="card-description">생각하는 힘을 키우는<br>읽기와 쓰기의 완성</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="tel:01048369991" aria-label="과학: 탐구하는 즐거움을 키우는 과학적 사고력. 문의하기">
-        <img src="partner-science.webp" alt="과학: 탐구하는 즐거움을 키우는 과학적 사고력" width="293" height="196" loading="lazy">
+      <a class="image-card rebuilt-card violet" href="tel:01048369991" aria-label="과학 — 탐구하는 즐거움을 키우는 과학적 사고력">
+        <span class="card-photo" style="background-image:url('partner-science.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">⚗</span><strong class="card-title">과학</strong><span class="card-description">탐구하는 즐거움을 키우는<br>과학적 사고력</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
-      <a class="image-card" href="tel:01048369991" aria-label="예체능: 다양한 재능을 키우는 균형 있는 교육. 문의하기">
-        <img src="partner-arts.webp" alt="예체능: 다양한 재능을 키우는 균형 있는 교육" width="291" height="196" loading="lazy">
+      <a class="image-card rebuilt-card peach" href="tel:01048369991" aria-label="예체능 — 다양한 재능을 키우는 균형 있는 교육">
+        <span class="card-photo" style="background-image:url('partner-arts.webp')" aria-hidden="true"></span>
+        <span class="card-content"><span class="card-symbol" aria-hidden="true">♫</span><strong class="card-title">예체능</strong><span class="card-description">다양한 재능을 키우는<br>균형 있는 교육</span></span>
+        <span class="card-arrow" aria-hidden="true">›</span>
       </a>
     </div>
   </section>
@@ -144,6 +164,12 @@
     <div class="footer-legal"><span>개인정보처리방침</span><i></i><span>이용약관</span></div>
   </div>
 </footer>
+<dialog class="account-dialog" id="account-dialog" aria-labelledby="account-title">
+  <button class="account-close" type="button" aria-label="닫기">×</button>
+  <h2 id="account-title">로그인</h2>
+  <p>계정 서비스는 준비 중입니다. 이용 가능해지면 이곳에서 로그인과 회원가입을 진행할 수 있습니다.</p>
+  <a class="account-call" href="tel:01048369991">상담 문의하기</a>
+</dialog>
 <script src="script.js" defer></script>
 </body>
 </html>
