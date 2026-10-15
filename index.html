@@ -7,7 +7,7 @@
   <meta name="description" content="콘매쓰(CON MATH) 통합수학 교육 및 협력 교육 네트워크 소개">
   <title>CON MATH | 학생에게 필요한 교육을 함께 연결합니다</title>
   <link rel="preload" href="hero-right.webp" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="style.css?v=20261015-web3">
+  <link rel="stylesheet" href="style.css?v=20261015-menu6">
 </head>
 <body>
 <header class="header" id="brand">
@@ -17,7 +17,17 @@
     </a>
     <nav class="nav-desktop" aria-label="주 메뉴">
       <a href="#brand">브랜드 소개</a>
-      <a href="curriculum.html">교육과정</a>
+      <div class="course-dropdown" data-course-dropdown>
+        <button class="course-dropdown-trigger" type="button" aria-expanded="false" aria-controls="main-course-dropdown">교육과정 <span class="course-chevron" aria-hidden="true">▾</span></button>
+        <div class="course-dropdown-panel" id="main-course-dropdown" aria-label="전체 교육과정">
+          <a href="course-school.html">교과수학</a>
+          <a href="integrated-math.html">통합수학</a>
+          <a href="mentor-class.html">멘토클래스</a>
+          <a href="math-reading.html">수학독서</a>
+          <a href="math-career.html">수학진로탐색</a>
+          <a href="arithmetic.html">연산강화</a>
+        </div>
+      </div>
       <a href="#partners">협력학원</a>
       <a href="#textbooks">교재</a>
       <a href="#management">학습관리</a>
@@ -36,7 +46,17 @@
     </div>
   </div>
   <nav class="mobile-nav" id="mobile-nav" aria-label="모바일 주 메뉴" hidden>
-    <a href="#brand">브랜드 소개</a><a href="curriculum.html">교육과정</a><a href="#partners">협력학원</a>
+    <a href="#brand">브랜드 소개</a><div class="mobile-course-group" data-mobile-course-group>
+      <button class="mobile-course-trigger" type="button" aria-controls="main-mobile-courses" aria-expanded="false">교육과정 <span aria-hidden="true">▾</span></button>
+      <div class="mobile-course-links" id="main-mobile-courses" hidden>
+        <a href="course-school.html">교과수학</a>
+        <a href="integrated-math.html">통합수학</a>
+        <a href="mentor-class.html">멘토클래스</a>
+        <a href="math-reading.html">수학독서</a>
+        <a href="math-career.html">수학진로탐색</a>
+        <a href="arithmetic.html">연산강화</a>
+      </div>
+    </div><a href="#partners">협력학원</a>
     <a href="#textbooks">교재</a><a href="#management">학습관리</a><a href="#news">설명회·소식</a><a href="#contact">문의</a>
     <a href="tel:01048369991" class="mobile-call">상담 문의 010-4836-9991</a>
   </nav>
