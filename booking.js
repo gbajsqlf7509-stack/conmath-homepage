@@ -77,10 +77,29 @@ document.addEventListener('DOMContentLoaded', () => {
         config: { layout: 'month_view', theme: 'light' }
       });
       window.Cal.ns[ns]('ui', {
-        hideEventTypeDetails: false,
+        // The page already shows full consultation details above the calendar.
+        // Do not display the Cal.com host's personal name in its metadata sidebar.
+        hideEventTypeDetails: true,
         layout: 'month_view',
         styles: { branding: { brandColor: '#0b568e' } }
       });
+      const showSuccess = (event) => {
+        if (document.body.dataset.conmathBookingSuccess === 'true') return;
+        // Only show this after Cal.com has actually notified us of booking success.
+        document.body.dataset.conmathBookingSuccess = 'true';
+        const flow = document.getElementById('bk-booking-flow');
+        const confirmation = document.getElementById('bk-confirmation');
+        if (!flow || !confirmation) return;
+        flow.hidden = true;
+        confirmation.hidden = false;
+        confirmation.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        confirmation.focus({ preventScroll: true });
+      };
+      // Cal.com embed sends a success event after accepting a reservation.
+      // Support both the newer and older event names.
+      for (const action of ['bookingSuccessfulV2', 'bookingSuccessful']) {
+        window.Cal.ns[ns]('on', { action, callback: showSuccess });
+      }
       container.hidden = false;
       pending.hidden = true;
       loaded.add(index);
