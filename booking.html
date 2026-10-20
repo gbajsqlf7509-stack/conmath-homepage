@@ -30,7 +30,7 @@
     .bk-tab[aria-selected="true"]{background:#0b568e;border-color:#0b568e;color:#fff}
     .bk-panel{border:1px solid var(--bk-line);background:#fff;padding:23px;border-radius:18px;min-height:160px}
     .bk-panel[hidden]{display:none}
-    .bk-embed{min-height:650px}
+    .bk-embed{min-height:760px;width:100%;overflow:visible}.bk-embed iframe{width:100%!important;min-height:760px;border:0}.bk-alt{margin:14px 0 3px;text-align:center;font-size:14px}.bk-alt a{color:#0b61b4;font-weight:800;text-decoration:underline;text-underline-offset:3px}.bk-alt a:focus-visible{outline:3px solid #00adf4}
     .bk-pending{background:#f3f7fb;border:1px dashed #bbcee2;border-radius:15px;padding:25px;text-align:center;color:#233d64}
     .bk-pending h3{margin:5px 0 10px;color:#123e77;font-size:19px}
     .bk-pending p{font-size:15px;line-height:1.8}
@@ -81,41 +81,18 @@
     </div>
     <div class="bk-panel" id="wk-panel" role="tabpanel" aria-labelledby="wk-tab">
       <div class="bk-embed" id="booking-week" hidden></div>
+      <p class="bk-alt"><a id="booking-week-direct" href="https://cal.com/반재원-agptpl/conmath-consultation" target="_blank" rel="noopener noreferrer">달력이 나타나지 않으면 예약 페이지 직접 열기 ↗</a></p>
       <div class="bk-pending" id="booking-week-pending"><h3>온라인 예약 시스템 연결 준비 중</h3><p>예약 일정과 중복 예약 방지 기능을 설정하고 있습니다.<br>연결 전에는 아래 번호로 문의해 주세요.</p><a class="bk-phone" href="tel:01048369991">전화 문의 010-4836-9991</a></div>
     </div>
     <div class="bk-panel" id="sun-panel" role="tabpanel" aria-labelledby="sun-tab" hidden>
       <div class="bk-embed" id="booking-sun" hidden></div>
+      <p class="bk-alt"><a id="booking-sun-direct" href="https://cal.com/반재원-agptpl/conmath-sunday" target="_blank" rel="noopener noreferrer">달력이 나타나지 않으면 예약 페이지 직접 열기 ↗</a></p>
       <div class="bk-pending" id="booking-sun-pending"><h3>일요일 예약 시스템 연결 준비 중</h3><p>일요일은 오전 9시부터 오후 8시까지, 최대 5팀 상담합니다.<br>온라인 예약 연결 전에는 전화로 문의해 주세요.</p><a class="bk-phone" href="tel:01048369991">전화 문의 010-4836-9991</a></div>
     </div>
     <p class="bk-rule"><strong>예약 안내</strong> · 예약 시 학부모 성함, 연락처, 자녀 학년을 확인합니다. 상담 예약은 반드시 자녀와 함께 방문 가능한 날짜로 선택해 주세요.</p>
   </section>
   <p class="bk-bottom">CON MATH | 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
 </main>
-<script src="booking-config.js?v=1" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const tabs=[document.getElementById('wk-tab'),document.getElementById('sun-tab')];
-  const panels=[document.getElementById('wk-panel'),document.getElementById('sun-panel')];
-  tabs.forEach((tab,i)=>tab.addEventListener('click',()=>{
-    tabs.forEach((t,j)=>{t.setAttribute('aria-selected',String(j===i));panels[j].hidden=j!==i;});
-  }));
-  const config=window.CONMATH_BOOKING||{};
-  const links=[config.weekdaySaturday,config.sunday];
-  const ids=['week','sun'];
-  const valid=(s)=>typeof s==='string' && /^https:\/\/cal\.com\/[a-z0-9\-_/]+\/?$/i.test(s);
-  const ready=links.map(valid);
-  if(!ready.some(Boolean))return;
-  // Cal.com hosts all real-time availability, collision protection, and reservation notifications.
-  (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let c=C.Cal,ar=arguments;if(!c.loaded){c.ns={};c.q=c.q||[];d.head.appendChild(d.createElement('script')).src=A;c.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const name=ar[1];api.q=api.q||[];if(typeof name==='string'){c.ns[name]=c.ns[name]||api;p(c.ns[name],ar);p(c,["initNamespace",name])}else p(c,ar);return;}p(c,ar)};})(window,'https://app.cal.com/embed/embed.js','init');
-  links.forEach((url,i)=>{
-    if(!ready[i])return;
-    const ns='conmath-'+ids[i];
-    document.getElementById('booking-'+ids[i]+'-pending').hidden=true;
-    document.getElementById('booking-'+ids[i]).hidden=false;
-    Cal('init',ns,{origin:'https://cal.com'});
-    Cal.ns[ns]('inline',{elementOrSelector:'#booking-'+ids[i],calLink:url.replace(/^https:\/\/cal\.com\//,'').replace(/\/$/,''),config:{layout:'month_view'}});
-    Cal.ns[ns]('ui',{hideEventTypeDetails:false,layout:'month_view',styles:{branding:{brandColor:'#0b568e'}}});
-  });
-});
-</script>
+<script src="booking-config.js?v=20261020" defer></script>
+<script src="booking.js?v=20261020" defer></script>
 </body></html>
