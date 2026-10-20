@@ -43,6 +43,17 @@
     .bk-embed iframe{width:100%!important;min-height:770px;border:none}
     .bk-pending[hidden],.bk-embed[hidden]{display:none}
     @media(max-width:690px){.bk-embed,.bk-embed iframe{min-height:750px}}
+    .bk-confirmation[hidden],#bk-booking-flow[hidden]{display:none}
+    .bk-confirmation{margin:30px auto 28px;max-width:760px;border:1px solid #cbdff0;border-radius:22px;padding:48px 32px;text-align:center;background:linear-gradient(150deg,#fff,#f6faff);box-shadow:0 8px 28px #12456f0a}
+    .bk-confirmation-icon{display:inline-grid;place-items:center;width:64px;height:64px;color:#fff;background:#087f72;border-radius:50%;font-size:31px;font-weight:800;margin:0 auto 15px}
+    .bk-confirmation h2{margin:0 0 16px;color:#082f64;font-size:clamp(24px,4vw,33px);line-height:1.3}
+    .bk-confirmation>p{line-height:1.85;color:#4b6281;font-size:16px}
+    .bk-confirmation-details{margin:26px auto;padding:22px;text-align:left;border-radius:14px;background:#f0f8f6;color:#164b4d}
+    .bk-confirmation-details p{margin:8px 0;line-height:1.7;font-size:14px}
+    .bk-confirmation-details a{color:#0b568e;text-decoration:underline}
+    .bk-back-home{display:inline-block;background:#0b568e;color:#fff;padding:15px 24px;border-radius:10px;font-weight:800;text-decoration:none}
+    .bk-back-home:hover{color:#fff;background:#084372}
+    @media(max-width:690px){.bk-confirmation{padding:30px 18px}.bk-confirmation-details{padding:18px}}
   </style>
 </head>
 <body>
@@ -77,7 +88,7 @@
       <p>09:00~11:00 · 11:00~13:00 · 13:00~15:00</p><p>15:00~17:00 · 17:00~19:00</p><p>상담은 팀당 2시간이며 오후 8시 전에 종료합니다.</p>
     </section>
   </div>
-  <section aria-labelledby="bk-select-title">
+  <section id="bk-booking-flow" aria-labelledby="bk-select-title">
     <h2 class="bk-section-title" id="bk-select-title">날짜 · 시간 선택</h2>
     <p class="bk-help">이미 예약된 시간은 선택할 수 없으며, 하루 예약 상한에 도달하면 해당 날짜의 접수가 마감됩니다.</p>
     <div class="bk-tabs" role="tablist" aria-label="상담 예약 요일">
@@ -102,8 +113,20 @@
     </div>
     <p class="bk-rule"><strong>예약 안내</strong> · 예약 시 학부모 성함, 연락처, 자녀 학년을 확인합니다. 상담 예약은 반드시 자녀와 함께 방문 가능한 날짜로 선택해 주세요.</p>
   </section>
+  <section id="bk-confirmation" class="bk-confirmation" role="status" tabindex="-1" aria-labelledby="bk-success-title" hidden>
+    <span class="bk-confirmation-icon" aria-hidden="true">✓</span>
+    <h2 id="bk-success-title">콘매쓰 상담 예약이 접수되었습니다.</h2>
+    <p>예약 신청해 주셔서 감사합니다.<br>예약 날짜와 시간을 확인하려면 <strong>Cal.com에서 발송한 안내 이메일</strong>을 확인해 주세요.</p>
+    <div class="bk-confirmation-details">
+      <strong>방문 상담 안내</strong>
+      <p>학부모와 자녀가 반드시 함께 방문해야 합니다.</p>
+      <p>주소: 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
+      <p>문의: <a href="tel:01048369991">010-4836-9991</a></p>
+    </div>
+    <a class="bk-back-home" href="index.html">콘매쓰 홈페이지로 돌아가기 →</a>
+  </section>
   <p class="bk-bottom">CON MATH | 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
 </main>
 <script src="booking-config.js?v=20261020c" defer></script>
-<script src="booking.js?v=20261020c" defer></script>
+<script src="booking.js?v=20261020d" defer></script>
 </body></html>
