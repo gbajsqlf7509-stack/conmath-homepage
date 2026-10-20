@@ -38,16 +38,11 @@
     .bk-rule{color:#53627a;font-size:14px;line-height:1.8;margin:24px 0}
     .bk-rule strong{color:#0b2e66}.bk-bottom{margin-top:24px;color:#64748a;font-size:13px;text-align:center}
     @media(max-width:690px){.bk-main{padding:0 16px 45px}.bk-intro{padding:28px 0 15px}.bk-grid{grid-template-columns:1fr;gap:11px}.bk-card{padding:18px}.bk-panel{padding:12px}.bk-header img{width:69px;height:66px}.bk-embed{min-height:700px}}
-    .bk-booking-action{max-width:610px;margin:0 auto;text-align:center;padding:38px 18px 30px}
-    .bk-action-symbol{display:inline-grid;place-items:center;width:62px;height:62px;font-size:28px;color:#0b568e;background:#e9f5ff;border-radius:18px;margin-bottom:16px}
-    .bk-booking-action h3{font-size:22px;color:#0b2e66;margin:0 0 10px}
-    .bk-booking-action>p{font-size:15px;color:#4a607f;line-height:1.75;margin:8px auto 24px}
-    .bk-booking-button{display:flex;justify-content:center;align-items:center;gap:9px;width:100%;padding:19px 12px;text-decoration:none;border-radius:13px;background:#0b568e;color:#fff;font-size:17px;font-weight:800;box-shadow:0 6px 22px rgba(11,86,142,.14)}
-    .bk-booking-button:hover{background:#084470;color:#fff}
-    .bk-booking-button:focus-visible{outline:3px solid #27a8e8;outline-offset:4px}
-    .bk-booking-action .bk-action-note{font-size:13px;color:#5b6d85;margin:16px auto 13px}
-    .bk-phone-link{display:inline-block;color:#0b568e;text-decoration:underline;text-underline-offset:3px;font-weight:750;font-size:14px}
-    @media(max-width:690px){.bk-booking-action{padding:20px 2px}.bk-booking-button{font-size:15px;line-height:1.4;padding:17px 7px}}
+    .bk-embed-heading{font-size:17px;font-weight:800;color:#0b2e66;margin:0 0 12px;text-align:center}
+    .bk-embed{width:100%;min-height:770px;overflow:visible}
+    .bk-embed iframe{width:100%!important;min-height:770px;border:none}
+    .bk-pending[hidden],.bk-embed[hidden]{display:none}
+    @media(max-width:690px){.bk-embed,.bk-embed iframe{min-height:750px}}
   </style>
 </head>
 <body>
@@ -90,40 +85,25 @@
       <button class="bk-tab" type="button" role="tab" id="sun-tab" aria-controls="sun-panel" aria-selected="false">일요일</button>
     </div>
     <div class="bk-panel" id="wk-panel" role="tabpanel" aria-labelledby="wk-tab">
-      <div class="bk-booking-action">
-        <span class="bk-action-symbol" aria-hidden="true">▣</span>
-        <h3>평일 · 토요일 방문 상담</h3>
-        <p>월~금 15시·21시, 토요일 9시·14시·16시·18시·20시 시작</p>
-        <a class="bk-booking-button" href="https://cal.com/반재원-agptpl/conmath-consultation" target="_blank" rel="noopener noreferrer">예약 가능한 날짜 · 시간 선택하기 <span aria-hidden="true">↗</span></a>
-        <p class="bk-action-note">Cal.com 예약 화면이 열립니다. 예약된 시간은 선택할 수 없습니다.</p>
-        <a class="bk-phone-link" href="tel:01048369991">문의 전화 010-4836-9991</a>
+      <h3 class="bk-embed-heading">평일 · 토요일 예약 달력</h3>
+      <div class="bk-embed" id="booking-week" aria-label="평일 · 토요일 예약 달력 예약 달력" hidden></div>
+      <div class="bk-pending" id="booking-week-pending" hidden>
+        <p>예약 달력을 불러오지 못했습니다. 아래 직접 예약 링크를 사용해 주세요.</p>
       </div>
+      <p class="bk-alt">달력 화면이 보이지 않으면 <a id="booking-week-direct" href="https://cal.com/반재원-agptpl/conmath-consultation" target="_blank" rel="noopener noreferrer">예약 페이지 직접 열기 ↗</a></p>
     </div>
     <div class="bk-panel" id="sun-panel" role="tabpanel" aria-labelledby="sun-tab" hidden>
-      <div class="bk-booking-action">
-        <span class="bk-action-symbol" aria-hidden="true">▣</span>
-        <h3>일요일 방문 상담</h3>
-        <p>일요일 9시·11시·13시·15시·17시 시작</p>
-        <a class="bk-booking-button" href="https://cal.com/반재원-agptpl/conmath-sunday" target="_blank" rel="noopener noreferrer">예약 가능한 날짜 · 시간 선택하기 <span aria-hidden="true">↗</span></a>
-        <p class="bk-action-note">Cal.com 예약 화면이 열립니다. 예약된 시간은 선택할 수 없습니다.</p>
-        <a class="bk-phone-link" href="tel:01048369991">문의 전화 010-4836-9991</a>
+      <h3 class="bk-embed-heading">일요일 예약 달력</h3>
+      <div class="bk-embed" id="booking-sun" aria-label="일요일 예약 달력 예약 달력" hidden></div>
+      <div class="bk-pending" id="booking-sun-pending" hidden>
+        <p>예약 달력을 불러오지 못했습니다. 아래 직접 예약 링크를 사용해 주세요.</p>
       </div>
+      <p class="bk-alt">달력 화면이 보이지 않으면 <a id="booking-sun-direct" href="https://cal.com/반재원-agptpl/conmath-sunday" target="_blank" rel="noopener noreferrer">예약 페이지 직접 열기 ↗</a></p>
     </div>
     <p class="bk-rule"><strong>예약 안내</strong> · 예약 시 학부모 성함, 연락처, 자녀 학년을 확인합니다. 상담 예약은 반드시 자녀와 함께 방문 가능한 날짜로 선택해 주세요.</p>
   </section>
   <p class="bk-bottom">CON MATH | 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
 </main>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const tabs=[document.getElementById('wk-tab'),document.getElementById('sun-tab')];
-  const panels=[document.getElementById('wk-panel'),document.getElementById('sun-panel')];
-  tabs.forEach((tab,i)=>tab.addEventListener('click',()=>{
-    tabs.forEach((t,j)=>{
-      const selected=i===j;
-      t.setAttribute('aria-selected',String(selected));
-      panels[j].hidden=!selected;
-    });
-  }));
-});
-</script>
+<script src="booking-config.js?v=20261020b" defer></script>
+<script src="booking.js?v=20261020b" defer></script>
 </body></html>
