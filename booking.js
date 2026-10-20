@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (segments.length !== 2 || url.search || url.hash) return null;
       // Important: the Cal.com profile slug contains Korean Unicode characters.
       // Preserve the exact path from the user's public event links.
-      return decodeURIComponent(segments.join('/'));
+      return decodeURIComponent(segments.join('/')).normalize('NFC');
     } catch (_) {
       return null;
     }
