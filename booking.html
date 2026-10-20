@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="콘매쓰 통합수학 학부모·학생 방문 상담 예약. 자녀 동반 필수, 팀당 2시간.">
+  <title>상담 예약 | CON MATH</title>
+  <link rel="stylesheet" href="style.css?v=20261016-logo">
+  <style>
+    :root{--bk-navy:#0a2f68;--bk-blue:#087bd3;--bk-line:#e1eaf4;--bk-mint:#e9f8f5}
+    .bk-header{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--bk-line);padding:12px 0}
+    .bk-header img{display:block;width:86px;height:75px;object-fit:contain}
+    .bk-back{text-decoration:none;color:var(--bk-navy);font-weight:750;border:1px solid #cadcec;padding:11px 17px;border-radius:100px;font-size:14px}
+    .bk-main{max-width:1060px;margin:0 auto;padding:0 22px 82px}
+    .bk-intro{padding:45px 0 25px}.bk-eyebrow{color:#087d91;font-size:13px;letter-spacing:.08em;font-weight:800}
+    .bk-intro h1{color:var(--bk-navy);font-size:clamp(31px,5vw,52px);letter-spacing:-.05em;line-height:1.2;margin:8px 0 15px}
+    .bk-intro>p{color:#50617d;font-size:16px;line-height:1.75}
+    .bk-important{margin:22px 0 28px;display:flex;gap:13px;align-items:flex-start;background:#f0f9f7;color:#114f45;border:1px solid #bce3dc;padding:18px;border-radius:16px}
+    .bk-important b{display:block;font-size:17px}.bk-important p{margin:4px 0 0;line-height:1.6;font-size:14px}
+    .bk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:28px}
+    .bk-card{padding:24px;border:1px solid var(--bk-line);border-radius:20px;background:linear-gradient(135deg,#fff,#f7fbfe);box-shadow:0 6px 30px #1335660a}
+    .bk-card h2{color:var(--bk-navy);font-size:20px;margin:0 0 13px}
+    .bk-card p{margin:7px 0;color:#344969;font-size:15px;line-height:1.5}
+    .bk-flag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.01em;color:#0b7f77;padding:5px 10px;background:#e7f8f5;border-radius:99px;margin-bottom:13px}
+    .bk-section-title{color:var(--bk-navy);font-size:24px;margin:32px 0 9px}
+    .bk-help{color:#55657e;font-size:14px;line-height:1.7;margin:0 0 16px}
+    .bk-tabs{display:flex;gap:9px;margin:22px 0 14px;flex-wrap:wrap}
+    .bk-tab{appearance:none;border:1px solid #c9dbea;color:var(--bk-navy);border-radius:11px;background:#fff;font-size:15px;padding:13px 23px;cursor:pointer;font-weight:800}
+    .bk-tab[aria-selected="true"]{background:#0b568e;border-color:#0b568e;color:#fff}
+    .bk-panel{border:1px solid var(--bk-line);background:#fff;padding:23px;border-radius:18px;min-height:160px}
+    .bk-panel[hidden]{display:none}
+    .bk-embed{min-height:650px}
+    .bk-pending{background:#f3f7fb;border:1px dashed #bbcee2;border-radius:15px;padding:25px;text-align:center;color:#233d64}
+    .bk-pending h3{margin:5px 0 10px;color:#123e77;font-size:19px}
+    .bk-pending p{font-size:15px;line-height:1.8}
+    .bk-pending .bk-phone{display:inline-flex;text-decoration:none;background:#0e5fa0;color:#fff;border-radius:100px;padding:13px 25px;font-size:15px;font-weight:800;margin-top:10px}
+    .bk-rule{color:#53627a;font-size:14px;line-height:1.8;margin:24px 0}
+    .bk-rule strong{color:#0b2e66}.bk-bottom{margin-top:24px;color:#64748a;font-size:13px;text-align:center}
+    @media(max-width:690px){.bk-main{padding:0 16px 45px}.bk-intro{padding:28px 0 15px}.bk-grid{grid-template-columns:1fr;gap:11px}.bk-card{padding:18px}.bk-panel{padding:12px}.bk-header img{width:69px;height:66px}.bk-embed{min-height:700px}}
+  </style>
+</head>
+<body>
+<main class="bk-main">
+  <div class="bk-header">
+    <a href="index.html" aria-label="콘매쓰 홈페이지로"><img src="conmath-logo-cutout.webp" width="1350" height="1165" alt="CON MATH"></a>
+    <a class="bk-back" href="index.html">← 홈페이지로</a>
+  </div>
+  <section class="bk-intro" aria-labelledby="booking-title">
+    <span class="bk-eyebrow">CON MATH · VISIT CONSULTATION</span>
+    <h1 id="booking-title">학부모 · 학생 상담 예약</h1>
+    <p>학생의 현재 학습 상황과 필요한 교육 방향을 함께 점검합니다.<br>달력에서 날짜와 시간을 고른 뒤 예약을 확정해 주세요.</p>
+  </section>
+  <aside class="bk-important">
+    <span aria-hidden="true" style="font-size:24px">✓</span>
+    <div><b>상담 시 자녀 동반 필수</b><p>모든 상담은 학부모와 학생이 함께 방문해야 합니다. 상담은 <strong>한 팀당 2시간</strong> 진행됩니다.</p></div>
+  </aside>
+  <div class="bk-grid" aria-label="상담 가능 일정">
+    <section class="bk-card">
+      <span class="bk-flag">월~금 · 하루 최대 2팀</span>
+      <h2>평일 상담</h2>
+      <p>15:00~17:00</p><p>21:00~23:00</p>
+    </section>
+    <section class="bk-card">
+      <span class="bk-flag">토요일 · 하루 최대 2팀</span>
+      <h2>토요일 상담</h2>
+      <p>09:00~11:00</p><p>14:00~16:00 · 16:00~18:00</p><p>18:00~20:00 · 20:00~22:00</p>
+    </section>
+    <section class="bk-card" style="grid-column:1/-1">
+      <span class="bk-flag">일요일 · 하루 최대 5팀</span>
+      <h2>일요일 상담</h2>
+      <p>자유 일정으로 운영하며, 예약 가능한 시간은 예약 달력에서 확인합니다. 상담 시간은 팀당 2시간입니다.</p>
+    </section>
+  </div>
+  <section aria-labelledby="bk-select-title">
+    <h2 class="bk-section-title" id="bk-select-title">날짜 · 시간 선택</h2>
+    <p class="bk-help">이미 예약된 시간은 선택할 수 없으며, 하루 예약 상한에 도달하면 해당 날짜의 접수가 마감됩니다.</p>
+    <div class="bk-tabs" role="tablist" aria-label="상담 예약 요일">
+      <button class="bk-tab" type="button" role="tab" id="wk-tab" aria-controls="wk-panel" aria-selected="true">평일 · 토요일</button>
+      <button class="bk-tab" type="button" role="tab" id="sun-tab" aria-controls="sun-panel" aria-selected="false">일요일</button>
+    </div>
+    <div class="bk-panel" id="wk-panel" role="tabpanel" aria-labelledby="wk-tab">
+      <div class="bk-embed" id="booking-week" hidden></div>
+      <div class="bk-pending" id="booking-week-pending"><h3>온라인 예약 시스템 연결 준비 중</h3><p>예약 일정과 중복 예약 방지 기능을 설정하고 있습니다.<br>연결 전에는 아래 번호로 문의해 주세요.</p><a class="bk-phone" href="tel:01048369991">전화 문의 010-4836-9991</a></div>
+    </div>
+    <div class="bk-panel" id="sun-panel" role="tabpanel" aria-labelledby="sun-tab" hidden>
+      <div class="bk-embed" id="booking-sun" hidden></div>
+      <div class="bk-pending" id="booking-sun-pending"><h3>일요일 예약 시스템 연결 준비 중</h3><p>일요일은 자유 일정으로 최대 5팀까지 상담합니다.<br>온라인 예약 연결 전에는 전화로 문의해 주세요.</p><a class="bk-phone" href="tel:01048369991">전화 문의 010-4836-9991</a></div>
+    </div>
+    <p class="bk-rule"><strong>예약 안내</strong> · 예약 시 학부모 성함, 연락처, 자녀 학년을 확인합니다. 상담 예약은 반드시 자녀와 함께 방문 가능한 날짜로 선택해 주세요.</p>
+  </section>
+  <p class="bk-bottom">CON MATH | 수원시 권선구 금곡로118번길 24, 리치빌딩 308호</p>
+</main>
+<script src="booking-config.js?v=1" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const tabs=[document.getElementById('wk-tab'),document.getElementById('sun-tab')];
+  const panels=[document.getElementById('wk-panel'),document.getElementById('sun-panel')];
+  tabs.forEach((tab,i)=>tab.addEventListener('click',()=>{
+    tabs.forEach((t,j)=>{t.setAttribute('aria-selected',String(j===i));panels[j].hidden=j!==i;});
+  }));
+  const config=window.CONMATH_BOOKING||{};
+  const links=[config.weekdaySaturday,config.sunday];
+  const ids=['week','sun'];
+  const valid=(s)=>typeof s==='string' && /^https:\/\/cal\.com\/[a-z0-9\-_/]+\/?$/i.test(s);
+  const ready=links.map(valid);
+  if(!ready.some(Boolean))return;
+  // Cal.com hosts all real-time availability, collision protection, and reservation notifications.
+  (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let c=C.Cal,ar=arguments;if(!c.loaded){c.ns={};c.q=c.q||[];d.head.appendChild(d.createElement('script')).src=A;c.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const name=ar[1];api.q=api.q||[];if(typeof name==='string'){c.ns[name]=c.ns[name]||api;p(c,["initNamespace",name])}else p(c,ar);return;}p(c,ar)};})(window,'https://app.cal.com/embed/embed.js','init');
+  links.forEach((url,i)=>{
+    if(!ready[i])return;
+    const ns='conmath-'+ids[i];
+    document.getElementById('booking-'+ids[i]+'-pending').hidden=true;
+    document.getElementById('booking-'+ids[i]).hidden=false;
+    Cal('init',ns,{origin:'https://cal.com'});
+    Cal.ns[ns]('inline',{elementOrSelector:'#booking-'+ids[i],calLink:url.replace(/^https:\/\/cal\.com\//,'').replace(/\/$/,''),config:{layout:'month_view'}});
+    Cal.ns[ns]('ui',{hideEventTypeDetails:false,layout:'month_view',styles:{branding:{brandColor:'#0b568e'}}});
+  });
+});
+</script>
+</body></html>
