@@ -6,6 +6,6 @@
  * Child and guardian must attend together.
  */
 window.CONMATH_BOOKING = {
-  weekdaySaturday: "https://cal.com/반재원-agptpl/conmath-consultation",
-  sunday: "https://cal.com/반재원-agptpl/conmath-sunday"
+  weekdaySaturday: "https://cal.com/반재원-agptpl/conmath-consultation",
+  sunday: "https://cal.com/반재원-agptpl/conmath-sunday"
 };
