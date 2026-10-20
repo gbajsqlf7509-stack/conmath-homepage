@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const ready=links.map(valid);
   if(!ready.some(Boolean))return;
   // Cal.com hosts all real-time availability, collision protection, and reservation notifications.
-  (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let c=C.Cal,ar=arguments;if(!c.loaded){c.ns={};c.q=c.q||[];d.head.appendChild(d.createElement('script')).src=A;c.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const name=ar[1];api.q=api.q||[];if(typeof name==='string'){c.ns[name]=c.ns[name]||api;p(c,["initNamespace",name])}else p(c,ar);return;}p(c,ar)};})(window,'https://app.cal.com/embed/embed.js','init');
+  (function(C,A,L){let p=function(a,ar){a.q.push(ar)};let d=C.document;C.Cal=C.Cal||function(){let c=C.Cal,ar=arguments;if(!c.loaded){c.ns={};c.q=c.q||[];d.head.appendChild(d.createElement('script')).src=A;c.loaded=true}if(ar[0]===L){const api=function(){p(api,arguments)};const name=ar[1];api.q=api.q||[];if(typeof name==='string'){c.ns[name]=c.ns[name]||api;p(c.ns[name],ar);p(c,["initNamespace",name])}else p(c,ar);return;}p(c,ar)};})(window,'https://app.cal.com/embed/embed.js','init');
   links.forEach((url,i)=>{
     if(!ready[i])return;
     const ns='conmath-'+ids[i];
