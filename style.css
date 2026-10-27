@@ -107,5 +107,5 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 .consultation-desc{font-size:13px;color:#42668f}
 .consultation-action{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;background:#0065cf;color:#fff;border-radius:11px;padding:13px 16px;font-size:13px;font-weight:800}
 .consultation-phone{display:block;text-align:center;margin-top:9px;font-size:13px;font-weight:700;color:#0065cf;text-decoration:none}
-@media (max-width:700px){.consultation-desktop{display:none}}
+@media (max-width:570px){.consultation-desktop{display:none}}
 @media (min-width:571px) and (max-width:850px){.consultation-desktop{gap:10px;padding:12px}.consultation-copy strong{font-size:19px}.consultation-icon{flex-basis:43px;width:43px;height:43px}.consultation-action{padding:10px;font-size:12px}}
