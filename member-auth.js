@@ -54,39 +54,14 @@
       : profile.approval_status === 'rejected' ? '학원 원장 · 승인 반려'
       : '학원 원장 · 관리자 승인 대기';
     $('member-message').textContent = profile.full_name + '님, ' + state;
-    const { data: admin } = await client.from('platform_admins').select('user_id').eq('user_id', user.id).maybeSingle();
-    $('admin-area').hidden = !admin;
-    if (admin) await loadPending();
-  }
-  async function loadPending() {
-    const target = $('pending-members');
-    target.textContent = '조회 중…';
-    const { data, error } = await client.from('member_profiles')
-      .select('user_id,full_name,email,phone,academy_name,academy_address,approval_status')
-      .eq('account_type','academy_owner').eq('approval_status','pending').order('created_at',{ascending:true});
-    target.textContent = '';
-    if (error) { target.textContent = '승인 목록을 불러오지 못했습니다.'; return; }
-    if (!data?.length) { target.textContent = '승인 대기 중인 원장이 없습니다.'; return; }
-    for (const member of data) {
-      const row = document.createElement('section');
-      row.className = 'pending-member';
-      const details = document.createElement('p');
-      details.textContent = [member.full_name,member.academy_name,member.academy_address,member.email,member.phone].filter(Boolean).join(' · ');
-      const approve = document.createElement('button');
-      approve.type = 'button';
-      approve.className = 'account-submit';
-      approve.textContent = '승인';
-      approve.addEventListener('click', async () => {
-        if (!confirm(member.academy_name + ' 원장 가입을 승인하시겠습니까?')) return;
-        approve.disabled = true;
-        const { error: updateError } = await client.from('member_profiles')
-          .update({approval_status:'approved',updated_at:new Date().toISOString()}).eq('user_id',member.user_id);
-        if (updateError) { notice('승인 실패: ' + updateError.message,true); approve.disabled = false; }
-        else { notice('원장 계정을 승인했습니다.'); await loadPending(); }
-      });
-      row.append(details,approve);
-      target.append(row);
-    }
+    const { data: admin, error: adminError } = await client.from('platform_admins').select('user_id').eq('user_id', user.id).maybeSingle();
+    if (adminError) { notice('계정 권한을 확인하지 못했습니다.', true); return; }
+    const route = admin ? 'admin-dashboard.html' : (
+      profile.account_type === 'academy_owner' ? 'academy-dashboard.html' : 'parent-dashboard.html'
+    );
+    $('account-dashboard-link').href = route;
+    $('account-dashboard-link').hidden = false;
+    return route;
   }
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -116,7 +91,8 @@
       } else {
         const {data,error} = await client.auth.signInWithPassword({email,password});
         if (error) throw error;
-        await showMember(data.user);
+        const route = await showMember(data.user);
+        if (route) window.location.assign(route);
       }
     } catch (error) {
       notice(error.message === 'Invalid login credentials' ? '이메일 또는 비밀번호를 확인해주세요.' : error.message,true);
