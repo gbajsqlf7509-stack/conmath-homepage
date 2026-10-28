@@ -56,7 +56,7 @@
     $('member-message').textContent = profile.full_name + '님, ' + state;
     const { data: admin, error: adminError } = await client.from('platform_admins').select('user_id').eq('user_id', user.id).maybeSingle();
     if (adminError) { notice('계정 권한을 확인하지 못했습니다.', true); return; }
-    const route = admin ? 'admin-dashboard.html' : (
+    const route = (admin && profile.account_type === 'admin') ? 'admin-dashboard.html' : (
       profile.account_type === 'academy_owner' ? 'academy-dashboard.html' : 'parent-dashboard.html'
     );
     $('account-dashboard-link').href = route;
