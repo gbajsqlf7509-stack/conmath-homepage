@@ -129,3 +129,5 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 .account-note{font-size:12px;margin:0!important;color:#627699}
 .pending-member{border-top:1px solid #dfebf5;padding:10px 0}
 .pending-member p{font-size:12px;overflow-wrap:anywhere}
+
+.account-dashboard-link{display:block;text-align:center;text-decoration:none;margin:12px 0}.account-dashboard-link[hidden]{display:none}
