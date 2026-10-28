@@ -67,9 +67,29 @@
         approved:'승인 완료 · '+(result.profile.academy_name||'등록된 학원')
       }[state]||'가입 상태를 확인해주세요.';
       document.getElementById('owner-approved-content').hidden=state!=='approved';
+      if (state==='approved') await loadPartnerPolicy();
     }
-    if(page==='admin') await loadPending();
+    if(page==='admin') { await Promise.all([loadPending(),loadPartnerPolicy()]); }
   }catch(error){showMessage('대시보드를 불러오지 못했습니다: '+error.message,true)}
+  async function loadPartnerPolicy(){
+    const label=document.getElementById('partner-referral-rate');
+    const breakdown=document.getElementById('partner-rate-breakdown');
+    const {data,error}=await supabase.from('partner_commission_policies')
+      .select('referral_rate_pct,marketing_rate_pct,total_rate_pct,effective_at')
+      .lte('effective_at',new Date().toISOString())
+      .order('effective_at',{ascending:false}).limit(1).maybeSingle();
+    if(error || !data){
+      if(label) label.textContent='정책 확인 필요';
+      if(breakdown) breakdown.textContent='추천수익 정책을 불러오지 못했습니다. 관리자에게 문의해주세요.';
+      return;
+    }
+    const f=number=>Number(number).toLocaleString('ko-KR',{maximumFractionDigits:2})+'%';
+    if(label) label.textContent=f(data.referral_rate_pct);
+    if(breakdown) breakdown.textContent='실제 납부 원비의 추천수익 '+f(data.referral_rate_pct)
+      +' (추천한 협력학원 원장 지급 대상) + 마케팅비 '+f(data.marketing_rate_pct)
+      +' (별도 배정, 수취인 미확정) = 총 '+f(data.total_rate_pct)
+      +'. 납부·환불·지급 기록과 자동 계산은 아직 연결되지 않았습니다.';
+  }
   async function loadPending(){
     const target=document.getElementById('pending-members');
     target.textContent='조회 중…';
