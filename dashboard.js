@@ -24,7 +24,7 @@
     const {data:admin,error:adminError}=await supabase.from('platform_admins')
       .select('user_id').eq('user_id',user.id).maybeSingle();
     if(adminError)throw adminError;
-    return {user,profile,role:admin?'admin':profile.account_type};
+    return {user,profile,role:admin && profile.account_type==='admin' ? 'admin' : profile.account_type};
   }
   if(page==='admin-login'){
     const login=document.getElementById('admin-login-form');
