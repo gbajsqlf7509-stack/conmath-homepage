@@ -82,8 +82,10 @@
         query('member_profiles','account_type'),
         query('platform_admins','user_id')
       ]),13000,'관리자 권한 조회 시간이 초과되었습니다.');
-      if(profiles?.[0]?.account_type!=='admin' || !badges?.[0]?.user_id)
+      if(profiles?.[0]?.account_type!=='admin' || !badges?.[0]?.user_id){
+        try{await timeout(client.auth.signOut(),3000,'로그아웃 시간 초과');}catch(_){}
         throw new Error('관리자 권한이 없는 계정입니다.');
+      }
       sessionStorage.setItem('conmath_admin_bootstrap_v1',JSON.stringify({
         token,user_id:user.id,expires_at:data.session.expires_at||0
       }));
