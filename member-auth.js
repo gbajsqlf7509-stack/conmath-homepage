@@ -103,7 +103,8 @@
         if (!$('account-consent').checked) throw new Error('개인정보 수집·이용 동의가 필요합니다.');
         const { error } = await client.auth.signUp({email,password,options:{
           emailRedirectTo: window.location.origin + window.location.pathname,
-          data: {account_type:type,full_name:fullName,phone,academy_name:academyName,academy_address:academyAddress}
+          data: {account_type:type,full_name:fullName,phone,academy_name:academyName,academy_address:academyAddress,
+            privacy_consent_version:'2026-10-29',privacy_consent_at:new Date().toISOString()}
         }});
         if (error) throw error;
         form.reset();
