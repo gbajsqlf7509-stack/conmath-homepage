@@ -132,7 +132,19 @@
         if (route) window.location.assign(route);
       }
     } catch (error) {
-      notice(error.message === 'Invalid login credentials' ? '이메일 또는 비밀번호를 확인해주세요.' : error.message,true);
+      const raw = String(error?.message || '').toLowerCase();
+      const code = String(error?.code || '').toLowerCase();
+      const message = raw.includes('invalid login credentials') || code === 'invalid_credentials'
+        ? '이메일 또는 비밀번호를 확인해주세요.'
+        : raw.includes('email not confirmed') || code === 'email_not_confirmed'
+        ? '이메일 인증이 완료되지 않았습니다. 받은 메일을 확인해주세요.'
+        : raw.includes('too many requests')
+        ? '로그인 요청이 많습니다. 잠시 후 다시 시도해주세요.'
+        : raw.includes('failed to fetch') || raw.includes('network')
+        ? '로그인 서비스 연결이 원활하지 않습니다. 인터넷 상태를 확인해주세요.'
+        : error?.message || '요청 처리 중 오류가 발생했습니다.';
+      notice(message,true);
+      if (mode === 'login' && typeof window.alert === 'function') window.alert(message);
     } finally { submit.disabled = false; }
   });
   $('member-signout').addEventListener('click',async()=> {
