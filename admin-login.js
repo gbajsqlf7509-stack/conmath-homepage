@@ -66,20 +66,29 @@
       const user=data?.user;
       if(!user?.id) throw new Error('로그인 정보를 확인할 수 없습니다. 다시 시도해주세요.');
       display('비밀번호 인증 완료. 관리자 권한 확인 중입니다.');
-      // signInWithPassword has already returned the verified user. Avoid a redundant
-      // getUser() network round-trip immediately after login.
-      const [profileResult,badgeResult]=await timeout(
-        Promise.all([
-          client.from('member_profiles').select('account_type').eq('user_id',user.id).single(),
-          client.from('platform_admins').select('user_id').eq('user_id',user.id).maybeSingle()
-        ]),15000,'관리자 권한 확인 시간이 초과되었습니다. 다시 로그인해주세요.'
-      );
-      if(profileResult.error || badgeResult.error)
-        throw new Error('로그인은 성공했지만 관리자 권한 정보를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.');
-      if(profileResult.data?.account_type!=='admin' || !badgeResult.data){
-        await client.auth.signOut();
-        throw new Error('관리자 권한이 없는 계정입니다. 관리자 전용 이메일을 사용해주세요.');
+      const token=data?.session?.access_token;
+      if(!token)throw new Error('인증 토큰을 확인하지 못했습니다. 다시 로그인해주세요.');
+      const query = async (table,columns) => {
+        const url = new URL(client.supabaseUrl+'/rest/v1/'+table);
+        url.searchParams.set('select',columns);
+        url.searchParams.set('user_id','eq.'+user.id);
+        const response = await timeout(fetch(url.toString(),{
+          headers:{apikey:client.supabaseKey,Authorization:'Bearer '+token}
+        }),10000,'관리자 권한 조회 시간이 초과되었습니다.');
+        if(!response.ok)throw new Error('관리자 권한 조회 실패 ('+response.status+').');
+        return response.json();
+      };
+      const [profiles,badges]=await timeout(Promise.all([
+        query('member_profiles','account_type'),
+        query('platform_admins','user_id')
+      ]),13000,'관리자 권한 조회 시간이 초과되었습니다.');
+      if(profiles?.[0]?.account_type!=='admin' || !badges?.[0]?.user_id){
+        try{await timeout(client.auth.signOut(),3000,'로그아웃 시간 초과');}catch(_){}
+        throw new Error('관리자 권한이 없는 계정입니다.');
       }
+      sessionStorage.setItem('conmath_admin_bootstrap_v1',JSON.stringify({
+        token,user_id:user.id,expires_at:data.session.expires_at||0
+      }));
       display('관리자 인증 완료. 관리자 화면으로 이동합니다.');
       window.location.assign('admin-dashboard.html');
     } catch(error) {

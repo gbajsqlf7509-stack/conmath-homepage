@@ -5,8 +5,10 @@ on:
     paths:
       - member-auth.js
       - admin-login.js
+      - admin-dashboard.js
+      - admin-dashboard.html
       - admin-login.html
-      - tests/admin-login.test.cjs
+      - tests/admin-login-rest.test.cjs
       - dashboard.js
       - tests/auth-smoke.test.cjs
       - .github/workflows/auth-smoke.yml
@@ -24,4 +26,4 @@ jobs:
         with:
           node-version: '22'
       - name: Verify membership flows
-        run: node --test tests/auth-smoke.test.cjs tests/admin-login.test.cjs
+        run: node --test tests/auth-smoke.test.cjs tests/admin-login-rest.test.cjs
