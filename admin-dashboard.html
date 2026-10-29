@@ -1,23 +1,24 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>관리자 대시보드 | CON MATH</title>
-<link rel="stylesheet" href="dashboard.css?v=20261028"></head>
+<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"></head>
 <body data-dashboard-role="admin">
 <header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
 <main class="dash-main">
 <div class="eyebrow">CON MATH · MEMBER SERVICE</div>
-<h1>관리자 대시보드</h1><p class="subtitle">회원 권한과 학원 제휴 승인 업무를 처리합니다.</p>
+<h1>관리자 대시보드</h1><p class="subtitle">협력학원 가입 신청을 검토하고 승인하거나 반려할 수 있습니다.</p>
 <div id="dashboard-message" class="dash-message" role="status" aria-live="polite">로그인 및 접근 권한을 확인하고 있습니다.</div>
 <div id="dashboard-content" hidden>
 <div class="welcome"><span id="user-greeting">회원님</span><button id="dashboard-logout" type="button">로그아웃</button></div>
 
-<section class="dash-section"><h2>가입 승인 대기 중인 학원</h2><div id="pending-members" class="pending-list">조회 중입니다.</div></section>
-<section class="dash-section"><h2>협력학원 양방향 추천수익 정책</h2><p id="partner-rate-breakdown" class="placeholder">현재 학생 추천 방향에 따라 콘매쓰가 지급하는 5%와 받는 10%를 별도로 계산합니다.</p><p>정책은 실제 납부 원비 기준입니다. 학생별 추천 내역·납부 원비·정산 및 자동 지급 시스템은 아직 구현하지 않았습니다.</p></section>
-<section class="dash-section"><h2>학부모 할인 정책</h2><p class="placeholder">학부모 할인율은 협력학원 추천수익과 별개로 결정해야 하며 아직 미확정입니다.</p></section>
-<section class="dash-section"><h2>콘매쓰 추천 학생 현황</h2><p class="placeholder">협력학원이 콘매쓰에 추천한 학생만 추적하며, 학생정보 열람은 적법한 동의와 학원별 접근 권한을 전제로 합니다.</p></section>
+<section class="dash-section" aria-labelledby="pending-title">
+<h2 id="pending-title">협력학원 가입 신청 관리</h2>
+<p class="approval-guide">가입 신청을 확인한 뒤 <strong>승인</strong>하거나 <strong>반려</strong>할 수 있습니다. 반려해도 계정은 삭제되지 않으며, 해당 원장에게는 가입 반려 상태가 표시됩니다.</p>
+<div id="pending-members" class="pending-list" aria-live="polite">승인 대기 중인 학원을 조회하고 있습니다.</div>
+</section>
 
 </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
-<script src="admin-dashboard.js?v=20261029-authrest2" defer></script>
+<script src="admin-dashboard.js?v=20261029-approvals1" defer></script>
 </body></html>
