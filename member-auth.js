@@ -94,6 +94,10 @@
         const academyAddress = String(fields.get('academy_address') || '').trim();
         if (!fullName || !phone || (type === 'academy_owner' && (!academyName || !academyAddress)))
           throw new Error('필수 정보를 모두 입력해주세요.');
+        const digits = phone.replace(/\D/g, '');
+        if (!/^[0-9 +()\-]+$/.test(phone) || digits.length < 9 || digits.length > 11) {
+          throw new Error('올바른 연락처를 입력해주세요. (숫자 9~11자리)');
+        }
         if (!$('account-consent').checked) throw new Error('개인정보 수집·이용 동의가 필요합니다.');
         const { error } = await client.auth.signUp({email,password,options:{
           emailRedirectTo: window.location.origin + window.location.pathname,
