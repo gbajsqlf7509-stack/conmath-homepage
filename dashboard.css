@@ -1,0 +1,15 @@
+:root{--navy:#003477;--blue:#0878df;--line:#d8e7f7;--bg:#f5f9ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#163b70;font-family:"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
+.dash-header{display:flex;justify-content:space-between;gap:12px;align-items:center;background:white;border-bottom:1px solid var(--line);padding:18px max(22px,calc((100% - 980px)/2));font-size:13px;font-weight:700}
+.brand{font-size:22px;color:var(--navy);font-weight:900}.brand span{color:var(--blue)}
+.dash-main{max-width:980px;margin:auto;padding:44px 22px 80px}.eyebrow{font-size:12px;letter-spacing:1.8px;color:var(--blue);font-weight:900}h1{font-size:clamp(26px,4vw,34px);margin:10px 0 8px;color:var(--navy)}.subtitle{color:#5d7396;margin:0 0 24px;line-height:1.7}
+.welcome{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 0;font-weight:800}.welcome button{border:1px solid #b6cfe9;color:#145598;border-radius:20px;background:white;padding:8px 15px}
+.dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:10px 0 20px}
+.info-card,.dash-section{padding:26px;background:white;border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 20px #00397108}
+.info-card .label{font-weight:750;color:#52709d;font-size:14px}.info-card .value{font-weight:900;color:var(--navy);font-size:21px;margin:9px 0}.info-card p,.dash-section p{line-height:1.7;font-size:14px;color:#5b7192}.dash-section{margin:18px 0}.dash-section h2{font-size:19px;color:var(--navy);margin:0 0 14px}.placeholder{padding:14px;border-radius:10px;background:#f1f7fe}
+.dash-message{color:#17694d;line-height:1.7;font-size:14px}.dash-message.is-error{color:#aa2632}
+.pending-member{padding:15px 0;border-top:1px solid #dbe8f5}.pending-member p{overflow-wrap:anywhere}.pending-member button,.dash-login button{border:0;border-radius:10px;background:var(--blue);padding:10px 17px;color:white;font-weight:850}.pending-member button:disabled{opacity:.6}
+.dash-login{max-width:500px}.dash-login label{display:block;font-weight:800;font-size:14px;margin:0 0 16px}
+.dash-login input{display:block;padding:11px 14px;border:1px solid #a9cce9;border-radius:9px;width:100%;margin-top:6px}
+@media(max-width:620px){.dash-grid{grid-template-columns:1fr}.dash-main{padding:32px 16px 70px}.info-card,.dash-section{padding:20px}.dash-header{padding:15px 16px}}

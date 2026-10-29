@@ -22,18 +22,7 @@ if (toggle && nav) {
   });
 }
 
-// Account navigation is visible, but credentials are not collected until an authentication backend exists.
-const accountDialog = document.getElementById('account-dialog');
-if (accountDialog) {
-  const title = accountDialog.querySelector('#account-title');
-  document.querySelectorAll('[data-account]').forEach(control => control.addEventListener('click', () => {
-    title.textContent = control.dataset.account === 'signup' ? '회원가입' : '로그인';
-    accountDialog.showModal();
-  }));
-  accountDialog.querySelector('.account-close').addEventListener('click', () => accountDialog.close());
-  accountDialog.addEventListener('click', e => { if (e.target === accountDialog) accountDialog.close(); });
-}
-
+// Account dialog / authentication is managed by member-auth.js.
 /* Shared curriculum dropdown behavior. Buttons never navigate by themselves. */
 document.querySelectorAll('[data-course-dropdown]').forEach(group => {
   const trigger=group.querySelector('.course-dropdown-trigger');

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>학원 원장 마이페이지 | CON MATH</title>
+<link rel="stylesheet" href="dashboard.css?v=20261028"></head>
+<body data-dashboard-role="academy_owner">
+<header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
+<main class="dash-main">
+<div class="eyebrow">CON MATH · MEMBER SERVICE</div>
+<h1>학원 원장 마이페이지</h1><p class="subtitle">학원 운영 현황과 제휴·추천 활동을 확인하는 공간입니다.</p>
+<div id="dashboard-message" class="dash-message" role="status" aria-live="polite">로그인 및 접근 권한을 확인하고 있습니다.</div>
+<div id="dashboard-content" hidden>
+<div class="welcome"><span id="user-greeting">회원님</span><button id="dashboard-logout" type="button">로그아웃</button></div>
+
+<div class="dash-section" id="academy-approval-box"><h2>학원 계정 상태</h2><p id="academy-approval-text">관리자 승인 상태를 확인합니다.</p></div>
+<div id="owner-approved-content" hidden>
+<div class="dash-grid">
+<section class="info-card"><div class="label">협력학원 추천수익률</div><div class="value" id="partner-referral-rate">정책 조회 중</div><p>콘매쓰에 추천한 학생의 실제 납부 원비 기준입니다. 수당 지급·정산 내역은 아직 연동되지 않았습니다.</p></section>
+<section class="info-card"><div class="label">콘매쓰에 추천한 학생 수</div><div class="value">집계 연동 전</div><p>본인 학원에서 콘매쓰로 추천한 학생의 등록·납부 실적을 연동할 예정입니다.</p></section>
+</div>
+<section class="dash-section"><h2>추천 정책</h2><p id="partner-rate-breakdown" class="placeholder">콘매쓰가 협력학원에 지급하는 5%와 콘매쓰가 협력학원에서 받는 10%는 별도의 추천 거래입니다.</p></section>
+<section class="dash-section"><h2>콘매쓰 추천 학생 현황</h2><p class="placeholder">추천 학생 목록은 아직 연동되지 않았습니다. 학생·학부모의 정보 공유 동의와 권한을 확인한 뒤 해당 학원이 추천한 학생 정보만 표시합니다.</p></section>
+</div>
+
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
+<script src="dashboard.js?v=20261028" defer></script>
+</body></html>
