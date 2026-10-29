@@ -10,7 +10,7 @@ const style=fs.readFileSync(path.join(__dirname,'../dashboard.css'),'utf8');
 test('The administrator dashboard only shows membership application controls',()=>{
  for(const title of ['협력학원 양방향 추천수익 정책','학부모 할인 정책','콘매쓰 추천 학생 현황'])
   assert.equal(page.includes(title),false);
- assert.match(page,/가입 신청 관리/);
+ assert.match(page,/회원가입 승인 관리/);
  assert.match(page,/id="pending-members"/);
  assert.doesNotMatch(page,/partner-rate-breakdown/);
 });
