@@ -31,7 +31,7 @@ class FakeFormData extends Map {
 async function simulate({mode='signup',kind='parent',adminBadge=false,phone='01012345678',unavailable=false}={}) {
  const names=['account-dialog','account-form','signup-only','academy-fields','account-status',
  'member-panel','account-switch','account-type','account-title','account-consent',
- 'member-message','account-dashboard-link','member-signout'];
+ 'member-message','account-dashboard-link','member-signout','admin-login-link'];
  const elements=Object.fromEntries(names.map(name=>[name,new Element()]));
  const form=elements['account-form'];
  form.submit=new Element();
@@ -74,7 +74,7 @@ async function simulate({mode='signup',kind='parent',adminBadge=false,phone='010
  vm.runInNewContext(source,{window,document,Event:FakeEvent,FormData:FakeFormData,confirm:()=>true});
  await (mode==='login'?loginButton:signupButton).dispatchEvent({type:'click'});
  if(!unavailable)await form.dispatchEvent({type:'submit'});
- return {submitted,route,status:elements['account-status'].textContent};
+ return {submitted,route,status:elements['account-status'].textContent,adminLinkVisible:!elements['admin-login-link'].hidden};
 }
 
 test('학부모 회원가입과 이메일 리다이렉트',async()=>{
@@ -102,13 +102,17 @@ test('학부모 전용 화면으로 이동',async()=>{
 test('원장 전용 화면으로 이동',async()=>{
  assert.equal((await simulate({mode:'login',kind:'academy_owner'})).route,'academy-dashboard.html');
 });
-test('관리자 프로필 및 뱃지가 있어야 관리자 화면 이동',async()=>{
- assert.equal((await simulate({mode:'login',kind:'admin',adminBadge:true})).route,'admin-dashboard.html');
+test('관리자 계정은 일반 로그인에서 관리자 화면으로 이동하지 않음',async()=>{
+ const r=await simulate({mode:'login',kind:'admin',adminBadge:true});
+ assert.equal(r.route,null);
+ assert.match(r.status,/관리자 전용 로그인/);
+ assert.equal(r.adminLinkVisible,true);
 });
-test('뱃지 없는 관리자 프로필은 접근 차단',async()=>{
+test('관리자 프로필은 일반 로그인에서 뱃지 유무와 관계없이 전용 로그인으로 안내',async()=>{
  const r=await simulate({mode:'login',kind:'admin'});
  assert.equal(r.route,null);
- assert.match(r.status,/관리자 권한/);
+ assert.match(r.status,/관리자 전용 로그인/);
+ assert.equal(r.adminLinkVisible,true);
 });
 test('외부 Supabase 스크립트 로딩 실패 시 오류 안내',async()=>{
  const r=await simulate({mode:'login',unavailable:true});
