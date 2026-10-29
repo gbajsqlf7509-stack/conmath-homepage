@@ -1,0 +1,24 @@
+name: Member authentication smoke tests
+
+on:
+  pull_request:
+    paths:
+      - member-auth.js
+      - dashboard.js
+      - tests/auth-smoke.test.cjs
+      - .github/workflows/auth-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auth-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify membership flows
+        run: node --test tests/auth-smoke.test.cjs
