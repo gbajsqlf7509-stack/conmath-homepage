@@ -140,3 +140,7 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 
 /* After signup success, show only the confirmation status (not the reset form). */
 .account-form[hidden],.account-switch[hidden]{display:none!important}
+
+/* Administrator login is routed to its own page; general signup stays parent/academy only. */
+.admin-login-link{display:block;text-align:center;margin:16px auto 0;font-size:13px;font-weight:750;color:#506b90;text-underline-offset:4px}
+.admin-login-link[hidden]{display:none!important}
