@@ -7,7 +7,7 @@
   <meta name="description" content="콘매쓰(CON MATH) 통합수학 교육 및 협력 교육 네트워크 소개">
   <title>CON MATH | 학생에게 필요한 교육을 함께 연결합니다</title>
   <link rel="preload" href="hero-right.webp" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="style.css?v=20261027-consult">
+  <link rel="stylesheet" href="style.css?v=20261029-members">
 </head>
 <body>
 <header class="header" id="brand">
@@ -194,9 +194,37 @@
 <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-title">
   <button class="account-close" type="button" aria-label="닫기">×</button>
   <h2 id="account-title">로그인</h2>
-  <p>계정 서비스는 준비 중입니다. 이용 가능해지면 이곳에서 로그인과 회원가입을 진행할 수 있습니다.</p>
-  <a class="account-call" href="tel:01048369991">상담 문의하기</a>
+  <p class="account-intro">콘매쓰에 오신 것을 환영합니다.</p>
+  <div id="account-status" class="account-status" role="status" aria-live="polite"></div>
+  <form id="account-form" class="account-form">
+    <div id="signup-only" hidden>
+      <label>회원 유형
+        <select name="account_type" id="account-type">
+          <option value="parent">학부모</option><option value="academy_owner">학원 원장</option>
+        </select>
+      </label>
+      <label>이름<input name="full_name" maxlength="60" autocomplete="name"></label>
+      <label>휴대전화<input name="phone" type="tel" maxlength="30" autocomplete="tel" placeholder="010-0000-0000"></label>
+      <div id="academy-fields" hidden>
+        <label>학원 이름<input name="academy_name" maxlength="120"></label>
+        <label>학원 주소<input name="academy_address" maxlength="200"></label>
+        <p class="account-note">원장 계정은 이메일 인증 후 관리자 승인이 필요합니다.</p>
+      </div>
+      <label class="account-consent"><input type="checkbox" id="account-consent"> <span>개인정보 수집 및 이용 안내를 확인하고 동의합니다. <a href="privacy.html" target="_blank" rel="noopener">자세히 보기</a></span></label>
+    </div>
+    <label>이메일<input name="email" type="email" required autocomplete="email" maxlength="254"></label>
+    <label>비밀번호<input name="password" type="password" minlength="8" required autocomplete="current-password"></label>
+    <button class="account-submit" type="submit">로그인</button>
+  </form>
+  <button id="account-switch" class="account-switch" type="button">계정이 없으신가요? 회원가입</button>
+  <div id="member-panel" hidden>
+    <p id="member-message"></p>
+    <button type="button" id="member-signout" class="account-submit">로그아웃</button>
+    <a id="account-dashboard-link" class="account-submit account-dashboard-link" href="parent-dashboard.html" hidden>내 전용 페이지로 이동</a>
+  </div>
 </dialog>
-<script src="script.js?v=20261015-menu6" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
+<script src="member-auth.js?v=20261029-members"></script>
+<script src="script.js?v=20261029-members" defer></script>
 </body>
 </html>
