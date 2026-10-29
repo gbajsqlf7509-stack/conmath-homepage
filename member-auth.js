@@ -108,7 +108,12 @@
         }});
         if (error) throw error;
         form.reset();
-        notice('가입 신청이 접수됐습니다. 이메일 인증 안내를 확인해주세요. 원장 계정은 추가 승인이 필요합니다.');
+        form.hidden = true;
+        switchButton.hidden = true;
+        $('account-title').textContent = '이메일 인증 안내';
+        notice(type === 'academy_owner'
+          ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 눌러주세요. 인증 후 관리자 승인이 필요합니다.'
+          : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 로그인해주세요.');
       } else {
         const {data,error} = await client.auth.signInWithPassword({email,password});
         if (error) throw error;

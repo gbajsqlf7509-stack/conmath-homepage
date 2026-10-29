@@ -85,6 +85,7 @@ test('학부모 회원가입과 이메일 리다이렉트',async()=>{
 test('협력 원장 회원가입',async()=>{
  const r=await simulate({kind:'academy_owner'});
  assert.equal(r.submitted.options.data.academy_name,'테스트 학원');
+ assert.match(r.status,/협력학원 원장 가입 신청/);
 });
 test('잘못된 연락처로 Supabase 가입을 호출하지 않음',async()=>{
  const r=await simulate({phone:'1'});
