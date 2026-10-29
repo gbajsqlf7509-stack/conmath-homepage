@@ -221,7 +221,7 @@
    try {
     const data=new FormData(form);
     const payload=await makePayload(data);
-    if(!payload) return;
+    if(!payload){msg('수강 내역을 갱신했습니다.');await reload();return;}
     const {error}=await client.from(table).insert(payload);
     if(error)throw error;
     const defaults={billing_month:currentMonth,paid_on:todayText,referred_on:todayText,settled_on:todayText};
