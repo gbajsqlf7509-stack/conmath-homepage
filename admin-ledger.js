@@ -160,8 +160,8 @@
    db.payments.map(p=>{
     const r=byId('referrals',p.referral_id);
     const rate=r?rateFor(r.direction,p.paid_on):null;
-    return [p.paid_on,monthDisplay(p.billing_month),r?student(r.student_id):'미확인',r?direction(r.direction):'미확인',
-     money(p.paid_won),rate===null?'요율 미확정':money(Math.round(Number(p.paid_won)*rate/100))];
+    return [p.paid_on,monthDisplay(p.billing_month),student(p.student_id),r?direction(r.direction):'일반 원비',
+     money(p.paid_won),!r?'해당 없음':(rate===null?'요율 미확정':money(Math.round(Number(p.paid_won)*rate/100)))];
    }));
  }
  function renderSettlements(){
@@ -201,6 +201,7 @@
   selectChoices('[data-partners]',db.members.filter(m=>m.account_type==='academy_owner'&&m.approval_status==='approved')
    .map(m=>[m.user_id,m.academy_name||m.full_name]),'승인된 협력학원 선택');
   selectChoices('[data-referrals]',db.referrals.map(r=>[r.id,student(r.student_id)+' · '+partner(r.partner_id)+' · '+direction(r.direction)]),'추천 내역 선택');
+  selectChoices('[data-optional-referrals]',db.referrals.map(r=>[r.id,student(r.student_id)+' · '+partner(r.partner_id)+' · '+direction(r.direction)]),'추천 없음 (일반 원비)');
  }
  function render(){
   refreshSelects();
@@ -249,7 +250,11 @@
  }),'cm_student_referrals');
  wireForm('form-payment',d=>{
   const value=Number(d.get('paid_won'));if(!Number.isSafeInteger(value)||value<=0)throw new Error('입금액을 확인해주세요.');
-  return {referral_id:Number(d.get('referral_id')),billing_month:monthDate(String(d.get('billing_month'))),
+  const studentId=String(d.get('student_id')||'');
+  const ref= d.get('referral_id')?byId('referrals',d.get('referral_id')):null;
+  if(ref && ref.student_id!==studentId)throw new Error('선택한 학생과 추천 기록의 학생이 다릅니다.');
+  if(!byId('students',studentId))throw new Error('등록된 학생을 선택해주세요.');
+  return {student_id:studentId,referral_id:ref?.id||null,billing_month:monthDate(String(d.get('billing_month'))),
     paid_on:String(d.get('paid_on')),paid_won:value};
  },'cm_tuition_payments');
  wireForm('form-settlement',d=>{
