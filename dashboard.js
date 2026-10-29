@@ -61,6 +61,13 @@
       await supabase.auth.signOut();location.replace('index.html');
     });
     if(page==='parent'){
+      const childLabel=document.getElementById('my-child-name');
+      const {data:children,error:childError}=await supabase.from('parent_children')
+        .select('child_name').eq('parent_user_id',result.user.id)
+        .order('created_at',{ascending:true});
+      childLabel.textContent=childError
+        ? '아이 이름을 불러오지 못했습니다.'
+        : '등록된 아이: '+((children||[]).map(x=>x.child_name).join(', ')||'확인 필요');
       const state=result.profile.approval_status;
       document.getElementById('parent-approval-text').textContent={
         pending:'가입 신청이 접수됐습니다. 콘매쓰 관리자의 승인을 기다려주세요.',

@@ -15,9 +15,28 @@
     return;
   }
   const $ = id => document.getElementById(id);
-  const form = $('account-form'), signup = $('signup-only'), academy = $('academy-fields'),
+  const form = $('account-form'), signup = $('signup-only'), academy = $('academy-fields'), parentFields = $('parent-fields'),
     status = $('account-status'), panel = $('member-panel'), switchButton = $('account-switch');
   let mode = 'login';
+  // UI-facing login IDs; Supabase Auth currently accepts email/phone identifiers.
+  // Internal alias is never shown to users or used for password recovery emails.
+  // This draft must NOT be merged until Confirm Email is OFF and the
+  // username/child RLS migration has been applied and verified.
+  const ACCOUNT_DOMAIN = 'accounts.conmath.kr';
+  const validId = /^[a-z][a-z0-9_]{3,19}$/;
+  function normalizeId(value) {
+    const id = String(value || '').trim().toLowerCase();
+    if (!validId.test(id)) throw new Error('아이디는 영문으로 시작하며 영문 소문자·숫자·_ 포함 4~20자로 입력해주세요.');
+    if (['admin', 'administrator', 'support', 'system', 'root'].includes(id))
+      throw new Error('사용할 수 없는 아이디입니다.');
+    return id;
+  }
+  function identityForLogin(value) {
+    const input = String(value || '').trim();
+    // Transitional compatibility for the two pre-existing test signups.
+    if (input.includes('@')) return input;
+    return normalizeId(input) + '@' + ACCOUNT_DOMAIN;
+  }
   function notice(message, error = false) {
     status.textContent = message || '';
     status.classList.toggle('is-error', error);
@@ -37,7 +56,9 @@
     $('admin-login-link').hidden = mode !== 'login';
   }
   $('account-type').addEventListener('change', () => {
-    academy.hidden = $('account-type').value !== 'academy_owner';
+    const isAcademy = $('account-type').value === 'academy_owner';
+    academy.hidden = !isAcademy;
+    parentFields.hidden = isAcademy;
   });
   switchButton.addEventListener('click', () => setMode(mode === 'signup' ? 'login' : 'signup'));
   dialog.querySelector('.account-close').addEventListener('click', () => dialog.close());
@@ -94,21 +115,35 @@
     const submit = form.querySelector('.account-submit');
     submit.disabled = true;
     const fields = new FormData(form);
-    const email = String(fields.get('email') || '').trim();
+    const loginId = String(fields.get('login_id') || '').trim();
     const password = String(fields.get('password') || '');
     try {
       if (mode === 'signup') {
         const type = String(fields.get('account_type'));
         if (!['parent','academy_owner'].includes(type)) throw new Error('올바른 회원 유형을 선택해주세요.');
-        const fullName = String(fields.get('full_name') || '').trim();
+        const username = normalizeId(loginId);
+        const childName = String(fields.get('child_name') || '').trim();
         const academyName = String(fields.get('academy_name') || '').trim();
-        if (!fullName || (type === 'academy_owner' && !academyName))
-          throw new Error('이름과 해당하는 학원 정보를 입력해주세요.');
+        const academyAddress = String(fields.get('academy_address') || '').trim();
+        if (type === 'parent' && (!childName || childName.length > 60))
+          throw new Error('아이 이름을 60자 이내로 입력해주세요.');
+        if (type === 'academy_owner' && (!academyName || !academyAddress))
+          throw new Error('학원명과 학원 주소를 모두 입력해주세요.');
         if (!$('account-consent').checked) throw new Error('개인정보 수집·이용 동의가 필요합니다.');
-        const {data,error} = await client.auth.signUp({email,password,options:{
-          emailRedirectTo: window.location.origin + window.location.pathname,
-          data: {account_type:type,full_name:fullName,academy_name:type === 'academy_owner' ? academyName : '',
-            privacy_consent_version:'2026-10-29',privacy_consent_at:new Date().toISOString()}
+        const {data,error} = await client.auth.signUp({
+          email: identityForLogin(username),password,options:{
+          data: {
+            account_type:type,
+            login_id:username,
+            // Only signup metadata; child data is copied into a protected child table
+            // by the trusted database trigger (not used for authorization).
+            child_name: type === 'parent' ? childName : '',
+            academy_name:type === 'academy_owner' ? academyName : '',
+            academy_address:type === 'academy_owner' ? academyAddress : '',
+            full_name:type === 'parent' ? '학부모 회원' : '협력학원 담당자',
+            privacy_consent_version:'2026-10-29-username-draft',
+            privacy_consent_at:new Date().toISOString()
+          }
         }});
         if (error) throw error;
         form.reset();
@@ -127,14 +162,13 @@
           $('account-dashboard-link').hidden = false;
           notice('가입 신청 완료 · 관리자 승인 대기');
         } else {
-          // Confirm email is still enabled on the Supabase project.
-          $('account-title').textContent = '이메일 인증 안내';
-          notice(type === 'academy_owner'
-            ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 관리자 승인을 기다려주세요.'
-            : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 관리자 승인을 기다려주세요.');
+          // Username-only signup requires email confirmation to be OFF. An
+          // internal alias has no delivery inbox, so do not claim an email was sent.
+          $('account-title').textContent = '가입 설정 확인 필요';
+          notice('아이디 방식의 가입 설정이 아직 준비되지 않았습니다. 관리자에게 문의해주세요.', true);
         }
       } else {
-        const {data,error} = await client.auth.signInWithPassword({email,password});
+        const {data,error} = await client.auth.signInWithPassword({email:identityForLogin(loginId),password});
         if (error) throw error;
         const route = await showMember(data.user);
         if (route) window.location.assign(route);
