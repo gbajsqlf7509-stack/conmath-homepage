@@ -28,7 +28,7 @@ class FakeFormData extends Map {
  constructor(form){super(Object.entries(form.fields??{}))}
 }
 
-async function simulate({mode='signup',kind='parent',adminBadge=false,phone='01012345678',unavailable=false}={}) {
+async function simulate({mode='signup',kind='parent',adminBadge=false,phone='01012345678',unavailable=false,instantSignup=false}={}) {
  const names=['account-dialog','account-form','signup-only','academy-fields','account-status',
  'member-panel','account-switch','account-type','account-title','account-consent',
  'member-message','account-dashboard-link','member-signout','admin-login-link'];
@@ -56,7 +56,7 @@ async function simulate({mode='signup',kind='parent',adminBadge=false,phone='010
    getUser:async()=>({data:{user:null}}),
    getSession:async()=>({data:{session:null}}),
    onAuthStateChange:()=>{},
-   signUp:async payload=>{submitted=payload;return {error:null}},
+   signUp:async payload=>{submitted=payload;return {error:null,data:instantSignup?{session:{access_token:'mock'},user}:{session:null,user}}},
    signInWithPassword:async()=>({data:{user},error:null}),
    signOut:async()=>({error:null})
   },
@@ -74,7 +74,7 @@ async function simulate({mode='signup',kind='parent',adminBadge=false,phone='010
  vm.runInNewContext(source,{window,document,Event:FakeEvent,FormData:FakeFormData,confirm:()=>true});
  await (mode==='login'?loginButton:signupButton).dispatchEvent({type:'click'});
  if(!unavailable)await form.dispatchEvent({type:'submit'});
- return {submitted,route,status:elements['account-status'].textContent,adminLinkVisible:!elements['admin-login-link'].hidden};
+ return {submitted,route,status:elements['account-status'].textContent,adminLinkVisible:!elements['admin-login-link'].hidden,formHidden:form.hidden,panelVisible:!elements['member-panel'].hidden,dashboardHref:elements['account-dashboard-link'].href,memberMessage:elements['member-message'].textContent};
 }
 
 test('학부모 회원가입과 이메일 리다이렉트',async()=>{
@@ -117,4 +117,26 @@ test('관리자 프로필은 일반 로그인에서 뱃지 유무와 관계없�
 test('외부 Supabase 스크립트 로딩 실패 시 오류 안내',async()=>{
  const r=await simulate({mode:'login',unavailable:true});
  assert.match(r.status,/불러오지/);
+});
+
+test('이메일 인증 비활성화: 학부모 가입 직후 마이페이지 링크 표시',async()=>{
+ const r=await simulate({kind:'parent',instantSignup:true});
+ assert.equal(r.formHidden,true);
+ assert.equal(r.panelVisible,true);
+ assert.equal(r.dashboardHref,'parent-dashboard.html');
+ assert.match(r.status,/회원가입 완료/);
+ assert.doesNotMatch(r.status,/이메일 인증 링크/);
+});
+test('이메일 인증 비활성화: 협력학원 가입 후 관리자 승인 대기',async()=>{
+ const r=await simulate({kind:'academy_owner',instantSignup:true});
+ assert.equal(r.panelVisible,true);
+ assert.equal(r.dashboardHref,'academy-dashboard.html');
+ assert.match(r.memberMessage,/관리자 승인/);
+ assert.doesNotMatch(r.status,/이메일 인증/);
+});
+test('인증 설정이 아직 활성화라면 기존 이메일 인증 안내를 유지',async()=>{
+ const r=await simulate({kind:'academy_owner',instantSignup:false});
+ assert.equal(r.formHidden,true);
+ assert.equal(r.panelVisible,false);
+ assert.match(r.status,/이메일 인증 링크/);
 });

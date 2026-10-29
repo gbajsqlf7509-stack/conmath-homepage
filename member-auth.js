@@ -31,7 +31,7 @@
     $('account-title').textContent = mode === 'signup' ? '회원가입' : '로그인';
     $('account-type').dispatchEvent(new Event('change'));
     form.elements.namedItem('password').autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
-    form.querySelector('.account-submit').textContent = mode === 'signup' ? '이메일로 회원가입' : '로그인';
+    form.querySelector('.account-submit').textContent = mode === 'signup' ? '회원가입' : '로그인';
     switchButton.textContent = mode === 'signup' ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
     switchButton.hidden = false;
     $('admin-login-link').hidden = mode !== 'login';
@@ -112,7 +112,7 @@
           throw new Error('올바른 연락처를 입력해주세요. (숫자 9~11자리)');
         }
         if (!$('account-consent').checked) throw new Error('개인정보 수집·이용 동의가 필요합니다.');
-        const { error } = await client.auth.signUp({email,password,options:{
+        const {data,error} = await client.auth.signUp({email,password,options:{
           emailRedirectTo: window.location.origin + window.location.pathname,
           data: {account_type:type,full_name:fullName,phone,academy_name:academyName,academy_address:academyAddress,
             privacy_consent_version:'2026-10-29',privacy_consent_at:new Date().toISOString()}
@@ -121,10 +121,25 @@
         form.reset();
         form.hidden = true;
         switchButton.hidden = true;
-        $('account-title').textContent = '이메일 인증 안내';
-        notice(type === 'academy_owner'
-          ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 눌러주세요. 인증 후 관리자 승인이 필요합니다.'
-          : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 로그인해주세요.');
+        if (data?.session && data?.user) {
+          // Supabase Confirm email disabled: signup returns an authenticated
+          // session immediately, without sending a confirmation message.
+          $('account-title').textContent = '회원가입 완료';
+          panel.hidden = false;
+          $('member-message').textContent = type === 'academy_owner'
+            ? '협력학원 원장 가입 신청이 접수됐습니다. 관리자 승인 후 원장 전용 기능을 이용할 수 있습니다.'
+            : '학부모 회원가입이 완료됐습니다. 학부모 전용 페이지를 이용할 수 있습니다.';
+          $('account-dashboard-link').href =
+            type === 'academy_owner' ? 'academy-dashboard.html' : 'parent-dashboard.html';
+          $('account-dashboard-link').hidden = false;
+          notice(type === 'academy_owner' ? '가입 신청 완료 · 관리자 승인 대기' : '회원가입 완료');
+        } else {
+          // Confirm email is still enabled on the Supabase project.
+          $('account-title').textContent = '이메일 인증 안내';
+          notice(type === 'academy_owner'
+            ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 눌러주세요. 인증 후 관리자 승인이 필요합니다.'
+            : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 로그인해주세요.');
+        }
       } else {
         const {data,error} = await client.auth.signInWithPassword({email,password});
         if (error) throw error;
