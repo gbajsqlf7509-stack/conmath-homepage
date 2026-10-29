@@ -34,6 +34,7 @@
     form.querySelector('.account-submit').textContent = mode === 'signup' ? '이메일로 회원가입' : '로그인';
     switchButton.textContent = mode === 'signup' ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
     switchButton.hidden = false;
+    $('admin-login-link').hidden = mode !== 'login';
   }
   $('account-type').addEventListener('change', () => {
     academy.hidden = $('account-type').value !== 'academy_owner';
@@ -58,6 +59,16 @@
     const { data: profile, error } = await client.from('member_profiles')
       .select('full_name, account_type, approval_status').eq('user_id', user.id).single();
     if (error || !profile) { notice('계정 정보를 불러오지 못했어요. 다시 로그인해주세요.', true); return; }
+    if (profile.account_type === 'admin') {
+      await client.auth.signOut();
+      form.hidden = true;
+      panel.hidden = true;
+      switchButton.hidden = true;
+      $('admin-login-link').hidden = false;
+      $('account-title').textContent = '관리자 전용 로그인';
+      notice('관리자 계정은 일반 회원 로그인에서 이용할 수 없습니다. 아래 관리자 전용 로그인으로 이동해주세요.');
+      return null;
+    }
     form.hidden = true;
     panel.hidden = false;
     switchButton.hidden = true;
