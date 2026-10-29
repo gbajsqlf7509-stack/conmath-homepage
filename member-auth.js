@@ -5,7 +5,15 @@
   const publishableKey = 'sb_publishable_yE-Ao1-apsmTvkdHhqEasg_Oarn7dSw';
   const client = window.supabase?.createClient(url, publishableKey);
   const dialog = document.getElementById('account-dialog');
-  if (!client || !dialog) return;
+  if (!dialog) return;
+  if (!client) {
+    document.querySelectorAll('[data-account]').forEach(button => button.addEventListener('click', () => {
+      dialog.showModal();
+      document.getElementById('account-status').textContent = '로그인 서비스를 불러오지 못했습니다. 새로고침하거나 잠시 후 다시 시도해주세요.';
+    }));
+    dialog.querySelector('.account-close')?.addEventListener('click', () => dialog.close());
+    return;
+  }
   const $ = id => document.getElementById(id);
   const form = $('account-form'), signup = $('signup-only'), academy = $('academy-fields'),
     status = $('account-status'), panel = $('member-panel'), switchButton = $('account-switch');
@@ -22,7 +30,7 @@
     signup.hidden = mode !== 'signup';
     $('account-title').textContent = mode === 'signup' ? '회원가입' : '로그인';
     $('account-type').dispatchEvent(new Event('change'));
-    form.password.autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
+    form.elements.namedItem('password').autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
     form.querySelector('.account-submit').textContent = mode === 'signup' ? '이메일로 회원가입' : '로그인';
     switchButton.textContent = mode === 'signup' ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
     switchButton.hidden = false;
@@ -38,8 +46,13 @@
     form.reset();
     $('account-type').dispatchEvent(new Event('change'));
     dialog.showModal();
-    const { data: { user } } = await client.auth.getUser();
-    if (user) await showMember(user);
+    try {
+      const { data, error } = await client.auth.getUser();
+      if (error && error.message !== 'Auth session missing!') notice('계정 상태 확인 중 오류가 발생했습니다.', true);
+      if (data?.user) await showMember(data.user);
+    } catch {
+      notice('로그인 상태를 확인하지 못했습니다. 다시 시도해주세요.', true);
+    }
   }));
   async function showMember(user) {
     const { data: profile, error } = await client.from('member_profiles')
@@ -74,6 +87,7 @@
     try {
       if (mode === 'signup') {
         const type = String(fields.get('account_type'));
+        if (!['parent','academy_owner'].includes(type)) throw new Error('올바른 회원 유형을 선택해주세요.');
         const fullName = String(fields.get('full_name') || '').trim();
         const phone = String(fields.get('phone') || '').trim();
         const academyName = String(fields.get('academy_name') || '').trim();
@@ -108,6 +122,6 @@
     document.querySelectorAll('[data-account="login"]').forEach(el=>el.textContent=session ? '내 계정' : '로그인');
   });
   client.auth.getSession().then(({data}) => {
-    if (data.session) document.querySelectorAll('[data-account="login"]').forEach(el=>el.textContent='내 계정');
-  });
+    if (data?.session) document.querySelectorAll('[data-account="login"]').forEach(el=>el.textContent='내 계정');
+  }).catch(() => {});
 })();
