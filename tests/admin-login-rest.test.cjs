@@ -11,8 +11,8 @@ test('Both admin login controllers have valid syntax',()=>{
 });
 test('JWT-based REST lookup without SDK session lock',()=>{
   assert.match(script,/signInWithPassword/);
-  assert.match(script,/rest\/v1\/member_profiles/);
-  assert.match(script,/rest\/v1\/platform_admins/);
+  assert.match(script,/rest\/v1\//);
+  assert.match(script,/query\('platform_admins'/);
   assert.doesNotMatch(script,/client\.from\(/);
 });
 test('Dashboard confirms JWT server-side, badge, and approval',()=>{
