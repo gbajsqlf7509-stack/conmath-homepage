@@ -77,18 +77,20 @@
     });
     const loadPending=async()=>{
       const target=$('pending-members');
-      target.textContent='조회 중…';
+      target.textContent='학부모·협력학원 가입 신청 조회 중…';
       try{
         const rows=await rest('GET','/rest/v1/member_profiles',token,{
-          select:'user_id,full_name,academy_name,academy_address,email,phone,approval_status',
-          account_type:'eq.academy_owner',approval_status:'eq.pending',order:'created_at.asc'
+          select:'user_id,full_name,account_type,academy_name,email,approval_status',
+          approval_status:'eq.pending',order:'created_at.asc'
         });
         target.replaceChildren();
-        if(!rows.length){target.textContent='현재 승인 대기 중인 협력학원 원장님이 없습니다.';return;}
+        if(!rows.length){target.textContent='현재 승인 대기 중인 회원가입 신청이 없습니다.';return;}
         for(const item of rows){
           const row=document.createElement('section');row.className='pending-member';
           const info=document.createElement('p');
-          info.textContent=[item.full_name,item.academy_name,item.academy_address,item.email,item.phone]
+          const roleLabel=item.account_type==='parent'?'학부모'
+            :item.account_type==='academy_owner'?'협력학원 원장':'확인 필요';
+          info.textContent=[roleLabel,item.full_name,item.academy_name,item.email]
             .filter(Boolean).join(' · ');
           const actions=document.createElement('div');
           actions.className='approval-actions';
@@ -101,26 +103,29 @@
           let processing=false;
           const decide=async(decision)=>{
             if(processing)return;
-            const academy=item.academy_name||'이 학원';
+            if(!['parent','academy_owner'].includes(item.account_type)){
+              show('회원 유형을 확인할 수 없습니다. 신청을 처리하지 않았습니다.',true);return;
+            }
+            const applicant=(item.academy_name||item.full_name||'이 회원')+' ('+roleLabel+')';
             const accepted=decision==='approved';
             const question=accepted
-              ? academy+' 원장 가입을 승인하시겠습니까?'
-              : academy+' 원장 가입을 반려하시겠습니까? 반려 시 원장 전용 기능을 사용할 수 없습니다.';
+              ? applicant+' 가입을 승인하시겠습니까?'
+              : applicant+' 가입을 반려하시겠습니까? 반려 시 회원 전용 기능을 사용할 수 없습니다.';
             if(!window.confirm(question))return;
             processing=true;
             approveButton.disabled=true;rejectButton.disabled=true;
-            show(accepted?'원장 가입을 승인하는 중입니다.':'원장 가입을 반려하는 중입니다.');
+            show(accepted?'회원가입 승인을 처리 중입니다.':'회원가입 반려를 처리 중입니다.');
             try{
               const changed=await rest('PATCH','/rest/v1/member_profiles',token,{
                 select:'user_id',
                 user_id:'eq.'+item.user_id,
                 approval_status:'eq.pending',
-                account_type:'eq.academy_owner'
+                account_type:'eq.'+item.account_type
               },{approval_status:decision,updated_at:new Date().toISOString()});
               if(!Array.isArray(changed)||changed.length!==1)
                 throw new Error('신청이 이미 처리되었거나 권한이 없습니다. 목록을 다시 확인해주세요.');
               await loadPending();
-              show(accepted?'원장 가입을 승인했습니다.':'원장 가입을 반려했습니다. 해당 계정은 삭제되지 않습니다.');
+              show(accepted?'회원가입을 승인했습니다.':'회원가입을 반려했습니다. 해당 계정은 삭제되지 않습니다.');
             }catch(error){
               show((accepted?'승인 실패: ':'반려 실패: ')+error.message,true);
             }finally{

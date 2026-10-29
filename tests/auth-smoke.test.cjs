@@ -28,7 +28,7 @@ class FakeFormData extends Map {
  constructor(form){super(Object.entries(form.fields??{}))}
 }
 
-async function simulate({mode='signup',kind='parent',adminBadge=false,phone='01012345678',unavailable=false,instantSignup=false}={}) {
+async function simulate({mode='signup',kind='parent',adminBadge=false,fullName='테스트 회원',unavailable=false,instantSignup=false}={}) {
  const names=['account-dialog','account-form','signup-only','academy-fields','account-status',
  'member-panel','account-switch','account-type','account-title','account-consent',
  'member-message','account-dashboard-link','member-signout','admin-login-link'];
@@ -37,8 +37,7 @@ async function simulate({mode='signup',kind='parent',adminBadge=false,phone='010
  form.submit=new Element();
  form.elements={namedItem:()=>({autocomplete:''})};
  form.fields={account_type:kind,email:'test@example.invalid',password:'long-secure-password',
-  full_name:'테스트 회원',phone,academy_name:kind==='academy_owner'?'테스트 학원':'',
-  academy_address:kind==='academy_owner'?'서울':''};
+  full_name:fullName,academy_name:kind==='academy_owner'?'테스트 학원':''};
  elements['account-dialog'].closeBtn=new Element();
  elements['account-type'].value=kind;
  elements['account-consent'].checked=true;
@@ -85,12 +84,14 @@ test('학부모 회원가입과 이메일 리다이렉트',async()=>{
 test('협력 원장 회원가입',async()=>{
  const r=await simulate({kind:'academy_owner'});
  assert.equal(r.submitted.options.data.academy_name,'테스트 학원');
+ assert.equal('phone' in r.submitted.options.data,false);
+ assert.equal('academy_address' in r.submitted.options.data,false);
  assert.match(r.status,/협력학원 원장 가입 신청/);
 });
-test('잘못된 연락처로 Supabase 가입을 호출하지 않음',async()=>{
- const r=await simulate({phone:'1'});
+test('이름이 없으면 Supabase 가입을 요청하지 않음',async()=>{
+ const r=await simulate({fullName:''});
  assert.equal(r.submitted,null);
- assert.match(r.status,/연락처/);
+ assert.match(r.status,/이름/);
 });
 test('공개 회원가입에서 관리자 역할을 만들 수 없음',async()=>{
  const r=await simulate({kind:'admin'});
@@ -119,13 +120,14 @@ test('외부 Supabase 스크립트 로딩 실패 시 오류 안내',async()=>{
  assert.match(r.status,/불러오지/);
 });
 
-test('이메일 인증 비활성화: 학부모 가입 직후 마이페이지 링크 표시',async()=>{
+test('이메일 인증 비활성화: 학부모 가입 직후 승인 대기 표시',async()=>{
  const r=await simulate({kind:'parent',instantSignup:true});
  assert.equal(r.formHidden,true);
  assert.equal(r.panelVisible,true);
  assert.equal(r.dashboardHref,'parent-dashboard.html');
- assert.match(r.status,/회원가입 완료/);
+ assert.match(r.status,/승인 대기/);
  assert.doesNotMatch(r.status,/이메일 인증 링크/);
+ assert.match(r.memberMessage,/관리자 승인/);
 });
 test('이메일 인증 비활성화: 협력학원 가입 후 관리자 승인 대기',async()=>{
  const r=await simulate({kind:'academy_owner',instantSignup:true});

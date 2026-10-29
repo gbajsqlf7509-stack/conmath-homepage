@@ -73,11 +73,10 @@
     panel.hidden = false;
     switchButton.hidden = true;
     $('account-title').textContent = '내 계정';
-    const state = profile.account_type === 'admin' ? '관리자 계정'
-      : profile.account_type === 'parent' ? '학부모 계정 · 이용 가능'
-      : profile.approval_status === 'approved' ? '학원 원장 · 승인 완료'
-      : profile.approval_status === 'rejected' ? '학원 원장 · 승인 반려'
-      : '학원 원장 · 관리자 승인 대기';
+    const accountLabel = profile.account_type === 'parent' ? '학부모' : '협력학원 원장';
+    const state = profile.approval_status === 'approved' ? accountLabel + ' · 승인 완료'
+      : profile.approval_status === 'rejected' ? accountLabel + ' · 가입 반려'
+      : accountLabel + ' · 관리자 승인 대기';
     $('member-message').textContent = profile.full_name + '님, ' + state;
     const { data: admin, error: adminError } = await client.from('platform_admins').select('user_id').eq('user_id', user.id).maybeSingle();
     if (adminError) { notice('계정 권한을 확인하지 못했습니다.', true); return; }
@@ -102,19 +101,13 @@
         const type = String(fields.get('account_type'));
         if (!['parent','academy_owner'].includes(type)) throw new Error('올바른 회원 유형을 선택해주세요.');
         const fullName = String(fields.get('full_name') || '').trim();
-        const phone = String(fields.get('phone') || '').trim();
         const academyName = String(fields.get('academy_name') || '').trim();
-        const academyAddress = String(fields.get('academy_address') || '').trim();
-        if (!fullName || !phone || (type === 'academy_owner' && (!academyName || !academyAddress)))
-          throw new Error('필수 정보를 모두 입력해주세요.');
-        const digits = phone.replace(/\D/g, '');
-        if (!/^[0-9 +()\-]+$/.test(phone) || digits.length < 9 || digits.length > 11) {
-          throw new Error('올바른 연락처를 입력해주세요. (숫자 9~11자리)');
-        }
+        if (!fullName || (type === 'academy_owner' && !academyName))
+          throw new Error('이름과 해당하는 학원 정보를 입력해주세요.');
         if (!$('account-consent').checked) throw new Error('개인정보 수집·이용 동의가 필요합니다.');
         const {data,error} = await client.auth.signUp({email,password,options:{
           emailRedirectTo: window.location.origin + window.location.pathname,
-          data: {account_type:type,full_name:fullName,phone,academy_name:academyName,academy_address:academyAddress,
+          data: {account_type:type,full_name:fullName,academy_name:type === 'academy_owner' ? academyName : '',
             privacy_consent_version:'2026-10-29',privacy_consent_at:new Date().toISOString()}
         }});
         if (error) throw error;
@@ -124,21 +117,21 @@
         if (data?.session && data?.user) {
           // Supabase Confirm email disabled: signup returns an authenticated
           // session immediately, without sending a confirmation message.
-          $('account-title').textContent = '회원가입 완료';
+          $('account-title').textContent = '가입 신청 완료';
           panel.hidden = false;
           $('member-message').textContent = type === 'academy_owner'
             ? '협력학원 원장 가입 신청이 접수됐습니다. 관리자 승인 후 원장 전용 기능을 이용할 수 있습니다.'
-            : '학부모 회원가입이 완료됐습니다. 학부모 전용 페이지를 이용할 수 있습니다.';
+            : '학부모 가입 신청이 접수됐습니다. 관리자 승인 후 학부모 전용 기능을 이용할 수 있습니다.';
           $('account-dashboard-link').href =
             type === 'academy_owner' ? 'academy-dashboard.html' : 'parent-dashboard.html';
           $('account-dashboard-link').hidden = false;
-          notice(type === 'academy_owner' ? '가입 신청 완료 · 관리자 승인 대기' : '회원가입 완료');
+          notice('가입 신청 완료 · 관리자 승인 대기');
         } else {
           // Confirm email is still enabled on the Supabase project.
           $('account-title').textContent = '이메일 인증 안내';
           notice(type === 'academy_owner'
-            ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 눌러주세요. 인증 후 관리자 승인이 필요합니다.'
-            : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 로그인해주세요.');
+            ? '협력학원 원장 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 관리자 승인을 기다려주세요.'
+            : '학부모 가입 신청이 접수됐습니다. 이메일 인증 링크를 누른 후 관리자 승인을 기다려주세요.');
         }
       } else {
         const {data,error} = await client.auth.signInWithPassword({email,password});
