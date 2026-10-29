@@ -21,11 +21,32 @@ test('Approval and rejection controls are present with distinct styles',()=>{
  assert.match(code,/가입 반려/);
  assert.match(style,/\.approval-reject/);
 });
-test('Only pending academy owner applications can be changed',()=>{
+test('Only pending parent and academy applications can be changed',()=>{
  assert.match(code,/approval_status:'eq.pending'/);
- assert.match(code,/account_type:'eq.academy_owner'/);
+ assert.match(code,/account_type:'eq.'\+item.account_type/);
+ assert.match(code,/approval_status:'eq.pending'/);
+ assert.match(code,/item.account_type==='parent'/);
+ assert.doesNotMatch(code,/academy_address/);
+ assert.doesNotMatch(code,/,email,phone,/);
  assert.match(code,/approval_status:decision/);
  assert.match(code,/window\.confirm\(question\)/);
  assert.doesNotMatch(code,/\/auth\/v1\/admin\/users/);
 });
 test('Admin dashboard script still parses',()=>new Function(code));
+
+test('A pending parent cannot see rewards on its dashboard',()=>{
+ const parentPage=fs.readFileSync(path.join(__dirname,'../parent-dashboard.html'),'utf8');
+ const shared=fs.readFileSync(path.join(__dirname,'../dashboard.js'),'utf8');
+ assert.match(parentPage,/id="parent-approved-content" hidden/);
+ assert.match(parentPage,/id="parent-approval-text"/);
+ assert.match(shared,/state!=='approved'/);
+ assert.match(shared,/parent-approved-content/);
+});
+test('Both member types are registered pending, with no extra personal fields',()=>{
+ const signup=fs.readFileSync(path.join(__dirname,'../member-auth.js'),'utf8');
+ const page=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+ assert.doesNotMatch(page,/name="phone"/);
+ assert.doesNotMatch(page,/name="academy_address"/);
+ assert.doesNotMatch(signup,/fields.get\('phone'\)/);
+ assert.match(signup,/관리자 승인 대기/);
+});
