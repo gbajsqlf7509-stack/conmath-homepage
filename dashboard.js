@@ -60,6 +60,15 @@
     document.getElementById('dashboard-logout').addEventListener('click',async()=>{
       await supabase.auth.signOut();location.replace('index.html');
     });
+    if(page==='parent'){
+      const state=result.profile.approval_status;
+      document.getElementById('parent-approval-text').textContent={
+        pending:'가입 신청이 접수됐습니다. 콘매쓰 관리자의 승인을 기다려주세요.',
+        rejected:'회원가입 신청이 반려되었습니다. 자세한 내용은 콘매쓰에 문의해주세요.',
+        approved:'가입 승인 완료 · 학부모 전용 기능을 이용할 수 있습니다.'
+      }[state]||'가입 상태를 확인해주세요.';
+      document.getElementById('parent-approved-content').hidden=state!=='approved';
+    }
     if(page==='academy_owner'){
       const state=result.profile.approval_status;
       document.getElementById('academy-approval-text').textContent={
