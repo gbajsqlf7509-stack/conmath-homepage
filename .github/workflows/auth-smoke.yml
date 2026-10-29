@@ -7,6 +7,8 @@ on:
       - admin-login.js
       - admin-dashboard.js
       - admin-dashboard.html
+      - dashboard.css
+      - tests/admin-approval.test.cjs
       - admin-login.html
       - tests/admin-login-rest.test.cjs
       - dashboard.js
@@ -26,4 +28,4 @@ jobs:
         with:
           node-version: '22'
       - name: Verify membership flows
-        run: node --test tests/auth-smoke.test.cjs tests/admin-login-rest.test.cjs
+        run: node --test tests/auth-smoke.test.cjs tests/admin-login-rest.test.cjs tests/admin-approval.test.cjs
