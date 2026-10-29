@@ -62,13 +62,15 @@
     panel.hidden = false;
     switchButton.hidden = true;
     $('account-title').textContent = '내 계정';
-    const state = profile.account_type === 'parent' ? '학부모 계정 · 이용 가능'
+    const state = profile.account_type === 'admin' ? '관리자 계정'
+      : profile.account_type === 'parent' ? '학부모 계정 · 이용 가능'
       : profile.approval_status === 'approved' ? '학원 원장 · 승인 완료'
       : profile.approval_status === 'rejected' ? '학원 원장 · 승인 반려'
       : '학원 원장 · 관리자 승인 대기';
     $('member-message').textContent = profile.full_name + '님, ' + state;
     const { data: admin, error: adminError } = await client.from('platform_admins').select('user_id').eq('user_id', user.id).maybeSingle();
     if (adminError) { notice('계정 권한을 확인하지 못했습니다.', true); return; }
+    if (profile.account_type === 'admin' && !admin) { notice('관리자 권한이 확인되지 않았습니다.', true); return; }
     const route = (admin && profile.account_type === 'admin') ? 'admin-dashboard.html' : (
       profile.account_type === 'academy_owner' ? 'academy-dashboard.html' : 'parent-dashboard.html'
     );
