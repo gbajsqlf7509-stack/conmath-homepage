@@ -131,3 +131,9 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 .pending-member p{font-size:12px;overflow-wrap:anywhere}
 
 .account-dashboard-link{display:block;text-align:center;text-decoration:none;margin:12px 0}.account-dashboard-link[hidden]{display:none}
+
+/* Membership legal links */
+.footer-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.footer-legal a:hover{color:#d8eaff}
+.account-consent input[type=checkbox]{flex:0 0 auto;width:18px;height:18px;accent-color:#0879d9;margin-top:2px}
+.account-consent span{display:block;min-width:0}
