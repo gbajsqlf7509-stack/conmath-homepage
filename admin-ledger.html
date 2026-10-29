@@ -70,9 +70,9 @@
   </section>
   <section id="panel-payments" class="ledger-panel dash-section">
    <h2>실제 납부 원비 입력</h2><form id="form-payment" class="ledger-row">
-    <label>추천 기록<select name="referral_id" data-referrals required></select></label><label>정산월<input name="billing_month" type="month" required></label>
+    <label>학생<select name="student_id" data-students required></select></label><label>추천 기록(없으면 일반 원비)<select name="referral_id" data-optional-referrals></select></label><label>정산월<input name="billing_month" type="month" required></label>
     <label>실제 납부 원비(원)<input type="number" name="paid_won" min="1" step="1" required></label><label>납부일<input name="paid_on" type="date" required></label><button>납부 등록</button></form>
-    <p class="ledger-hint">납부 예정액이 아니라 실제 확인한 입금액만 입력합니다. 입금 취소·환불·중복 납부 정정 방식은 별도 구현 전까지 이 화면에서 처리하지 않습니다.</p><div id="table-payments" class="table-wrap"></div>
+    <p class="ledger-hint">추천인이 없는 학생도 원비 납부를 기록할 수 있습니다. 납부 예정액이 아니라 실제 확인한 입금액만 입력합니다. 입금 취소·환불·중복 납부 정정 방식은 별도 구현 전까지 이 화면에서 처리하지 않습니다.</p><div id="table-payments" class="table-wrap"></div>
   </section>
   <section id="panel-settlements" class="ledger-panel dash-section">
    <h2>추천수당 지급·수령 누적 기록</h2><form id="form-settlement" class="ledger-row">
