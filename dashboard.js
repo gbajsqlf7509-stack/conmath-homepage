@@ -24,6 +24,7 @@
     const {data:admin,error:adminError}=await supabase.from('platform_admins')
       .select('user_id').eq('user_id',user.id).maybeSingle();
     if(adminError)throw adminError;
+    if(profile.account_type==='admin' && !admin)throw new Error('관리자 계정 권한을 확인할 수 없습니다.');
     return {user,profile,role:admin && profile.account_type==='admin' ? 'admin' : profile.account_type};
   }
   if(page==='admin-login'){
