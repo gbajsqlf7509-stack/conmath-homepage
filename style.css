@@ -144,3 +144,40 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 /* Administrator login is routed to its own page; general signup stays parent/academy only. */
 .admin-login-link{display:block;text-align:center;margin:16px auto 0;font-size:13px;font-weight:750;color:#506b90;text-underline-offset:4px}
 .admin-login-link[hidden]{display:none!important}
+
+
+/* Brand story — real Korean HTML text, never rasterized into an AI image. */
+.brand-story{padding:70px 0 72px;background:linear-gradient(175deg,#f7fbff 0%,#eef5fd 72%,#f9fcff 100%);scroll-margin-top:80px}
+.brand-story-inner{max-width:1300px}
+.brand-story-intro{max-width:970px;margin-bottom:32px}
+.brand-story-eyebrow{margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:2.3px;color:#0b66b6}
+.brand-story-eyebrow span{color:#c4a464;margin:0 9px}
+.brand-story-intro h2{margin:0;color:#062d69;font-size:clamp(28px,3.2vw,43px);line-height:1.4;letter-spacing:-1.6px;font-weight:870;word-break:keep-all}
+.brand-story-intro h2 strong{color:#036ec9;font-weight:900}
+.brand-story-summary{font-size:16px;line-height:1.9;color:#435a80;max-width:780px;margin:19px 0 0;word-break:keep-all}
+.brand-story-summary strong{color:#183d78}
+.brand-story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;align-items:stretch}
+.brand-story-manifesto{position:relative;isolation:isolate;min-height:428px;overflow:hidden;border-radius:22px;padding:41px 44px 34px;background:linear-gradient(145deg,#062e70,#07549a 94%);box-shadow:0 20px 40px rgba(3,52,108,.13);color:white}
+.brand-story-manifesto:before{content:"";position:absolute;right:-90px;top:-115px;width:340px;height:340px;border:1px solid rgba(233,198,112,.28);border-radius:50%;box-shadow:0 0 0 65px rgba(232,195,114,.045),0 0 0 115px rgba(232,195,114,.025);pointer-events:none;z-index:-1}
+.brand-story-mark{position:absolute;right:26px;top:2px;font:900 120px/1 Georgia,serif;color:rgba(213,182,103,.25)}
+.brand-story-small{font-size:13px;letter-spacing:1.4px;font-weight:750;color:#d7e9ff;margin:0 0 22px}
+.brand-story-manifesto blockquote{margin:0;font-size:clamp(26px,2.8vw,39px);font-weight:880;line-height:1.5;letter-spacing:-1.3px;word-break:keep-all}
+.brand-story-manifesto blockquote em{font-style:normal;color:#edca78}
+.brand-story-context{max-width:500px;color:#e1edfa;font-size:14px;line-height:1.9;margin:23px 0 0;word-break:keep-all}
+.brand-story-rule{height:1px;max-width:470px;background:linear-gradient(90deg,#e8c77d 0%,rgba(255,255,255,.1) 78%);margin-top:26px}
+.brand-story-tagline{margin:14px 0 0;color:#e8c77d;font-size:13px;letter-spacing:.1px;font-weight:760}
+.brand-story-principles{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:13px}
+.brand-principle{display:flex;gap:23px;align-items:flex-start;border:1px solid #d9e7f5;background:#fff;border-radius:18px;padding:27px 28px;box-shadow:0 6px 20px rgba(8,62,118,.035)}
+.brand-principle-num{font:800 24px/1.4 Georgia,serif;letter-spacing:-.5px;color:#b4985d;flex:0 0 37px}
+.brand-principle h3{font-size:20px;line-height:1.35;margin:0 0 8px;color:#063473;letter-spacing:-.6px}
+.brand-principle p{font-size:14px;line-height:1.75;margin:0;color:#506788;word-break:keep-all}
+.brand-story-vision{margin-top:22px;padding:27px 34px;border-radius:18px;border:1px solid #cadcef;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand-story-vision-kicker{font-size:11px;letter-spacing:1.5px;font-weight:850;color:#a7894a;margin:0 0 7px}
+.brand-story-vision h3{font-size:20px;letter-spacing:-.6px;color:#063473;margin:0 0 7px;word-break:keep-all}
+.brand-story-vision p:not(.brand-story-vision-kicker){font-size:14px;color:#61728e;line-height:1.75;margin:0;word-break:keep-all}
+.brand-story-cta{display:inline-flex;align-items:center;gap:12px;justify-content:center;background:#083b82;color:white;border-radius:28px;padding:13px 20px;white-space:nowrap;font-weight:800;font-size:13px;flex:0 0 auto;transition:background .15s}
+.brand-story-cta:hover{background:#006ccd}
+.brand-story-cta span{color:#ecc979;font-size:20px;line-height:1}
+@media(max-width:970px){.brand-story{padding:48px 0 54px}.brand-story-grid{grid-template-columns:1fr;gap:15px}.brand-story-manifesto{min-height:unset;padding:32px 32px}.brand-story-principles{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto;gap:10px}.brand-principle{display:block;padding:22px}.brand-principle-num{display:block;margin-bottom:7px}.brand-principle h3{font-size:18px}.brand-principle p{font-size:13px}.brand-story-vision{align-items:flex-start}}
+@media(max-width:650px){.brand-story{padding:43px 0 45px;scroll-margin-top:69px}.brand-story-intro{margin-bottom:24px}.brand-story-eyebrow{font-size:11px;letter-spacing:1.6px}.brand-story-intro h2{font-size:clamp(25px,6vw,32px);letter-spacing:-1.2px;line-height:1.5}.brand-story-summary{font-size:14px;line-height:1.8;margin-top:13px}.brand-story-manifesto{padding:30px 25px 26px;border-radius:17px}.brand-story-manifesto blockquote{font-size:clamp(25px,6vw,34px)}.brand-story-small{margin-bottom:14px}.brand-story-context{font-size:13px;margin-top:18px}.brand-story-principles{grid-template-columns:1fr}.brand-principle{display:flex;gap:15px;padding:20px;border-radius:15px}.brand-principle-num{font-size:20px;flex:0 0 30px;margin:0}.brand-principle h3{font-size:18px;margin-bottom:6px}.brand-story-vision{padding:22px 21px;flex-direction:column;align-items:stretch;gap:17px}.brand-story-vision h3{font-size:18px}.brand-story-cta{width:100%;white-space:normal}.brand-story-manifesto:before{width:230px;height:230px;top:-65px;right:-80px}}
+@media(prefers-reduced-motion:reduce){.brand-story-cta{transition:none}}
