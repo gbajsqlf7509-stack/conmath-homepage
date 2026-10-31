@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - member-auth.js
+      - index.html
+      - style.css
+      - tests/brand-story.test.cjs
       - admin-login.js
       - admin-dashboard.js
       - admin-dashboard.html
@@ -28,4 +31,4 @@ jobs:
         with:
           node-version: '22'
       - name: Verify membership flows
-        run: node --test tests/auth-smoke.test.cjs tests/admin-login-rest.test.cjs tests/admin-approval.test.cjs
+        run: node --test tests/auth-smoke.test.cjs tests/admin-login-rest.test.cjs tests/admin-approval.test.cjs tests/brand-story.test.cjs
