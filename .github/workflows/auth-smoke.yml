@@ -5,6 +5,7 @@ on:
     paths:
       - member-auth.js
       - index.html
+      - brand.html
       - style.css
       - tests/brand-story.test.cjs
       - admin-login.js

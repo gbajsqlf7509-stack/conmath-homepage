@@ -181,3 +181,13 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 @media(max-width:970px){.brand-story{padding:48px 0 54px}.brand-story-grid{grid-template-columns:1fr;gap:15px}.brand-story-manifesto{min-height:unset;padding:32px 32px}.brand-story-principles{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto;gap:10px}.brand-principle{display:block;padding:22px}.brand-principle-num{display:block;margin-bottom:7px}.brand-principle h3{font-size:18px}.brand-principle p{font-size:13px}.brand-story-vision{align-items:flex-start}}
 @media(max-width:650px){.brand-story{padding:43px 0 45px;scroll-margin-top:69px}.brand-story-intro{margin-bottom:24px}.brand-story-eyebrow{font-size:11px;letter-spacing:1.6px}.brand-story-intro h2{font-size:clamp(25px,6vw,32px);letter-spacing:-1.2px;line-height:1.5}.brand-story-summary{font-size:14px;line-height:1.8;margin-top:13px}.brand-story-manifesto{padding:30px 25px 26px;border-radius:17px}.brand-story-manifesto blockquote{font-size:clamp(25px,6vw,34px)}.brand-story-small{margin-bottom:14px}.brand-story-context{font-size:13px;margin-top:18px}.brand-story-principles{grid-template-columns:1fr}.brand-principle{display:flex;gap:15px;padding:20px;border-radius:15px}.brand-principle-num{font-size:20px;flex:0 0 30px;margin:0}.brand-principle h3{font-size:18px;margin-bottom:6px}.brand-story-vision{padding:22px 21px;flex-direction:column;align-items:stretch;gap:17px}.brand-story-vision h3{font-size:18px}.brand-story-cta{width:100%;white-space:normal}.brand-story-manifesto:before{width:230px;height:230px;top:-65px;right:-80px}}
 @media(prefers-reduced-motion:reduce){.brand-story-cta{transition:none}}
+
+/* Dedicated brand page: no brand feature card on the homepage. */
+.brand-page-main{background:#f7fbff;min-height:calc(100vh - 156px)}
+.brand-page-breadcrumb{display:flex;align-items:center;gap:10px;padding-top:27px;font-size:13px;font-weight:700;color:#60779d}
+.brand-page-breadcrumb a:hover{text-decoration:underline;color:#0a67c4}
+.brand-page-breadcrumb span{color:#b39c63}
+.brand-page-breadcrumb strong{color:#063473}
+.brand-page-main .brand-story{padding-top:31px;padding-bottom:80px}
+.nav-desktop a[aria-current="page"],.mobile-nav a[aria-current="page"]{color:#087ad9}
+@media(max-width:650px){.brand-page-breadcrumb{padding-top:19px;font-size:12px}.brand-page-main .brand-story{padding-top:20px;padding-bottom:50px}}
