@@ -79,10 +79,25 @@
       const target=$('pending-members');
       target.textContent='학부모·협력학원 가입 신청 조회 중…';
       try{
-        const rows=await rest('GET','/rest/v1/member_profiles',token,{
-          select:'user_id,full_name,account_type,academy_name,email,approval_status',
-          approval_status:'eq.pending',order:'created_at.asc'
-        });
+        const [rows,usernames,children]=await Promise.all([
+          rest('GET','/rest/v1/member_profiles',token,{
+            select:'user_id,account_type,academy_name,academy_address,approval_status',
+            approval_status:'eq.pending',order:'created_at.asc'
+          }),
+          rest('GET','/rest/v1/member_login_ids',token,{
+            select:'user_id,login_id'
+          }),
+          rest('GET','/rest/v1/parent_children',token,{
+            select:'parent_user_id,child_name'
+          })
+        ]);
+        const nameForId=new Map(usernames.map(x=>[x.user_id,x.login_id]));
+        const childrenForId=new Map();
+        for(const child of children){
+          const list=childrenForId.get(child.parent_user_id)||[];
+          list.push(child.child_name);
+          childrenForId.set(child.parent_user_id,list);
+        }
         target.replaceChildren();
         if(!rows.length){target.textContent='현재 승인 대기 중인 회원가입 신청이 없습니다.';return;}
         for(const item of rows){
@@ -90,8 +105,14 @@
           const info=document.createElement('p');
           const roleLabel=item.account_type==='parent'?'학부모'
             :item.account_type==='academy_owner'?'협력학원 원장':'확인 필요';
-          info.textContent=[roleLabel,item.full_name,item.academy_name,item.email]
-            .filter(Boolean).join(' · ');
+          info.textContent=[
+            roleLabel,
+            '아이디: '+(nameForId.get(item.user_id)||'기존 가입 계정'),
+            item.account_type==='parent'
+              ? '아이: '+((childrenForId.get(item.user_id)||[]).join(', ')||'등록 필요')
+              : item.academy_name,
+            item.account_type==='academy_owner' ? item.academy_address : ''
+          ].filter(Boolean).join(' · ');
           const actions=document.createElement('div');
           actions.className='approval-actions';
           const approveButton=document.createElement('button');
@@ -106,7 +127,7 @@
             if(!['parent','academy_owner'].includes(item.account_type)){
               show('회원 유형을 확인할 수 없습니다. 신청을 처리하지 않았습니다.',true);return;
             }
-            const applicant=(item.academy_name||item.full_name||'이 회원')+' ('+roleLabel+')';
+            const applicant=(item.academy_name||nameForId.get(item.user_id)||'이 회원')+' ('+roleLabel+')';
             const accepted=decision==='approved';
             const question=accepted
               ? applicant+' 가입을 승인하시겠습니까?'

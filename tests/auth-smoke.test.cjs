@@ -28,16 +28,17 @@ class FakeFormData extends Map {
  constructor(form){super(Object.entries(form.fields??{}))}
 }
 
-async function simulate({mode='signup',kind='parent',adminBadge=false,fullName='테스트 회원',unavailable=false,instantSignup=false}={}) {
- const names=['account-dialog','account-form','signup-only','academy-fields','account-status',
+async function simulate({mode='signup',kind='parent',adminBadge=false,childName='아동가',username='parent001',unavailable=false,instantSignup=false}={}) {
+ const names=['account-dialog','account-form','signup-only','academy-fields','parent-fields','account-status',
  'member-panel','account-switch','account-type','account-title','account-consent',
  'member-message','account-dashboard-link','member-signout','admin-login-link'];
  const elements=Object.fromEntries(names.map(name=>[name,new Element()]));
  const form=elements['account-form'];
  form.submit=new Element();
  form.elements={namedItem:()=>({autocomplete:''})};
- form.fields={account_type:kind,email:'test@example.invalid',password:'long-secure-password',
-  full_name:fullName,academy_name:kind==='academy_owner'?'테스트 학원':''};
+ form.fields={account_type:kind,login_id:username,password:'long-secure-password',
+  child_name:childName,academy_name:kind==='academy_owner'?'테스트 학원':'',
+  academy_address:kind==='academy_owner'?'경기도 수원시':''};
  elements['account-dialog'].closeBtn=new Element();
  elements['account-type'].value=kind;
  elements['account-consent'].checked=true;
@@ -76,22 +77,25 @@ async function simulate({mode='signup',kind='parent',adminBadge=false,fullName='
  return {submitted,route,status:elements['account-status'].textContent,adminLinkVisible:!elements['admin-login-link'].hidden,formHidden:form.hidden,panelVisible:!elements['member-panel'].hidden,dashboardHref:elements['account-dashboard-link'].href,memberMessage:elements['member-message'].textContent};
 }
 
-test('학부모 회원가입과 이메일 리다이렉트',async()=>{
+test('학부모 가입은 내부 식별자만 생성하고 아이 이름 등록',async()=>{
  const r=await simulate();
  assert.equal(r.submitted.options.data.account_type,'parent');
- assert.equal(r.submitted.options.emailRedirectTo,'https://www.conmath.kr/index.html');
+ assert.equal(r.submitted.email,'parent001@accounts.conmath.kr');
+ assert.equal(r.submitted.options.data.child_name,'아동가');
+ assert.equal(r.submitted.options.emailRedirectTo,undefined);
 });
 test('협력 원장 회원가입',async()=>{
  const r=await simulate({kind:'academy_owner'});
  assert.equal(r.submitted.options.data.academy_name,'테스트 학원');
  assert.equal('phone' in r.submitted.options.data,false);
- assert.equal('academy_address' in r.submitted.options.data,false);
- assert.match(r.status,/협력학원 원장 가입 신청/);
+ assert.equal(r.submitted.options.data.academy_address,'경기도 수원시');
+ assert.equal('child_name' in r.submitted.options.data,true);
+ assert.match(r.status,/아이디 방식의 가입 설정/);
 });
-test('이름이 없으면 Supabase 가입을 요청하지 않음',async()=>{
- const r=await simulate({fullName:''});
+test('아이 이름 없으면 학부모 가입을 요청하지 않음',async()=>{
+ const r=await simulate({childName:''});
  assert.equal(r.submitted,null);
- assert.match(r.status,/이름/);
+ assert.match(r.status,/아이 이름/);
 });
 test('공개 회원가입에서 관리자 역할을 만들 수 없음',async()=>{
  const r=await simulate({kind:'admin'});
@@ -136,9 +140,16 @@ test('이메일 인증 비활성화: 협력학원 가입 후 관리자 승인 �
  assert.match(r.memberMessage,/관리자 승인/);
  assert.doesNotMatch(r.status,/이메일 인증/);
 });
-test('인증 설정이 아직 활성화라면 기존 이메일 인증 안내를 유지',async()=>{
+test('아이디 가입에서 인증 설정 미완료면 이메일 전송을 안내하지 않음',async()=>{
  const r=await simulate({kind:'academy_owner',instantSignup:false});
  assert.equal(r.formHidden,true);
  assert.equal(r.panelVisible,false);
- assert.match(r.status,/이메일 인증 링크/);
+ assert.match(r.status,/아이디 방식의 가입 설정/);
+ assert.doesNotMatch(r.status,/이메일 인증 링크/);
+});
+
+test('아이디 형식에 맞지 않으면 인증 호출 없이 가입 차단',async()=>{
+ const r=await simulate({username:'bad id@naver.com'});
+ assert.equal(r.submitted,null);
+ assert.match(r.status,/아이디는 영문/);
 });
