@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>관리자 대시보드 | CON MATH</title>
-<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104"></head>
+<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"></head>
 <body data-dashboard-role="admin">
 <header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
 <main class="dash-main">
@@ -17,13 +17,21 @@
 <div id="pending-members" class="pending-list" aria-live="polite">승인 대기 중인 회원을 조회하고 있습니다.</div>
 </section>
 
-<section class="dash-section" aria-labelledby="admin-consult-title">
-<h2 id="admin-consult-title">학부모 자녀별 상담 · 답변 대기</h2>
-<p>승인된 학부모의 짧은 질문에 한 번만 답변할 수 있습니다. 전화·학교명 등 불필요한 정보를 요청하지 마세요.</p>
-<div id="admin-consultations" class="consult-history" aria-live="polite">상담 목록 확인 중…</div>
+<section class="dash-section" aria-labelledby="admin-comment-title">
+<h2 id="admin-comment-title">학부모 자녀별 학습 코멘트 작성</h2>
+<p>등록된 자녀를 선택해 짧은 학습 상황을 공유합니다. <strong>학부모는 읽기만 가능</strong>하며, 입력한 코멘트는 등록 후 수정하지 않습니다.</p>
+<form id="admin-comment-form" class="admin-comment-form">
+<label>학부모 / 자녀 선택 <select id="admin-comment-child" required><option value="">자녀 목록 확인 중…</option></select></label>
+<label>학습 코멘트 (300자 이내)
+<textarea id="admin-comment-text" required minlength="2" maxlength="300" rows="3" placeholder="예: 오늘은 분수 계산의 원리를 잘 이해했습니다. 다음에는 응용문제 풀이를 점검하겠습니다."></textarea></label>
+<div class="actions"><span id="admin-comment-count">0 / 300자</span><button id="admin-comment-submit" type="submit">코멘트 등록</button></div>
+</form>
+<p id="admin-comment-status" class="inline-status" role="status" aria-live="polite"></p>
+<h3 class="history-title">선택한 자녀의 최근 코멘트</h3>
+<div id="admin-comment-history" class="comment-history" aria-live="polite">자녀를 선택해주세요.</div>
 </section>
 </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
 <script src="admin-dashboard.js?v=20261029-allapprovals1" defer></script>
-<script src="admin-consultations.js?v=20261104" defer></script></body></html>
+<script src="admin-consultations.js?v=20261104-comments2" defer></script></body></html>
