@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>학부모 마이페이지 | CON MATH</title>
-<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104"></head>
+<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"></head>
 <body data-dashboard-role="parent">
 <header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
 <main class="dash-main">
 <div class="eyebrow">CON MATH · PARENT SERVICE</div>
-<h1>우리 아이 학습 공간</h1><p class="subtitle">자녀를 등록하고, 아이별 학습 고민을 짧게 상담하는 공간입니다.</p>
+<h1>우리 아이 학습 공간</h1><p class="subtitle">자녀를 등록하고, 콘매쓰에서 남긴 아이별 학습 코멘트를 확인하는 공간입니다.</p>
 <div id="dashboard-message" class="dash-message" role="status" aria-live="polite">로그인 및 접근 권한을 확인하고 있습니다.</div>
 <div id="dashboard-content" hidden><div class="welcome"><span id="user-greeting">회원님</span><button id="dashboard-logout" type="button">로그아웃</button></div>
 <section class="dash-section" id="parent-approval-box"><h2>학부모 계정 상태</h2><p id="parent-approval-text">관리자 승인 상태를 확인하고 있습니다.</p></section>
@@ -18,19 +18,17 @@
 <label>학교급 <select name="school_stage"><option value="other">선택 안 함</option><option value="elementary">초등</option><option value="middle">중등</option><option value="high">고등</option></select></label>
 <label>학년 <select name="grade"><option value="">선택 안 함</option><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option><option value="4">4학년</option><option value="5">5학년</option><option value="6">6학년</option></select></label>
 <button type="submit">+ 자녀 등록</button></form><p id="child-status" class="inline-status" role="status" aria-live="polite"></p></section>
-<section class="dash-section parent-feature"><div class="section-heading"><div><div class="eyebrow">02 · CONSULTATION</div><h2>자녀별 짧은 상담</h2></div><span class="step-badge">비공개</span></div>
-<p>실시간 채팅 대신 <strong>자녀당 7일에 질문 1개(200자 이내)</strong>를 남길 수 있습니다. 관리자는 <strong>1회(300자 이내)</strong> 답변하며, 이전 질문의 답변이 오기 전에는 새 글을 등록할 수 없습니다.</p>
-<form id="consult-form" class="consult-form"><label>상담할 자녀 <select id="consult-child" name="child_id" required><option value="">자녀를 먼저 등록해주세요</option></select></label>
-<label>학습 상담 내용 <textarea id="consult-question" name="question" maxlength="200" minlength="3" required rows="3" placeholder="예: 응용문제를 풀 때 자꾸 막힙니다. 어떤 개념을 점검하면 좋을까요?"></textarea></label>
-<div class="consult-submit"><span id="question-count" aria-live="polite">0 / 200자</span><button id="consult-submit" type="submit">상담 남기기</button></div></form>
-<p class="notice">학습에 필요한 내용만 적어주세요. 건강·연락처 등 민감한 개인정보는 작성하지 마세요. 급한 상담은 <a href="tel:01048369991">010-4836-9991</a>로 문의해주세요.</p>
-<p id="consult-status" class="inline-status" role="status" aria-live="polite"></p>
-<h3 class="history-title">내 상담 내역</h3><div id="consult-history" class="consult-history" aria-live="polite">상담 내역을 불러오는 중…</div></section>
+<section class="dash-section parent-feature"><div class="section-heading"><div><div class="eyebrow">02 · LEARNING NOTES</div><h2>우리 아이 학습 코멘트</h2></div><span class="step-badge">읽기 전용</span></div>
+<p>콘매쓰에서 남긴 간단한 학습 코멘트를 확인할 수 있어요. <strong>코멘트 작성은 관리자만 가능</strong>하며, 학부모는 조회만 할 수 있습니다.</p>
+<label class="comment-filter">조회할 자녀 <select id="comment-child-filter" aria-label="코멘트를 조회할 자녀"><option value="">전체 자녀</option></select></label>
+<div id="comment-history" class="comment-history" aria-live="polite">학습 코멘트를 불러오는 중…</div>
+<p class="notice">코멘트는 등록된 자녀의 학습 상황을 간단히 공유하는 안내입니다. 추가 상담이 필요하면 <a href="tel:01048369991">010-4836-9991</a>로 문의해주세요.</p>
+</section>
 <section class="dash-section parent-feature"><div class="section-heading"><div><div class="eyebrow">03 · BENEFITS</div><h2>추천 혜택</h2></div></div>
 <div class="dash-grid"><div class="info-card"><div class="label">내 추천수당</div><div class="value">정산 기준 미설정</div><p>정산 정책 확정 후 금액이 표시됩니다.</p></div>
 <div class="info-card"><div class="label">내 할인율</div><div class="value">할인 정책 미설정</div><p>교육과정별 할인 정책 확정 후 표시됩니다.</p></div></div>
 <p class="placeholder">추천 내역 조회는 준비 중입니다. 실제 추천·정산이 시작되지 않았습니다.</p></section>
 </div></div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
-<script src="dashboard.js?v=20261029-allapprovals1" defer></script><script src="parent-service.js?v=20261104" defer></script>
+<script src="dashboard.js?v=20261029-allapprovals1" defer></script><script src="parent-service.js?v=20261104-comments2" defer></script>
 </body></html>
