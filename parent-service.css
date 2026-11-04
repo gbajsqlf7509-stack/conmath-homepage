@@ -19,3 +19,18 @@
 .admin-reply .actions{display:flex;align-items:center;justify-content:space-between;margin-top:8px;color:#667e9d;font-size:13px}
 @media(max-width:760px){.child-form{grid-template-columns:1fr 1fr}.child-form label:first-child{grid-column:span 2}.child-form button{grid-column:span 2}.parent-feature{padding:20px}}
 @media(max-width:460px){.parent-feature .section-heading{align-items:flex-start}.step-badge{font-size:11px;padding:7px 9px}.child-form{grid-template-columns:1fr}.child-form label:first-child,.child-form button{grid-column:auto}}
+/* Read-only parent learning notes and administrator composer */
+.comment-history{display:grid;gap:12px;margin:16px 0}
+.comment-filter{display:flex;align-items:center;gap:14px;font-size:14px;font-weight:800;color:#173b63;margin:16px 0}
+.comment-filter select{min-width:180px;max-width:100%;min-height:43px;border:1px solid #b9d1ed;border-radius:9px;padding:8px 12px;background:white;color:#173b63;font:inherit}
+.comment-history .consult-card{background:#fff}
+.comment-history .consult-card .answer{margin-top:12px;white-space:pre-wrap}
+.admin-comment-form{display:grid;gap:12px;border:1px solid #dceafa;border-radius:14px;padding:18px;background:#f3f8ff}
+.admin-comment-form label{font-size:14px;font-weight:800;color:#123769}
+.admin-comment-form select,.admin-comment-form textarea{display:block;width:100%;margin-top:7px;border:1px solid #b9d1ed;border-radius:9px;background:white;color:#173b63;padding:10px 12px;font:inherit}
+.admin-comment-form select{min-height:44px}
+.admin-comment-form textarea{min-height:105px;resize:vertical;line-height:1.6}
+.admin-comment-form .actions{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#667e9d;gap:12px}
+.admin-comment-form button{min-height:44px;background:#0878df;color:white;border:0;border-radius:9px;padding:10px 16px;font-weight:850}
+.admin-comment-form button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:460px){.comment-filter{display:block}.comment-filter select{width:100%;margin-top:8px}}
