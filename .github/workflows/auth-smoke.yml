@@ -7,7 +7,7 @@ on:
       - index.html
       - brand.html
       - style.css
-      - tests/brand-story.test.cjs
+      - tests/brand-story.test.cjs tests/parent-service.test.cjs
       - admin-login.js
       - admin-dashboard.js
       - admin-dashboard.html
@@ -16,6 +16,11 @@ on:
       - admin-login.html
       - tests/admin-login-rest.test.cjs
       - dashboard.js
+      - parent-dashboard.html
+      - parent-service.js
+      - parent-service.css
+      - admin-consultations.js
+      - tests/parent-service.test.cjs
       - tests/auth-smoke.test.cjs
       - .github/workflows/auth-smoke.yml
   workflow_dispatch:
