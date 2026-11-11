@@ -33,15 +33,16 @@ test('Standalone brand page preserves normal navigation, account login and booki
  assert.match(page,/href="index.html#management"/);
  assert.match(page,/href="booking.html"/);
  assert.match(page,/id="account-dialog"/);
- assert.match(page,/src="member-auth.js\?v=20261029-minimal1"/);
+ assert.match(page,/id="payout-step"/);
+ assert.match(page,/src="member-auth.js\?v=20261111-bankstep1"/);
 });
 test('Brand page remains responsive and never relies on text rendered into images',()=>{
  assert.match(css,/\.brand-story-grid/);
  assert.match(css,/\.brand-story-manifesto/);
  assert.match(css,/\.brand-page-breadcrumb/);
  assert.match(css,/@media\(max-width:650px\)/);
- assert.match(page,/style\.css\?v=20261102-brandpage/);
- assert.match(home,/style\.css\?v=20261102-brandpage/);
+ assert.match(page,/style\.css\?v=20261111-bankstep1/);
+ assert.match(home,/style\.css\?v=20261111-bankstep1/);
 });
 test('Expanded academy partnership remains a future-facing direction',()=>{
  assert.match(brand,/넓혀가고자 합니다/);

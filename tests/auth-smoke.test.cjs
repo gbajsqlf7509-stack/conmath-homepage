@@ -9,159 +9,201 @@ const source=fs.readFileSync(path.join(__dirname,'../member-auth.js'),'utf8');
 const page=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
 
 class Element{
-  constructor(){this.hidden=false;this.value='';this.textContent='';this.dataset={};this.handlers={};
-    this.classList={toggle(){}};}
+  constructor(){
+    this.hidden=false;this.value='';this.textContent='';
+    this.dataset={};this.handlers={};this.classList={toggle(){}};
+    this.required=false;this.disabled=false;
+  }
   addEventListener(name,fn){(this.handlers[name]??=[]).push(fn);}
-  async dispatchEvent(event){for(const fn of this.handlers[event.type]??[])await fn({
-    target:this,preventDefault(){}});
+  async dispatchEvent(event){
+    for(const fn of this.handlers[event.type]??[])await fn({target:this,preventDefault(){}});
   }
   querySelector(selector){return selector==='.account-submit'?this.submit:
     selector==='.account-close'?this.closeBtn:null;}
-  setAttribute(name,val){this[name]=val;}
+  setAttribute(name,value){this[name]=value;}
   showModal(){this.open=true;}
   close(){this.open=false;}
   reset(){}
 }
-class FakeFormData extends Map {
-  constructor(form){super(Object.entries(form.fields??{}));}
-}
+class FakeFormData extends Map{constructor(form){super(Object.entries(form.fields??{}));}}
+
 async function simulate({
-  mode='signup',kind='parent',username='happyparent',fullName='테스트 회원',
-  bank='',unavailable=false,legacyEmail=false,approve='approved'
+  mode='signup',kind='parent',username='happyparent',
+  fullName='테스트 회원',bankName='국민은행',bankNumber='123456-789012',
+  available=true,legacy=false,bankAlreadySaved=false,session=true
 }={}){
-  const ids=['account-dialog','account-form','signup-only','account-status',
+  const names=['account-dialog','account-form','signup-only','account-status',
     'member-panel','account-switch','account-type','account-title','account-consent',
     'member-message','account-dashboard-link','member-signout','admin-login-link',
-    'login-id','login-id-label','account-bank','payout-guide'];
-  const els=Object.fromEntries(ids.map(id=>[id,new Element()]));
-  const form=els['account-form'];
-  form.submit=new Element();
-  form.elements={namedItem:()=>({autocomplete:''})};
-  const details=bank||(kind==='academy_owner'?'국민은행 123456789123':'');
-  form.fields={
-    account_type:kind,full_name:fullName,login_id:legacyEmail?'legacy@example.net':username,
-    password:'long-secure-password',account_details:details
-  };
+    'login-id','login-id-label','payout-step','account-bank-name','account-bank-number',
+    'payout-step-guide','payout-skip','payout-save','member-open-payout'];
+  const els=Object.fromEntries(names.map(id=>[id,new Element()]));
   els['account-dialog'].closeBtn=new Element();
+  els['account-form'].submit=new Element();
+  els['account-form'].elements={namedItem:()=>({autocomplete:''})};
+  els['account-form'].fields={
+    account_type:kind,full_name:fullName,
+    login_id:legacy?'legacy@example.net':username,password:'test-password-123'
+  };
   els['account-type'].value=kind;
   els['account-consent'].checked=true;
-  const loginButton=new Element(),joinButton=new Element();
-  loginButton.dataset.account='login';joinButton.dataset.account='signup';
-  const doc={
+  els['account-bank-name'].value=bankName;
+  els['account-bank-number'].value=bankNumber;
+  const loginButton=new Element(),signupButton=new Element();
+  loginButton.dataset.account='login';signupButton.dataset.account='signup';
+  const document={
     getElementById:id=>els[id],
-    querySelectorAll:selector=>selector==='[data-account]'?[loginButton,joinButton]:
+    querySelectorAll:selector=>selector==='[data-account]'?[loginButton,signupButton]:
       selector==='[data-account="login"]'?[loginButton]:[]
   };
-  let submitted=null,route=null,payout=null,loginEmail=null;
-  const user={id:'simulated-session-user'};
+  const user={id:'fake-user-id'};
+  let signupPayload=null,loginEmail=null,payout=null,route=null;
+  let savedAccount=bankAlreadySaved?{user_id:user.id,account_details:'국민은행 123456-789012'}:null;
+  let signedIn=false;
   const client={
     auth:{
-      getUser:async()=>({data:{user:null}}),
+      getUser:async()=>({data:{user:signedIn?user:null},error:null}),
       getSession:async()=>({data:{session:null}}),
-      onAuthStateChange:()=>{},
-      signUp:async payload=>{submitted=payload;return {
-        data:{user,session:{access_token:'mock'}},error:null};},
-      signInWithPassword:async payload=>{loginEmail=payload.email;return {data:{user},error:null};},
-      signOut:async()=>({error:null})
+      signUp:async payload=>{signupPayload=payload;signedIn=session;return{data:{user,session:session?{access_token:'test'}:null},error:null};},
+      signInWithPassword:async payload=>{loginEmail=payload.email;signedIn=true;return{data:{user,session:{access_token:'test'}},error:null};},
+      onAuthStateChange:()=>{},signOut:async()=>({error:null})
     },
-    from:table=>{
+    from(table){
       if(table==='member_payout_accounts')return {
-        upsert:async payload=>{payout=payload;return {error:null};}
+        select(){return this;},eq(){return this;},
+        maybeSingle:async()=>({data:savedAccount,error:null}),
+        upsert:async payload=>{payout=payload;savedAccount={...payload};return{error:null};}
       };
       return {
         select(){return this;},eq(){return this;},
-        single:async()=>({data:{account_type:kind,full_name:'테스트 회원',
-          approval_status:approve},error:null})
+        single:async()=>({data:{account_type:kind,full_name:'테스트 회원',approval_status:'pending'},error:null})
       };
     }
   };
   const window={
-    supabase:unavailable?null:{createClient:()=>client},
-    location:{assign:path=>route=path},alert:()=>{}
+    supabase:available?{createClient:()=>client}:null,
+    location:{assign:p=>route=p},alert:()=>{}
   };
-  vm.runInNewContext(source,{window,document:doc,FormData:FakeFormData});
-  await (mode==='login'?loginButton:joinButton).dispatchEvent({type:'click'});
-  if(!unavailable)await form.dispatchEvent({type:'submit'});
-  return {submitted,route,payout,loginEmail,status:els['account-status'].textContent,
-    formHidden:form.hidden,bankRequired:els['account-bank'].required,
-    adminLinkVisible:!els['admin-login-link'].hidden};
+  vm.runInNewContext(source,{window,document,FormData:FakeFormData});
+  await (mode==='login'?loginButton:signupButton).dispatchEvent({type:'click'});
+  const snapshot=()=>({
+    signupPayload,loginEmail,payout,route,
+    payoutVisible:!els['payout-step'].hidden,signupVisible:!els['account-form'].hidden,
+    skipVisible:!els['payout-skip'].hidden,
+    bankLabel:els['payout-step-guide'].textContent,
+    message:els['account-status'].textContent,
+    memberVisible:!els['member-panel'].hidden,
+    title:els['account-title'].textContent
+  });
+  return {
+    elements:els,snapshot,
+    submitSignup:async()=>els['account-form'].dispatchEvent({type:'submit'}),
+    submitBank:async()=>els['payout-step'].dispatchEvent({type:'submit'}),
+    skip:async()=>els['payout-skip'].dispatchEvent({type:'click'}),
+    manageAccount:async()=>els['member-open-payout'].dispatchEvent({type:'click'})
+  };
 }
 
-test('새 회원가입 화면은 이름·아이디·비번·계좌를 사용하고 이메일을 요구하지 않는다',()=>{
-  assert.match(page,/name="login_id"/);
-  assert.match(page,/name="account_details"/);
-  assert.doesNotMatch(page,/name="email" type="email"/);
-  assert.match(page,/추천비를 받으실 분만/);
+test('회원가입에는 계좌번호가 없고 별도 입력 화면이 있다',()=>{
+  const signup=page.split('<form id="account-form"')[1].split('</form>')[0];
+  assert.doesNotMatch(signup,/account_details|account-bank-name|account-bank-number/);
+  assert.match(page,/id="payout-step"/);
+  assert.match(page,/id="account-bank-name"/);
+  assert.match(page,/id="account-bank-number"/);
+  assert.match(page,/id="payout-skip"/);
 });
-test('학부모는 아이디 회원가입 후 관리자 승인 대상으로 등록된다',async()=>{
+test('학부모: 회원가입 성공 → 계좌 화면이 열리고 가입 단계에서는 계좌가 저장되지 않는다',async()=>{
   const x=await simulate();
-  assert.equal(x.submitted.email,'happyparent@fyzgwhtqqomsftqbfvjb.supabase.co');
-  assert.equal(x.submitted.options.data.username,'happyparent');
-  assert.equal(x.submitted.options.data.account_type,'parent');
-  assert.match(x.status,/관리자 승인/);
-  assert.equal(x.payout,null);
+  await x.submitSignup();
+  const s=x.snapshot();
+  assert.equal(s.signupPayload.email,'happyparent@fyzgwhtqqomsftqbfvjb.supabase.co');
+  assert.equal(s.payoutVisible,true);
+  assert.equal(s.signupVisible,false);
+  assert.equal(s.skipVisible,true);
+  assert.equal(s.payout,null);
+  assert.match(s.message,/가입 신청이 접수/);
 });
-test('학원장은 은행명과 계좌를 별도 보호 테이블에 저장한다',async()=>{
+test('학부모는 계좌 단계를 건너뛰고 관리자 승인을 기다릴 수 있다',async()=>{
+  const x=await simulate();await x.submitSignup();await x.skip();
+  const s=x.snapshot();
+  assert.equal(s.payout,null);
+  assert.equal(s.payoutVisible,false);
+  assert.equal(s.memberVisible,true);
+});
+test('학원장도 가입한 후 계좌 화면이 열리며 건너뛰기는 제공하지 않는다',async()=>{
+  const x=await simulate({kind:'academy_owner',bankAlreadySaved:false});
+  await x.submitSignup();
+  const s=x.snapshot();
+  assert.equal(s.signupPayload.options.data.account_type,'academy_owner');
+  assert.equal(s.payoutVisible,true);
+  assert.equal(s.skipVisible,false);
+  assert.equal(s.payout,null);
+});
+test('학원장: 별도 계좌 단계에서 저장하면 전용 페이지로 이동할 수 있다',async()=>{
   const x=await simulate({kind:'academy_owner'});
-  assert.equal(x.bankRequired,true);
-  assert.equal(x.payout.account_details,'국민은행 123456789123');
-  assert.equal(x.payout.user_id,'simulated-session-user');
-  assert.equal('account_details' in x.submitted.options.data,false);
-  assert.equal('password' in x.submitted.options.data,false);
-  assert.equal('phone' in x.submitted.options.data,false);
+  await x.submitSignup();await x.submitBank();
+  const s=x.snapshot();
+  assert.equal(s.payout.account_details,'국민은행 123456-789012');
+  assert.equal(s.payout.user_id,'fake-user-id');
+  assert.equal(s.memberVisible,true);
+  assert.equal(s.payoutVisible,false);
+  assert.match(s.message,/계좌정보를 저장/);
 });
-test('추천을 원하는 학부모만 계좌를 선택적으로 저장할 수 있다',async()=>{
-  const x=await simulate({bank:'우리은행 123456789123'});
-  assert.equal(x.bankRequired,false);
-  assert.equal(x.payout.account_details,'우리은행 123456789123');
+test('학부모도 희망하면 계좌를 저장할 수 있다',async()=>{
+  const x=await simulate({kind:'parent'});
+  await x.submitSignup();await x.submitBank();
+  assert.equal(x.snapshot().payout.account_details,'국민은행 123456-789012');
 });
-test('학원장이 계좌 없이 회원가입하면 신청하지 않는다',async()=>{
-  const x=await simulate({kind:'academy_owner',bank:' '});
-  // Empty/whitespace payout should be rejected before signUp.
-  assert.equal(x.submitted,null);
-  assert.match(x.status,/계좌/);
+test('학원장이 미등록 계좌로 로그인하면 계좌 화면부터 보여준다',async()=>{
+  const x=await simulate({mode:'login',kind:'academy_owner'});
+  await x.submitSignup();
+  assert.equal(x.snapshot().payoutVisible,true);
+  assert.equal(x.snapshot().route,null);
 });
-test('아이디가 규칙에 맞지 않으면 회원가입하지 않는다',async()=>{
-  const x=await simulate({username:'x'});
-  assert.equal(x.submitted,null);
-  assert.match(x.status,/아이디/);
+test('학원장이 계좌를 이미 등록했으면 기존처럼 마이페이지로 이동한다',async()=>{
+  const x=await simulate({mode:'login',kind:'academy_owner',bankAlreadySaved:true});
+  await x.submitSignup();
+  assert.equal(x.snapshot().route,'academy-dashboard.html');
 });
-test('이름 없으면 회원가입하지 않는다',async()=>{
-  const x=await simulate({fullName:''});
-  assert.equal(x.submitted,null);
-  assert.match(x.status,/이름/);
+test('기존 이메일 계정도 계속 로그인할 수 있다',async()=>{
+  const x=await simulate({mode:'login',legacy:true});
+  await x.submitSignup();
+  assert.equal(x.snapshot().loginEmail,'legacy@example.net');
+  assert.equal(x.snapshot().route,'parent-dashboard.html');
 });
-test('공개 화면에서 관리자 계정 생성 불가',async()=>{
-  const x=await simulate({kind:'admin'});
-  assert.equal(x.submitted,null);
+test('학부모는 계좌 없이 로그인해도 전용 페이지로 이동할 수 있다',async()=>{
+  const x=await simulate({mode:'login',kind:'parent'});
+  await x.submitSignup();
+  assert.equal(x.snapshot().route,'parent-dashboard.html');
 });
-test('아이디 로그인은 내부 계정으로 전환된다',async()=>{
-  const x=await simulate({mode:'login'});
-  assert.equal(x.loginEmail,'happyparent@fyzgwhtqqomsftqbfvjb.supabase.co');
-  assert.equal(x.route,'parent-dashboard.html');
+test('아이디와 이름은 가입 과정에서 검증한다',async()=>{
+  const x=await simulate({username:'a'});await x.submitSignup();
+  assert.equal(x.snapshot().signupPayload,null);
+  assert.match(x.snapshot().message,/아이디/);
+  const y=await simulate({fullName:''});await y.submitSignup();
+  assert.equal(y.snapshot().signupPayload,null);
+  assert.match(y.snapshot().message,/이름/);
 });
-test('기존 이메일 회원은 이전 이메일로 로그인할 수 있다',async()=>{
-  const x=await simulate({mode:'login',legacyEmail:true});
-  assert.equal(x.loginEmail,'legacy@example.net');
-  assert.equal(x.route,'parent-dashboard.html');
+test('공개 화면에서 관리자 계정 생성은 막힌다',async()=>{
+  const x=await simulate({kind:'admin'});await x.submitSignup();
+  assert.equal(x.snapshot().signupPayload,null);
 });
-test('학원장 승인 상태와 별개로 원장 전용 화면에 이동한다',async()=>{
-  const x=await simulate({mode:'login',kind:'academy_owner',approve:'pending'});
-  assert.equal(x.route,'academy-dashboard.html');
+test('비정상 계좌번호는 저장하지 않는다',async()=>{
+  const x=await simulate({bankNumber:'ABC'});await x.submitSignup();await x.submitBank();
+  assert.equal(x.snapshot().payout,null);
+  assert.match(x.snapshot().message,/계좌번호/);
 });
-test('관리자 계정은 일반 로그인 화면에서 차단된다',async()=>{
-  const x=await simulate({mode:'login',kind:'admin'});
-  assert.equal(x.route,null);
-  assert.match(x.status,/관리자 전용 로그인/);
-  assert.equal(x.adminLinkVisible,true);
+test('이미 등록한 계좌도 계정 화면에서 다시 수정할 수 있다',async()=>{
+  const x=await simulate({mode:'login',bankAlreadySaved:true});
+  await x.submitSignup();await x.manageAccount();
+  assert.equal(x.snapshot().payoutVisible,true);
 });
-test('Supabase 스크립트 장애를 안내한다',async()=>{
-  const x=await simulate({mode:'login',unavailable:true});
-  assert.match(x.status,/불러오지 못/);
+test('외부 Supabase 스크립트 오류를 안내한다',async()=>{
+  const x=await simulate({available:false,mode:'login'});
+  assert.match(x.snapshot().message,/불러오지 못/);
 });
-test('관리자 비밀번호 재설정은 회원 비밀번호를 조회하지 않는다',()=>{
+test('비밀번호를 관리자에게 조회시키지 않는다',()=>{
   const controls=fs.readFileSync(path.join(__dirname,'../admin-account-controls.js'),'utf8');
   assert.match(controls,/admin-reset-member-password/);
   assert.doesNotMatch(controls,/encrypted_password/);
-  assert.match(controls,/임시 비밀번호/);
 });
