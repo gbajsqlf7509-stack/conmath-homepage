@@ -1,0 +1,28 @@
+.commission-section h3{font-size:16px;color:#003477;margin:24px 0 12px}
+.commission-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
+.commission-stats>div{border:1px solid #d7e6f5;background:#f4f8ff;border-radius:13px;padding:15px}
+.commission-stats span{display:block;font-size:12px;color:#526f93}
+.commission-stats strong{display:block;font-size:clamp(16px,2vw,23px);color:#063d80;margin-top:8px;overflow-wrap:anywhere}
+.commission-month-label{display:flex;align-items:center;gap:14px;margin:18px 0;font-weight:800}
+.commission-forms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.commission-form{border:1px solid #d7e6f5;border-radius:14px;padding:16px;background:#fafcff;display:flex;flex-direction:column;gap:10px}
+.commission-form h3{margin:0 0 4px}
+.commission-form label{display:flex;flex-direction:column;gap:5px;font-weight:750;font-size:13px}
+.commission-form input,.commission-form select,.commission-month-label input{width:100%;max-width:100%;min-width:0;border:1px solid #a9c6e5;border-radius:8px;padding:10px;background:#fff;color:#163b70;font:inherit}
+.commission-month-label input{width:180px}
+.commission-form button{border:0;border-radius:9px;background:#0878df;color:white;padding:11px 12px;font-weight:800;margin-top:auto;min-height:42px}
+.commission-form button:disabled{opacity:.55;cursor:not-allowed}
+.commission-form small{font-size:12px;line-height:1.5;color:#687d98}
+.commission-due{margin:0!important;padding:9px;border:1px solid #c5dff6;background:#edf6ff;border-radius:8px;color:#084c91!important;font-weight:700}
+.commission-table-scroll{width:100%;overflow-x:auto}
+.commission-table{width:100%;border-collapse:collapse;font-size:13px;min-width:610px}
+.commission-table th,.commission-table td{text-align:left;padding:12px 10px;border-bottom:1px solid #e0eaf5;white-space:nowrap}
+.commission-table th{background:#f4f8ff;color:#426187;font-size:12px}
+.commission-small{padding:7px 9px;border-radius:8px;background:#fff;border:1px solid #b7d3ec;color:#125493;cursor:pointer;font-size:12px}
+#commission-status.is-error{color:#ad2635}
+.partner-earnings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.partner-earnings .info-card{box-shadow:none}
+.partner-earnings .value{font-size:clamp(19px,3vw,28px)}
+.partner-earnings .info-card:last-child{grid-column:1 / -1}
+@media(max-width:850px){.commission-forms{grid-template-columns:1fr}.commission-form{max-width:none}}
+@media(max-width:520px){.commission-stats{grid-template-columns:1fr}.partner-earnings{grid-template-columns:1fr}.partner-earnings .info-card:last-child{grid-column:auto}}
