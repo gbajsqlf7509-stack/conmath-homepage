@@ -50,7 +50,7 @@
     switchButton.textContent=mode==='signup'?'이미 계정이 있으신가요? 로그인':'계정이 없으신가요? 회원가입';
     switchButton.hidden=false;
     $('admin-login-link').hidden=mode!=='login';
-    if(mode==='signup')syncRole();
+    syncRole();
   }
   $('account-type').addEventListener('change',syncRole);
   switchButton.addEventListener('click',()=>setMode(mode==='signup'?'login':'signup'));
