@@ -189,7 +189,8 @@
     if(!payoutUser?.id||!payoutRole){notice('먼저 회원가입 또는 로그인을 해주세요.',true);return;}
     const bank=bankName.value.trim();
     const account=bankNumber.value.trim();
-    if(!bank||!/^[0-9-]{6,40}$/.test(account)){
+    if(!bank||bank.length>30||!/^[0-9]+(?:-[0-9]+)*$/.test(account)||
+       account.replace(/-/g,'').length<6||account.replace(/-/g,'').length>30){
       notice('은행명과 올바른 계좌번호(숫자·하이픈)를 입력해주세요.',true);return;
     }
     const save=$('payout-save');save.disabled=true;
