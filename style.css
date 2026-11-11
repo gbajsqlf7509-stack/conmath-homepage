@@ -191,3 +191,12 @@ footer{border-top:1px solid #edf5fc;background:linear-gradient(#fff,#fdfdff);min
 .brand-page-main .brand-story{padding-top:31px;padding-bottom:80px}
 .nav-desktop a[aria-current="page"],.mobile-nav a[aria-current="page"]{color:#087ad9}
 @media(max-width:650px){.brand-page-breadcrumb{padding-top:19px;font-size:12px}.brand-page-main .brand-story{padding-top:20px;padding-bottom:50px}}
+
+
+/* Signup is complete before the second-step bank registration screen appears. */
+#payout-step[hidden]{display:none!important}
+#payout-step{margin-top:12px}
+#payout-step .account-note{margin:0 0 8px!important;line-height:1.65}
+#payout-step #payout-skip{width:100%;margin:4px 0 0;text-align:center}
+#payout-step #payout-skip[hidden]{display:none!important}
+#member-open-payout{margin:8px auto 14px}
