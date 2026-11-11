@@ -1,0 +1,13 @@
+.account-admin-list{display:grid;gap:12px;margin-top:18px}
+.account-admin-row{padding:14px;background:#f8fbff;border:1px solid #dbe6f3;border-radius:12px;overflow-wrap:anywhere}
+.account-admin-main{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.account-admin-main strong{color:#0b427f}
+.account-admin-meta{font-size:13px;color:#557291}
+.account-admin-account{font-size:13px;color:#385b82;line-height:1.6;margin:7px 0}
+.account-admin-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.account-admin-actions button{border:1px solid #a5c6ea;color:#075ca8;border-radius:8px;padding:8px 12px;background:#fff;font-weight:750}
+.account-admin-actions button:disabled{opacity:.5}
+.account-admin-secret{background:#eef6ff;border:1px solid #bbdcff;border-radius:10px;margin-top:10px;padding:12px;font-size:13px}
+.account-admin-secret code{display:block;overflow-wrap:anywhere;font-size:16px;font-weight:800;margin:8px 0}
+.account-admin-secret button{background:#0c6bc8;color:white;border:none;border-radius:8px;padding:8px 12px}
+#member-admin-status.is-error{color:#a32634}

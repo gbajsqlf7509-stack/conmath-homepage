@@ -79,10 +79,16 @@
       const target=$('pending-members');
       target.textContent='학부모·협력학원 가입 신청 조회 중…';
       try{
-        const rows=await rest('GET','/rest/v1/member_profiles',token,{
-          select:'user_id,full_name,account_type,academy_name,email,approval_status',
-          approval_status:'eq.pending',order:'created_at.asc'
-        });
+        const [rows,payouts]=await Promise.all([
+          rest('GET','/rest/v1/member_profiles',token,{
+            select:'user_id,username,full_name,account_type,academy_name,email,approval_status',
+            approval_status:'eq.pending',order:'created_at.asc'
+          }),
+          rest('GET','/rest/v1/member_payout_accounts',token,{
+            select:'user_id,account_details'
+          })
+        ]);
+        const bankByUser=new Map(payouts.map(item=>[item.user_id,item.account_details]));
         target.replaceChildren();
         if(!rows.length){target.textContent='현재 승인 대기 중인 회원가입 신청이 없습니다.';return;}
         for(const item of rows){
@@ -90,13 +96,20 @@
           const info=document.createElement('p');
           const roleLabel=item.account_type==='parent'?'학부모'
             :item.account_type==='academy_owner'?'협력학원 원장':'확인 필요';
-          info.textContent=[roleLabel,item.full_name,item.academy_name,item.email]
+          const bank=bankByUser.get(item.user_id);
+          info.textContent=[roleLabel,item.full_name,item.academy_name,
+            '아이디: '+(item.username||item.email),
+            bank?'계좌: '+bank:'계좌 미등록']
             .filter(Boolean).join(' · ');
           const actions=document.createElement('div');
           actions.className='approval-actions';
           const approveButton=document.createElement('button');
           approveButton.type='button';approveButton.className='approval-accept';
           approveButton.textContent='가입 승인';
+          if(item.account_type==='academy_owner'&&!bank){
+            approveButton.disabled=true;
+            approveButton.title='학원장 계좌정보를 먼저 등록해주세요. 전체 회원 관리에서 입력한 뒤 새로고침하세요.';
+          }
           const rejectButton=document.createElement('button');
           rejectButton.type='button';rejectButton.className='approval-reject';
           rejectButton.textContent='가입 반려';
