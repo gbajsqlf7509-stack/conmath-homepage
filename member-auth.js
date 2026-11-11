@@ -28,6 +28,53 @@
     status.textContent=message||'';
     status.classList.toggle('is-error',error);
   }
+  // Supabase often returns English errors. Never display provider error text directly.
+  function koreanError(error,context='signup'){
+    const raw=String(error?.message||'').toLowerCase();
+    const code=String(error?.code||'').toLowerCase();
+    const statusCode=Number(error?.status||0);
+    const seconds=raw.match(/(?:after|in|wait|retry after)\s+(\d+)\s+seconds?/i)
+      ||raw.match(/(\d+)\s+seconds?/i);
+    if(statusCode===429 || code.includes('rate_limit')
+      ||raw.includes('for security purposes')
+      ||raw.includes('too many requests')
+      ||raw.includes('rate limit') ||raw.includes('request this after')){
+      return seconds
+        ?'보안을 위해 '+seconds[1]+'초 후 다시 시도해주세요.'
+        :'요청이 잠시 제한됐습니다. 잠시 후 다시 시도해주세요.';
+    }
+    if(code==='user_already_exists'||raw.includes('already registered')
+      ||raw.includes('already exists')||raw.includes('user already registered')){
+      return '이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.';
+    }
+    if(code==='invalid_credentials'||raw.includes('invalid login credentials')
+      ||raw.includes('invalid credentials')){
+      return '아이디 또는 비밀번호를 확인해주세요.';
+    }
+    if(raw.includes('email address') ||code.includes('email_address_invalid')
+      ||raw.includes('invalid email')){
+      return '아이디 계정 생성에 문제가 있습니다. 관리자에게 문의해주세요.';
+    }
+    if(raw.includes('password')&&(raw.includes('weak')||raw.includes('short')
+      ||raw.includes('characters')||raw.includes('least'))){
+      return '비밀번호가 보안 기준에 맞지 않습니다. 8자 이상으로 다시 설정해주세요.';
+    }
+    if(raw.includes('signup is disabled')||raw.includes('signups not allowed')){
+      return '현재 회원가입을 처리할 수 없습니다. 관리자에게 문의해주세요.';
+    }
+    if(raw.includes('failed to fetch')||raw.includes('network')
+      ||raw.includes('fetch failed')||raw.includes('timed out')){
+      return '서버 연결이 원활하지 않습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';
+    }
+    // Keep our own Korean validation messages; conceal all unknown English server messages.
+    if(/[가-힣]/.test(String(error?.message||'')) &&
+       !/[a-z]{3,}/i.test(String(error?.message||''))){
+      return String(error.message);
+    }
+    if(context==='login')return '로그인 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.';
+    if(context==='bank')return '계좌정보를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.';
+    return '회원가입 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.';
+  }
   async function showPayoutStep(user,role){
     if(!user?.id || !['parent','academy_owner'].includes(role))return;
     payoutUser=user;payoutRole=role;
@@ -167,19 +214,7 @@
         if(route)window.location.assign(route);
       }
     }catch(error){
-      const raw=String(error?.message||'').toLowerCase();
-      const code=String(error?.code||'').toLowerCase();
-      const msg=raw.includes('already registered')||code==='user_already_exists'
-        ? '이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.'
-        :raw.includes('invalid login credentials')||code==='invalid_credentials'
-        ?'아이디 또는 비밀번호를 확인해주세요.'
-        :raw.includes('email address')||code==='email_address_invalid'
-        ?'아이디 계정 생성에 문제가 있습니다. 관리자에게 문의해주세요.'
-        :raw.includes('too many requests')
-        ?'요청이 많습니다. 잠시 후 다시 시도해주세요.'
-        :raw.includes('failed to fetch')||raw.includes('network')
-        ?'로그인 서비스 연결이 원활하지 않습니다.'
-        :error?.message||'요청 처리 중 오류가 발생했습니다.';
+      const msg=koreanError(error,mode);
       notice(msg,true);
       if(mode==='login'&&typeof window.alert==='function')window.alert(msg);
     }finally{submit.disabled=false;}
@@ -205,7 +240,7 @@
       if(error)throw error;
       await showMember(user);
       notice('계좌정보를 저장했습니다. 관리자 승인 후 회원 서비스를 이용할 수 있습니다.');
-    }catch(error){notice('계좌정보 저장 실패: '+(error?.message||'다시 시도해주세요.'),true);}
+    }catch(error){notice(koreanError(error,'bank'),true);}
     finally{save.disabled=false;}
   });
   $('payout-skip').addEventListener('click',async()=>{

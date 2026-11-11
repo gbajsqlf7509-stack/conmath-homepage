@@ -30,7 +30,8 @@ class FakeFormData extends Map{constructor(form){super(Object.entries(form.field
 async function simulate({
   mode='signup',kind='parent',username='happyparent',
   fullName='테스트 회원',bankName='국민은행',bankNumber='123456-789012',
-  available=true,legacy=false,bankAlreadySaved=false,session=true
+  available=true,legacy=false,bankAlreadySaved=false,session=true,
+  authError=null,bankError=null
 }={}){
   const names=['account-dialog','account-form','signup-only','account-status',
     'member-panel','account-switch','account-type','account-title','account-consent',
@@ -64,15 +65,15 @@ async function simulate({
     auth:{
       getUser:async()=>({data:{user:signedIn?user:null},error:null}),
       getSession:async()=>({data:{session:null}}),
-      signUp:async payload=>{signupPayload=payload;signedIn=session;return{data:{user,session:session?{access_token:'test'}:null},error:null};},
-      signInWithPassword:async payload=>{loginEmail=payload.email;signedIn=true;return{data:{user,session:{access_token:'test'}},error:null};},
+      signUp:async payload=>{signupPayload=payload;if(authError)return{data:{user:null,session:null},error:authError};signedIn=session;return{data:{user,session:session?{access_token:'test'}:null},error:null};},
+      signInWithPassword:async payload=>{loginEmail=payload.email;if(authError)return{data:{user:null,session:null},error:authError};signedIn=true;return{data:{user,session:{access_token:'test'}},error:null};},
       onAuthStateChange:()=>{},signOut:async()=>({error:null})
     },
     from(table){
       if(table==='member_payout_accounts')return {
         select(){return this;},eq(){return this;},
         maybeSingle:async()=>({data:savedAccount,error:null}),
-        upsert:async payload=>{payout=payload;savedAccount={...payload};return{error:null};}
+        upsert:async payload=>{if(bankError)return{error:bankError};payout=payload;savedAccount={...payload};return{error:null};}
       };
       return {
         select(){return this;},eq(){return this;},
@@ -206,4 +207,39 @@ test('비밀번호를 관리자에게 조회시키지 않는다',()=>{
   const controls=fs.readFileSync(path.join(__dirname,'../admin-account-controls.js'),'utf8');
   assert.match(controls,/admin-reset-member-password/);
   assert.doesNotMatch(controls,/encrypted_password/);
+});
+
+test('보안상 17초 제한: 영어 원문 대신 남은 시간을 한국어로 표시',async()=>{
+  const x=await simulate({
+    authError:{message:'For security purposes, you can only request this after 17 seconds.',status:429,code:'over_request_rate_limit'}
+  });
+  await x.submitSignup();
+  const message=x.snapshot().message;
+  assert.match(message,/보안을 위해 17초 후 다시 시도해주세요/);
+  assert.doesNotMatch(message,/For security|seconds|request this/i);
+});
+test('보안 재요청 제한: 초를 모를 때에도 한국어만 안내',async()=>{
+  const x=await simulate({authError:{message:'Rate limit exceeded',status:429}});
+  await x.submitSignup();
+  assert.match(x.snapshot().message,/잠시 후 다시 시도해주세요/);
+  assert.doesNotMatch(x.snapshot().message,/[a-z]{3,}/i);
+});
+test('알려지지 않은 영어 가입 오류도 화면에 표시하지 않는다',async()=>{
+  const x=await simulate({authError:{message:'Unexpected Authentication Gateway Message'}});
+  await x.submitSignup();
+  assert.match(x.snapshot().message,/회원가입 요청/);
+  assert.doesNotMatch(x.snapshot().message,/Unexpected|Gateway|Authentication/i);
+});
+test('영어 로그인 오류도 한국어로 표시',async()=>{
+  const x=await simulate({mode:'login',authError:{message:'Invalid login credentials',code:'invalid_credentials'}});
+  await x.submitSignup();
+  assert.match(x.snapshot().message,/아이디 또는 비밀번호/);
+  assert.doesNotMatch(x.snapshot().message,/Invalid login credentials/i);
+});
+test('계좌 입력 단계에서 영어 서버 오류를 그대로 보여주지 않는다',async()=>{
+  const x=await simulate({bankError:{message:'new row violates row-level security policy'}});
+  await x.submitSignup();
+  await x.submitBank();
+  assert.match(x.snapshot().message,/계좌정보를 저장하지 못했습니다/);
+  assert.doesNotMatch(x.snapshot().message,/row-level|policy/i);
 });
