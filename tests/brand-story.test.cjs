@@ -34,7 +34,7 @@ test('Standalone brand page preserves normal navigation, account login and booki
  assert.match(page,/href="booking.html"/);
  assert.match(page,/id="account-dialog"/);
  assert.match(page,/id="payout-step"/);
- assert.match(page,/src="member-auth.js\?v=20261111-bankstep1"/);
+ assert.match(page,/src="member-auth.js\?v=20261111-koerrors1"/);
 });
 test('Brand page remains responsive and never relies on text rendered into images',()=>{
  assert.match(css,/\.brand-story-grid/);
