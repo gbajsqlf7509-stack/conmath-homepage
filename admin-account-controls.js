@@ -27,13 +27,14 @@
     const [{data:members,error:memberError},{data:accounts,error:bankError}]=await Promise.all([
       client.from('member_profiles')
         .select('user_id,username,email,full_name,academy_name,account_type,approval_status,created_at')
-        .in('account_type',['parent','academy_owner']).order('created_at',{ascending:false}),
+        .in('account_type',['parent','academy_owner'])
+        .in('approval_status',['pending','approved']).order('created_at',{ascending:false}),
       client.from('member_payout_accounts').select('user_id,account_details')
     ]);
     if(memberError||bankError)throw memberError||bankError;
     const byId=new Map((accounts||[]).map(x=>[x.user_id,x.account_details]));
     const target=$('all-members');target.replaceChildren();
-    for(const member of members||[]){
+    for(const member of (members||[]).filter(m=>m.approval_status==='pending'||m.approval_status==='approved')){
       const item=document.createElement('article');
       item.className='account-admin-row';
       const header=document.createElement('div');header.className='account-admin-main';
@@ -122,7 +123,7 @@
       actions.append(changeBank,reset);
       item.append(header,bankLine,actions);target.append(item);
     }
-    if(!members?.length)target.textContent='등록된 학부모·학원장 계정이 없습니다.';
+    if(!(members||[]).some(m=>m.approval_status==='pending'||m.approval_status==='approved'))target.textContent='현재 표시할 승인 대기·승인 완료 회원이 없습니다.';
   }
   try{
     const {data:{user},error}=await client.auth.getUser();
