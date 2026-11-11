@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>관리자 대시보드 | CON MATH</title>
-<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"></head>
+<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"><link rel="stylesheet" href="commission.css?v=20261111-1"></head>
 <body data-dashboard-role="admin">
 <header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
 <main class="dash-main">
@@ -30,8 +30,54 @@
 <h3 class="history-title">선택한 자녀의 최근 코멘트</h3>
 <div id="admin-comment-history" class="comment-history" aria-live="polite">자녀를 선택해주세요.</div>
 </section>
+
+<section class="dash-section commission-section" id="commission-admin" aria-labelledby="commission-title" hidden>
+<h2 id="commission-title">협력학원 추천비 정산</h2>
+<p>협력학원 → 콘매쓰 추천 학생만 관리합니다. 학생은 전화번호 뒷자리 4자리로 표시되며, <strong>실제 납부한 원비의 5%</strong>를 계산합니다. 송금은 관리자가 별도로 진행합니다.</p>
+<div class="commission-stats">
+<div><span>선택한 달 발생 추천비</span><strong id="commission-month-earned">0원</strong></div>
+<div><span>전체 미지급 추천비</span><strong id="commission-unpaid">0원</strong></div>
+<div><span>누적 지급 완료</span><strong id="commission-paid-total">0원</strong></div>
+</div>
+<label class="commission-month-label">조회·정산할 월 <input id="commission-month" type="month" required></label>
+<div class="commission-forms">
+<form id="commission-register-form" class="commission-form">
+<h3>추천 학생 등록</h3>
+<label>전화번호 뒷자리 4자리<input id="commission-last4" type="text" inputmode="numeric" autocomplete="off" maxlength="4" pattern="[0-9]{4}" placeholder="예: 4721" required></label>
+<label>추천 학원<select id="commission-partner" required></select></label>
+<label>수강 과정<select id="commission-course" required></select></label>
+<small id="commission-course-help">과정을 선택하면 기준 원비를 확인할 수 있습니다.</small>
+<label>추천 등록일<input id="commission-referred-on" type="date" required></label>
+<button type="submit">학생 등록</button>
+</form>
+<form id="commission-payment-form" class="commission-form">
+<h3>이번 달 원비 납부 입력</h3>
+<label>학생 선택<select id="commission-payment-student" required></select></label>
+<small id="commission-payment-course">과정에 따른 기준 원비가 표시됩니다.</small>
+<label>실제 납부 원비(원)<input id="commission-payment-won" type="number" min="1" step="1" required></label>
+<label>납부일<input id="commission-paid-on" type="date" required></label>
+<button id="commission-payment-submit" type="submit">원비 납부 기록</button>
+<small>같은 학생·월에 다시 저장하면 <strong>해당 월 누적 납부액</strong>으로 수정됩니다. 미납 월은 기록하지 않습니다.</small>
+</form>
+<form id="commission-settlement-form" class="commission-form">
+<h3>추천비 지급 기록</h3>
+<label>학생 선택<select id="commission-settlement-student" required></select></label>
+<p id="commission-settlement-due" class="commission-due">미지급액 확인 중</p>
+<label>실제 송금한 금액(원)<input id="commission-settlement-won" type="number" min="1" step="1" required></label>
+<label>송금일<input id="commission-settled-on" type="date" required></label>
+<button id="commission-settlement-submit" type="submit">송금 완료 기록</button>
+<small>이 버튼은 돈을 보내지 않습니다. 실제 계좌이체를 마친 뒤에만 기록하세요.</small>
+</form>
+</div>
+<p id="commission-status" class="inline-status" role="status" aria-live="polite"></p>
+<h3>추천 학생 목록</h3>
+<div class="commission-table-scroll"><table class="commission-table"><thead><tr><th>학생 4자리</th><th>추천 학원</th><th>수강 과정</th><th>재원 상태</th><th>관리</th></tr></thead><tbody id="commission-students-body"></tbody></table></div>
+<h3>선택한 달 수납·정산</h3>
+<div class="commission-table-scroll"><table class="commission-table"><thead><tr><th>학생</th><th>추천 학원</th><th>실제 원비</th><th>발생 5%</th><th>지급 완료</th><th>미지급</th></tr></thead><tbody id="commission-ledger-body"></tbody></table></div>
+</section>
 </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
 <script src="admin-dashboard.js?v=20261029-allapprovals1" defer></script>
-<script src="admin-consultations.js?v=20261104-comments2" defer></script></body></html>
+<script src="admin-consultations.js?v=20261104-comments2" defer></script>
+<script src="admin-commissions.js?v=20261111-1" defer></script></body></html>
