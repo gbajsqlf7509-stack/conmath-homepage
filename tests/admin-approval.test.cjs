@@ -50,3 +50,12 @@ test('Both member types are registered pending, with no extra personal fields',(
  assert.doesNotMatch(signup,/fields.get\('phone'\)/);
  assert.match(signup,/관리자 승인 대기/);
 });
+
+test('Rejected members are excluded from the administrator member panel',()=>{
+ const controls=fs.readFileSync(path.join(__dirname,'../admin-account-controls.js'),'utf8');
+ assert.match(controls,/\.in\('approval_status',\['pending','approved'\]\)/);
+ assert.match(controls,/\.filter\(m=>m\.approval_status==='pending'\|\|m\.approval_status==='approved'\)/);
+ assert.match(page,/반려한 회원의 기록은 보관하되 이 화면에서는 숨깁니다/);
+ assert.match(page,/admin-account-controls\.js\?v=20261111-hide-rejected1/);
+ new Function(controls);
+});
