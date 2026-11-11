@@ -203,14 +203,15 @@
           <option value="parent">학부모</option><option value="academy_owner">협력학원 원장</option>
         </select>
       </label>
-      <label>이름<input name="full_name" maxlength="60" autocomplete="name"></label>
-      <div id="academy-fields" hidden>
-        <label>학원 이름<input name="academy_name" maxlength="120"></label>
-      </div>
-      <p class="account-note">학부모·협력학원 원장 모두 관리자 승인 후 회원 전용 기능을 이용할 수 있습니다.</p>
+      <label>이름<input name="full_name" maxlength="60" autocomplete="name" required></label>
+      <label id="payout-label">계좌정보 (은행명·계좌번호)
+        <input id="account-bank" name="account_details" maxlength="100" autocomplete="off" placeholder="예: 국민은행 123456-78-901234">
+      </label>
+      <p class="account-note" id="payout-guide">학부모는 추천비를 받으실 분만 계좌정보를 입력해주세요. 협력학원 원장은 필수입니다.</p>
+      <p class="account-note">가입은 관리자 승인 후 완료됩니다. 비밀번호는 관리자에게 공개되지 않습니다.</p>
       <label class="account-consent"><input type="checkbox" id="account-consent"> <span><strong>[필수]</strong> 회원가입 개인정보 수집·이용에 동의합니다. <a href="privacy.html" target="_blank" rel="noopener">수집 목적·항목·보유기간·거부권 확인</a></span></label>
     </div>
-    <label>이메일<input name="email" type="email" required autocomplete="email" maxlength="254"></label>
+    <label><span id="login-id-label">아이디</span><input id="login-id" name="login_id" type="text" required autocomplete="username" maxlength="254" placeholder="아이디를 입력해주세요"></label>
     <label>비밀번호<input name="password" type="password" minlength="8" required autocomplete="current-password"></label>
     <button class="account-submit" type="submit">로그인</button>
   </form>
@@ -223,7 +224,7 @@
   </div>
 </dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
-<script src="member-auth.js?v=20261029-minimal1"></script>
+<script src="member-auth.js?v=20261111-simpleid1"></script>
 <script src="script.js?v=20261029-members" defer></script>
 </body>
 </html>
