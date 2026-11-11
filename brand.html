@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="CON MATH 콘매쓰의 교육 철학 — 원리를 탐구하고 개념을 연결하며 스스로 활용하는 힘">
   <title>브랜드 소개 | CON MATH 콘매쓰</title>
-  <link rel="stylesheet" href="style.css?v=20261102-brandpage">
+  <link rel="stylesheet" href="style.css?v=20261111-bankstep1">
 </head>
 <body>
 <header class="header">
@@ -135,26 +135,35 @@
         </select>
       </label>
       <label>이름<input name="full_name" maxlength="60" autocomplete="name"></label>
-      <div id="academy-fields" hidden>
-        <label>학원 이름<input name="academy_name" maxlength="120"></label>
-      </div>
-      <p class="account-note">학부모·협력학원 원장 모두 관리자 승인 후 회원 전용 기능을 이용할 수 있습니다.</p>
+      <p class="account-note">가입은 관리자 승인 후 완료됩니다. 비밀번호는 관리자에게 공개되지 않습니다.</p>
       <label class="account-consent"><input type="checkbox" id="account-consent"> <span><strong>[필수]</strong> 회원가입 개인정보 수집·이용에 동의합니다. <a href="privacy.html" target="_blank" rel="noopener">수집 목적·항목·보유기간·거부권 확인</a></span></label>
     </div>
-    <label>이메일<input name="email" type="email" required autocomplete="email" maxlength="254"></label>
+    <label><span id="login-id-label">아이디</span><input id="login-id" name="login_id" type="text" required autocomplete="username" maxlength="254" placeholder="아이디를 입력해주세요"></label>
     <label>비밀번호<input name="password" type="password" minlength="8" required autocomplete="current-password"></label>
     <button class="account-submit" type="submit">로그인</button>
+  </form>
+  <form id="payout-step" class="account-form payout-step" hidden>
+    <p id="payout-step-guide" class="account-note">회원가입이 접수되었습니다. 추천비 수령용 계좌정보를 입력해주세요.</p>
+    <label>은행명
+      <input id="account-bank-name" name="bank_name" type="text" maxlength="30" autocomplete="off" placeholder="예: 국민은행" required>
+    </label>
+    <label>계좌번호
+      <input id="account-bank-number" name="account_number" type="text" inputmode="numeric" maxlength="40" autocomplete="off" placeholder="예: 123456-78-901234" required>
+    </label>
+    <button class="account-submit" type="submit" id="payout-save">계좌정보 저장</button>
+    <button class="account-switch" type="button" id="payout-skip">나중에 입력하기</button>
   </form>
   <button id="account-switch" class="account-switch" type="button">계정이 없으신가요? 회원가입</button>
   <a id="admin-login-link" class="admin-login-link" href="admin-login.html" hidden>관리자 전용 로그인 →</a>
   <div id="member-panel" hidden>
     <p id="member-message"></p>
+    <button type="button" id="member-open-payout" class="account-switch">계좌정보 등록·변경</button>
     <button type="button" id="member-signout" class="account-submit">로그아웃</button>
     <a id="account-dashboard-link" class="account-submit account-dashboard-link" href="parent-dashboard.html" hidden>내 전용 페이지로 이동</a>
   </div>
 </dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
-<script src="member-auth.js?v=20261029-minimal1"></script>
+<script src="member-auth.js?v=20261111-bankstep1"></script>
 <script src="script.js?v=20261029-members" defer></script>
 </body>
 </html>
