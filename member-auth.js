@@ -18,26 +18,45 @@
   const $=id=>document.getElementById(id);
   const form=$('account-form'),signup=$('signup-only'),status=$('account-status'),
     panel=$('member-panel'),switchButton=$('account-switch');
-  const idInput=$('login-id'),bankInput=$('account-bank');
+  const idInput=$('login-id'),payoutForm=$('payout-step'),
+    bankName=$('account-bank-name'),bankNumber=$('account-bank-number');
   const ID_RE=/^[a-z][a-z0-9_-]{3,19}$/;
   const alias=id=>id+'@fyzgwhtqqomsftqbfvjb.supabase.co';
-  let mode='login';
+  let mode='login',payoutUser=null,payoutRole=null,currentUser=null,currentRole=null;
 
   function notice(message,error=false){
     status.textContent=message||'';
     status.classList.toggle('is-error',error);
   }
-  function syncRole(){
-    const isOwner=$('account-type').value==='academy_owner';
-    bankInput.required=mode==='signup'&&isOwner;
-    $('payout-guide').textContent=isOwner
-      ? '협력학원 원장은 계좌정보를 필수로 입력해주세요. 은행명과 계좌번호를 함께 입력합니다.'
-      : '학부모는 추천비를 받으실 분만 계좌정보를 입력해주세요. 일반 학부모는 비워두세요.';
+  async function showPayoutStep(user,role){
+    if(!user?.id || !['parent','academy_owner'].includes(role))return;
+    payoutUser=user;payoutRole=role;
+    form.hidden=true;panel.hidden=true;switchButton.hidden=true;
+    $('admin-login-link').hidden=true;
+    payoutForm.hidden=false;
+    payoutForm.reset();
+    $('account-title').textContent='계좌정보 입력';
+    $('payout-step-guide').textContent=role==='academy_owner'
+      ? '회원가입이 접수됐습니다. 추천비를 받으실 은행명과 계좌번호를 입력해주세요. 계좌정보가 있어야 관리자가 학원장 가입을 승인할 수 있습니다.'
+      : '회원가입이 접수됐습니다. 추천비를 받으실 학부모만 계좌정보를 입력해주세요. 필요하지 않으면 건너뛸 수 있습니다.';
+    $('payout-skip').hidden=role!=='parent';
+    try{
+      const {data,error}=await client.from('member_payout_accounts')
+        .select('account_details').eq('user_id',user.id).maybeSingle();
+      if(error)throw error;
+      if(data?.account_details){
+        const saved=String(data.account_details).trim();
+        const space=saved.indexOf(' ');
+        if(space>0){bankName.value=saved.slice(0,space);bankNumber.value=saved.slice(space+1);}
+      }
+    }catch(_){ /* Upsert will still work; do not expose any other user's data. */ }
   }
   function setMode(next){
     mode=next;
     notice('');
     panel.hidden=true;
+    payoutForm.hidden=true;
+    payoutUser=null;payoutRole=null;
     form.hidden=false;
     signup.hidden=mode!=='signup';
     $('account-title').textContent=mode==='signup'?'회원가입':'로그인';
@@ -50,16 +69,13 @@
     switchButton.textContent=mode==='signup'?'이미 계정이 있으신가요? 로그인':'계정이 없으신가요? 회원가입';
     switchButton.hidden=false;
     $('admin-login-link').hidden=mode!=='login';
-    syncRole();
   }
-  $('account-type').addEventListener('change',syncRole);
   switchButton.addEventListener('click',()=>setMode(mode==='signup'?'login':'signup'));
   dialog.querySelector('.account-close').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
   document.querySelectorAll('[data-account]').forEach(button=>button.addEventListener('click',async()=>{
     setMode(button.dataset.account==='signup'?'signup':'login');
     form.reset();
-    if(mode==='signup')syncRole();
     dialog.showModal();
     try{
       const {data}=await client.auth.getUser();
@@ -79,6 +95,14 @@
       notice('관리자 계정은 관리자 전용 로그인으로 이동해주세요.');
       return null;
     }
+    currentUser=user;currentRole=profile.account_type;
+    if(profile.account_type==='academy_owner'){
+      const {data:account,error:accountError}=await client.from('member_payout_accounts')
+        .select('user_id').eq('user_id',user.id).maybeSingle();
+      if(accountError){notice('계좌정보 확인에 실패했습니다. 다시 시도해주세요.',true);return null;}
+      if(!account){await showPayoutStep(user,profile.account_type);return null;}
+    }
+    payoutForm.hidden=true;
     form.hidden=true;panel.hidden=false;switchButton.hidden=true;
     $('account-title').textContent='내 계정';
     const kind=profile.account_type==='parent'?'학부모':'협력학원 원장';
@@ -104,14 +128,10 @@
         const accountType=String(fields.get('account_type')||'');
         const name=String(fields.get('full_name')||'').trim();
         const username=rawId.toLowerCase();
-        const bank=String(fields.get('account_details')||'').trim();
         if(!['parent','academy_owner'].includes(accountType))throw new Error('회원 유형을 확인해주세요.');
         if(!name||name.length>60)throw new Error('이름을 입력해주세요.');
         if(!ID_RE.test(username))throw new Error('아이디는 영문자로 시작하는 4~20자의 영문·숫자·밑줄·하이픈만 가능합니다.');
         if(password.length<8)throw new Error('비밀번호는 8자 이상 입력해주세요.');
-        if(accountType==='academy_owner'&&!bank)throw new Error('학원장은 은행명과 계좌번호를 입력해주세요.');
-        if(bank&&bank.length<8)throw new Error('은행명과 계좌번호를 함께 입력해주세요.');
-        if(bank.length>100)throw new Error('계좌정보가 너무 깁니다.');
         if(!$('account-consent').checked)throw new Error('개인정보 수집·이용 동의가 필요합니다.');
         // No bank data or passwords in user-editable auth metadata.
         const {data,error}=await client.auth.signUp({
@@ -121,24 +141,22 @@
         });
         if(error)throw error;
         if(!data?.user)throw new Error('회원가입 결과를 확인할 수 없습니다.');
-        if(bank){
-          if(!data.session)throw new Error('회원 계정은 생성됐지만 계좌정보를 저장할 수 없습니다. 관리자에게 가입 아이디를 알려주세요.');
-          const {error:bankError}=await client.from('member_payout_accounts').upsert({
-            user_id:data.user.id,account_details:bank,updated_at:new Date().toISOString()
-          },{onConflict:'user_id'});
-          if(bankError){
-            form.hidden=true;switchButton.hidden=true;
-            $('account-title').textContent='회원가입 신청 완료';
-            notice('계정은 생성됐지만 계좌정보 저장에 실패했습니다. 관리자에게 문의하여 계좌정보를 등록해주세요.',true);
-            return;
-          }
+        // Collect bank details only AFTER the authentication account exists.
+        // A session is required to save the account under its owner's RLS policy.
+        let session=data.session;
+        if(!session){
+          const attempt=await client.auth.signInWithPassword({email:alias(username),password});
+          session=attempt.data?.session||null;
         }
         form.reset();form.hidden=true;switchButton.hidden=true;
-        $('account-title').textContent='회원가입 신청 완료';
-        panel.hidden=true;
-        notice(data.session
-          ? '가입 신청이 접수됐습니다. 관리자 승인 후 서비스를 이용할 수 있습니다.'
-          : '가입 신청은 접수됐지만 로그인 확인이 필요합니다. 관리자에게 문의해주세요.');
+        if(session){
+          await showPayoutStep(data.user,accountType);
+          notice('회원가입 신청이 접수됐습니다. 다음으로 계좌정보를 등록해주세요.');
+        }else{
+          payoutForm.hidden=true;panel.hidden=true;
+          $('account-title').textContent='회원가입 신청 완료';
+          notice('가입 신청은 접수됐지만 계좌 입력을 위한 로그인 상태를 확인할 수 없습니다. 관리자에게 문의해주세요.',true);
+        }
       }else{
         const username=rawId.toLowerCase();
         const email=rawId.includes('@')?rawId:(ID_RE.test(username)?alias(username):'');
@@ -165,6 +183,40 @@
       notice(msg,true);
       if(mode==='login'&&typeof window.alert==='function')window.alert(msg);
     }finally{submit.disabled=false;}
+  });
+  payoutForm.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(!payoutUser?.id||!payoutRole){notice('먼저 회원가입 또는 로그인을 해주세요.',true);return;}
+    const bank=bankName.value.trim();
+    const account=bankNumber.value.trim();
+    if(!bank||!/^[0-9-]{6,40}$/.test(account)){
+      notice('은행명과 올바른 계좌번호(숫자·하이픈)를 입력해주세요.',true);return;
+    }
+    const save=$('payout-save');save.disabled=true;
+    try{
+      const {data:{user},error:authError}=await client.auth.getUser();
+      if(authError||user?.id!==payoutUser.id)throw new Error('로그인 상태가 일치하지 않습니다.');
+      const {error}=await client.from('member_payout_accounts').upsert({
+        user_id:user.id,
+        account_details:bank+' '+account,
+        updated_at:new Date().toISOString()
+      },{onConflict:'user_id'});
+      if(error)throw error;
+      await showMember(user);
+      notice('계좌정보를 저장했습니다. 관리자 승인 후 회원 서비스를 이용할 수 있습니다.');
+    }catch(error){notice('계좌정보 저장 실패: '+(error?.message||'다시 시도해주세요.'),true);}
+    finally{save.disabled=false;}
+  });
+  $('payout-skip').addEventListener('click',async()=>{
+    if(payoutRole!=='parent'||!payoutUser)return;
+    const user=payoutUser;
+    await showMember(user);
+    notice('계좌 등록을 건너뛰었습니다. 추천비를 받으시려면 나중에 계좌정보를 등록해주세요.');
+  });
+  $('member-open-payout').addEventListener('click',async()=>{
+    if(!currentUser||!currentRole)return;
+    await showPayoutStep(currentUser,currentRole);
+    notice('');
   });
   $('member-signout').addEventListener('click',async()=>{
     await client.auth.signOut();
