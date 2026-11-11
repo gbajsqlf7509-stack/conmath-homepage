@@ -59,12 +59,13 @@ async function simulate({
   const user={id:'fake-user-id'};
   let signupPayload=null,loginEmail=null,payout=null,route=null;
   let savedAccount=bankAlreadySaved?{user_id:user.id,account_details:'국민은행 123456-789012'}:null;
+  let signedIn=false;
   const client={
     auth:{
-      getUser:async()=>({data:{user},error:null}),
+      getUser:async()=>({data:{user:signedIn?user:null},error:null}),
       getSession:async()=>({data:{session:null}}),
-      signUp:async payload=>{signupPayload=payload;return{data:{user,session:session?{access_token:'test'}:null},error:null};},
-      signInWithPassword:async payload=>{loginEmail=payload.email;return{data:{user,session:{access_token:'test'}},error:null};},
+      signUp:async payload=>{signupPayload=payload;signedIn=session;return{data:{user,session:session?{access_token:'test'}:null},error:null};},
+      signInWithPassword:async payload=>{loginEmail=payload.email;signedIn=true;return{data:{user,session:{access_token:'test'}},error:null};},
       onAuthStateChange:()=>{},signOut:async()=>({error:null})
     },
     from(table){
