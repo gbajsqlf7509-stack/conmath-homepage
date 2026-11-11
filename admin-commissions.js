@@ -202,7 +202,7 @@
       const amt=Number($('commission-settlement-won').value);
       if(!r||!Number.isInteger(amt)||amt<=0)throw new Error('지급 대상과 금액을 확인해주세요.');
       const due=commissionsFor(r.id,month).due;
-      if(amt>due)throw new Error('미지급 추천비보다 많은 금액을 지급 기록으로 저장할 수 없습니다.');
+      if(amt!==due)throw new Error('현재는 중복 지급 방지를 위해 해당 학생·월의 미지급 추천비 전액만 지급 기록할 수 있습니다.');
       const exists=settlements.find(s=>s.referral_id===r.id&&s.billing_month===month);
       if(exists)throw new Error('이 학생·월의 지급 기록이 이미 있습니다. 중복 지급 방지를 위해 자동 추가하지 않습니다.');
       if(!window.confirm(format(amt)+'을 실제 송금 완료했나요? 송금이 끝난 금액만 기록해주세요.'))return;
