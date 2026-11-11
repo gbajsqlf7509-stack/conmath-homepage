@@ -69,6 +69,26 @@
         }catch(error){say('계좌정보 저장 실패: '+error.message,true);}
         finally{busy=false;changeBank.disabled=false;}
       });
+      if(member.account_type==='academy_owner'){
+        const academyBtn=button('학원명 지정',async()=>{
+          if(busy)return;
+          const next=window.prompt('정산 목록에 표시할 학원명을 입력해주세요.',member.academy_name||'');
+          if(next===null)return;
+          const name=next.trim();
+          if(!name||name.length>120){say('학원명은 1~120자로 입력해주세요.',true);return;}
+          busy=true;academyBtn.disabled=true;
+          try{
+            const {error}=await client.from('member_profiles').update({
+              academy_name:name,updated_at:new Date().toISOString()
+            }).eq('user_id',member.user_id).eq('account_type','academy_owner');
+            if(error)throw error;
+            member.academy_name=name;
+            say('학원명을 변경했습니다. 정산 페이지를 새로고침하면 반영됩니다.');
+          }catch(error){say('학원명 수정 실패: '+error.message,true);}
+          finally{busy=false;academyBtn.disabled=false;}
+        });
+        actions.append(academyBtn);
+      }
       const reset=button('임시 비밀번호 재발급',async()=>{
         if(busy)return;
         if(!window.confirm(member.full_name+' 회원의 비밀번호를 새로운 임시 비밀번호로 변경할까요? 기존 비밀번호는 더 이상 사용할 수 없습니다.'))return;
