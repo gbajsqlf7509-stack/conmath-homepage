@@ -1,6 +1,6 @@
 'use strict';
-// Username login is adapted to Supabase email/password auth using a reserved
-// non-deliverable internal alias. Never store or display passwords to administrators.
+// Username login is adapted to Supabase email/password auth using a project-scoped
+// internal alias; no email delivery is used. Never store or display passwords to administrators.
 (function () {
   const url='https://fyzgwhtqqomsftqbfvjb.supabase.co';
   const publishableKey='sb_publishable_yE-Ao1-apsmTvkdHhqEasg_Oarn7dSw';
@@ -20,7 +20,7 @@
     panel=$('member-panel'),switchButton=$('account-switch');
   const idInput=$('login-id'),bankInput=$('account-bank');
   const ID_RE=/^[a-z][a-z0-9_-]{3,19}$/;
-  const alias=id=>id+'@members.conmath.invalid';
+  const alias=id=>id+'@fyzgwhtqqomsftqbfvjb.supabase.co';
   let mode='login';
 
   function notice(message,error=false){
