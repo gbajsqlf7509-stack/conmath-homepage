@@ -25,8 +25,14 @@
       return '이메일 또는 비밀번호를 확인해주세요.';
     if (message.includes('email not confirmed') || code==='email_not_confirmed')
       return '이메일 인증이 완료되지 않았습니다. 메일을 확인해주세요.';
-    if (message.includes('too many requests') || code==='over_request_rate_limit')
-      return '로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.';
+    if (message.includes('too many requests') || message.includes('for security purposes')
+      || message.includes('rate limit') || code.includes('rate_limit')
+      || Number(error?.status)===429) {
+      const remaining=message.match(/(?:after|in|wait)\s+(\d+)\s+seconds?/i);
+      return remaining
+        ? '보안을 위해 '+remaining[1]+'초 후 다시 로그인해주세요.'
+        : '로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.';
+    }
     if (message.includes('failed to fetch') || message.includes('network') || message.includes('fetch failed'))
       return '서버에 연결하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요.';
     if (message.includes('시간이 초과'))
