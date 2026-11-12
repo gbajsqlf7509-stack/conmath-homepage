@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /academy-dashboard.html
+Disallow: /parent-dashboard.html
+
+Sitemap: https://www.conmath.kr/sitemap.xml
