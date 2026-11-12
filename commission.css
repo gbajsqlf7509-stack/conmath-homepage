@@ -26,3 +26,8 @@
 .partner-earnings .info-card:last-child{grid-column:1 / -1}
 @media(max-width:850px){.commission-forms{grid-template-columns:1fr}.commission-form{max-width:none}}
 @media(max-width:520px){.commission-stats{grid-template-columns:1fr}.partner-earnings{grid-template-columns:1fr}.partner-earnings .info-card:last-child{grid-column:auto}}
+
+/* Referred students and their courses can only be edited from the admin dashboard. */
+.commission-course-select{max-width:260px;min-width:155px;width:100%;border:1px solid #a9c6e5;border-radius:8px;padding:8px 7px;background:#fff;color:#163b70;font:inherit}
+.commission-row-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.commission-small:disabled{opacity:.5;cursor:not-allowed}
