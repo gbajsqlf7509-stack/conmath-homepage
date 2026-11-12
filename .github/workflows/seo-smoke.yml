@@ -1,0 +1,25 @@
+name: Naver search SEO checks
+
+on:
+  pull_request:
+    paths:
+      - "*.html"
+      - robots.txt
+      - sitemap.xml
+      - tests/seo-sitemap.test.cjs
+      - .github/workflows/seo-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate public SEO metadata and sitemap
+        run: node --test tests/seo-sitemap.test.cjs
