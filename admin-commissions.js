@@ -96,10 +96,53 @@
       const s=students.find(x=>x.id===r.student_id);
       addCell(tr,s?.phone_last4||'????');
       addCell(tr,partnerName(r.partner_id));
-      addCell(tr,courseName(r.default_course_id));
+      // Only the administrator can select or change a referred student's course.
+      // The academy owner's dashboard never receives student/course-level data.
+      const courseCell=document.createElement('td');
+      let courseSelector=null;
+      if(!r.ended_on){
+        courseSelector=document.createElement('select');
+        courseSelector.className='commission-course-select';
+        courseSelector.setAttribute('aria-label',(s?.phone_last4||'추천 학생')+' 수강 과정 변경');
+        for(const c of courses.filter(c=>c.active||String(c.id)===String(r.default_course_id))){
+          const o=option(c.id,courseName(c.id)+(c.active?'':' (종료된 과정)'));
+          courseSelector.append(o);
+        }
+        if(r.default_course_id!=null)courseSelector.value=String(r.default_course_id);
+        else courseSelector.prepend(option('','과정 미선택'));
+        courseCell.append(courseSelector);
+      }else{
+        courseCell.textContent=courseName(r.default_course_id);
+      }
+      tr.append(courseCell);
       addCell(tr,r.ended_on?'퇴원 ('+r.ended_on+')':'재원 중');
       const td=document.createElement('td');
+      td.className='commission-row-actions';
       if(!r.ended_on){
+        const saveCourse=document.createElement('button');
+        saveCourse.type='button';saveCourse.className='commission-small';
+        saveCourse.textContent='과정 저장';
+        saveCourse.disabled=true;
+        courseSelector.addEventListener('change',()=>{
+          saveCourse.disabled=!courseSelector.value
+            ||courseSelector.value===String(r.default_course_id||'');
+        });
+        saveCourse.addEventListener('click',()=>withBusy(async()=>{
+          const nextCourse=courses.find(c=>String(c.id)===courseSelector.value&&c.active);
+          if(!nextCourse)throw new Error('선택한 과정이 없거나 더 이상 운영하지 않는 과정입니다.');
+          if(String(nextCourse.id)===String(r.default_course_id))return;
+          const changed=window.confirm((s?.phone_last4||'해당')+' 학생의 수강 과정을 '+courseName(nextCourse.id)
+            +'(으)로 변경할까요?\\n앞으로 입력할 원비의 기본 금액에만 반영되며 이미 입력한 원비와 정산 내역은 변경되지 않습니다.');
+          if(!changed)return;
+          const saved=must(await client.from('cm_student_referrals')
+            .update({default_course_id:nextCourse.id})
+            .eq('id',r.id).eq('direction','partner_to_conmath')
+            .select('id,default_course_id'));
+          if(saved.length!==1)throw new Error('과정 변경이 저장되지 않았습니다. 관리자 권한을 확인해주세요.');
+          await load();
+          notice((s?.phone_last4||'해당')+' 학생의 수강 과정을 변경했습니다. 과거 원비와 정산 내역은 유지됩니다.');
+        }));
+        td.append(saveCourse);
         const button=document.createElement('button');button.type='button';button.className='commission-small';
         button.textContent='퇴원 처리';
         button.addEventListener('click',()=>withBusy(async()=>{

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>관리자 대시보드 | CON MATH</title>
-<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"><link rel="stylesheet" href="commission.css?v=20261111-1"><link rel="stylesheet" href="member-admin.css?v=20261111-1"></head>
+<link rel="stylesheet" href="dashboard.css?v=20261029-approvals1"><link rel="stylesheet" href="parent-service.css?v=20261104-comments2"><link rel="stylesheet" href="commission.css?v=20261112-admin-course1"><link rel="stylesheet" href="member-admin.css?v=20261111-1"></head>
 <body data-dashboard-role="admin">
 <header class="dash-header"><a class="brand" href="index.html">CON <span>MATH</span></a><a href="index.html">홈페이지로 돌아가기 →</a></header>
 <main class="dash-main">
@@ -78,6 +78,7 @@
 </div>
 <p id="commission-status" class="inline-status" role="status" aria-live="polite"></p>
 <h3>추천 학생 목록</h3>
+<p class="approval-guide">추천 학생 등록과 수강 과정 변경은 관리자만 가능합니다. 과정 선택 후 <strong>과정 저장</strong>을 누르면 앞으로 입력하는 원비의 기준 금액만 바뀝니다. 기존 수납·추천비 내역은 유지됩니다.</p>
 <div class="commission-table-scroll"><table class="commission-table"><thead><tr><th>학생 4자리</th><th>추천 학원</th><th>수강 과정</th><th>재원 상태</th><th>관리</th></tr></thead><tbody id="commission-students-body"></tbody></table></div>
 <h3>선택한 달 수납·정산</h3>
 <div class="commission-table-scroll"><table class="commission-table"><thead><tr><th>학생</th><th>추천 학원</th><th>실제 원비</th><th>발생 5%</th><th>지급 완료</th><th>미지급</th></tr></thead><tbody id="commission-ledger-body"></tbody></table></div>
@@ -87,5 +88,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
 <script src="admin-dashboard.js?v=20261029-allapprovals1" defer></script>
 <script src="admin-consultations.js?v=20261104-comments2" defer></script>
-<script src="admin-commissions.js?v=20261111-1" defer></script>
+<script src="admin-commissions.js?v=20261112-admin-course1" defer></script>
 <script src="admin-account-controls.js?v=20261111-hide-rejected1" defer></script></body></html>

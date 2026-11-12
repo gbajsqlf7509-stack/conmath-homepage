@@ -59,3 +59,23 @@ test('Rejected members are excluded from the administrator member panel',()=>{
  assert.match(page,/admin-account-controls\.js\?v=20261111-hide-rejected1/);
  new Function(controls);
 });
+
+test('Only administrators control recommended student registration and course changes',()=>{
+ const adminPage=fs.readFileSync(path.join(__dirname,'../admin-dashboard.html'),'utf8');
+ const adminCommissions=fs.readFileSync(path.join(__dirname,'../admin-commissions.js'),'utf8');
+ const ownerPage=fs.readFileSync(path.join(__dirname,'../academy-dashboard.html'),'utf8');
+ const ownerEarnings=fs.readFileSync(path.join(__dirname,'../partner-earnings.js'),'utf8');
+ assert.match(adminPage,/id="commission-register-form"/);
+ assert.match(adminPage,/추천 학생 등록과 수강 과정 변경은 관리자만 가능합니다/);
+ assert.match(adminCommissions,/platform_admins/);
+ assert.match(adminCommissions,/profile\.data\?\.account_type!=='admin'/);
+ assert.match(adminCommissions,/commission-course-select/);
+ assert.match(adminCommissions,/saveCourse\.textContent='과정 저장'/);
+ assert.match(adminCommissions,/update\(\{default_course_id:nextCourse\.id\}\)/);
+ assert.match(adminCommissions,/eq\('direction','partner_to_conmath'\)/);
+ assert.match(adminCommissions,/saved\.length!==1/);
+ assert.match(adminCommissions,/기존 수납|과거 원비와 정산 내역은 유지/);
+ assert.doesNotMatch(ownerPage,/commission-register-form|commission-course-select|과정 저장/);
+ assert.doesNotMatch(ownerEarnings,/\.update\(\{default_course_id|cm_student_referrals|cm_students/);
+ new Function(adminCommissions);
+});
